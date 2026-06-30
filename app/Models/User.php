@@ -9,19 +9,27 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable([
+    'code',
+    'organization_code',
+    'business_code',
+    'role_id',
+
+    'name',
+    'email',
+    'password',
+    'phone',
+
+    'status',
+])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
-{
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+class User extends Authenticatable implements JWTSubject{
+    use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -29,4 +37,30 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'code';
+    }
+
 }
