@@ -39,3 +39,4 @@ class RegisteredUserController extends Controller
         ], 'User registered successfully.', 201);
     }
 }
+

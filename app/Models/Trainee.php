@@ -64,4 +64,13 @@ class Trainee extends Model
             'code'
         );
     }
+
+    public function goals()
+    {
+        return $this->hasMany(
+            TraineeGoal::class,
+            'trainee_code',
+            'code'
+        );
+    }
 }

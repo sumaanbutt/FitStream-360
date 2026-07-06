@@ -52,16 +52,10 @@ class UserController extends Controller
         );
     }
 
-    public function update(
-        UpdateUserRequest $request,
-        User $user
-    ) {
+    public function update(UpdateUserRequest $request, User $user) {
         $this->authorize('update', $user);
 
-        $user = $this->userService->update(
-            $user,
-            $request->validated()
-        );
+        $user = $this->userService->update($user, $request->validated());
 
         return ApiResponse::success(
             new UserResource($user),

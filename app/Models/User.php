@@ -50,12 +50,29 @@ class User extends Authenticatable implements JWTSubject{
 
     public function organization()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(
+            Organization::class,
+            'organization_code',
+            'code'
+        );
     }
 
     public function business()
     {
-        return $this->belongsTo(Business::class);
+        return $this->belongsTo(
+            Business::class,
+            'business_code',
+            'code'
+        );
+    }
+
+    public function uploadedGoalAttachments()
+    {
+        return $this->hasMany(
+            TraineeGoalAttachment::class,
+            'uploaded_by',
+            'code'
+        );
     }
 
     public function getRouteKeyName(): string

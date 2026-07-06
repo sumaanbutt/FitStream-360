@@ -34,11 +34,15 @@ class Staff extends Model
         return 'code';
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(
+            Organization::class,
+            'organization_code',
+            'code'
+        );
+    }
 
     public function business(): BelongsTo
     {
@@ -58,28 +62,35 @@ class Staff extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Future Relationships
-    |--------------------------------------------------------------------------
-    */
-
-    public function trainer(): HasOne
+    public function locations()
     {
-        return $this->hasOne(
-            Trainer::class,
+        return $this->hasMany(
+            Location::class,
             'staff_code',
             'code'
         );
     }
 
-    // public function shiftSchedules()
-    // {
-    //     return $this->hasMany(ShiftSchedule::class);
-    // }
+    public function shiftSchedules()
+    {
+        return $this->hasMany(
+            ShiftSchedule::class,
+            'staff_code',
+            'code'
+        );
+    }
 
-    // public function attendances()
-    // {
-    //     return $this->hasMany(Attendance::class);
-    // }
+
+
+// Future Relationships:
+
+//    public function trainer(): HasOne
+//    {
+//        return $this->hasOne(
+//            Trainer::class,
+//            'staff_code',
+//            'code'
+//        );
+//    }
+
 }

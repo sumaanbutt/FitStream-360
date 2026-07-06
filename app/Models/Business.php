@@ -29,17 +29,29 @@ class Business extends Model
 
     public function organization()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(
+            Organization::class,
+            'organization_code',
+            'code'
+        );
     }
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(
+            User::class,
+            'business_code',
+            'code'
+        );
     }
 
     public function locations()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasMany(
+            Location::class,
+            'business_code',
+            'code'
+        );
     }
 
     public function getRouteKeyName(): string

@@ -59,17 +59,11 @@ class TraineeController extends Controller
         );
     }
 
-    public function update(
-        UpdateTraineeRequest $request,
-        Trainee $trainee
-    ): JsonResponse {
+    public function update(UpdateTraineeRequest $request, Trainee $trainee): JsonResponse {
 
         $this->authorize('update', $trainee);
 
-        $trainee = $this->traineeService->update(
-            $trainee,
-            $request->validated()
-        );
+        $trainee = $this->traineeService->update($trainee, $request->validated());
 
         return ApiResponse::success(
             new TraineeResource($trainee),

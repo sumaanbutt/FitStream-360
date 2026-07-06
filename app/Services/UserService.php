@@ -26,7 +26,6 @@ class UserService
     public function store(array $data): User
     {
         try {
-
             return DB::transaction(function () use ($data) {
 
                 $user = User::create([
@@ -103,7 +102,6 @@ class UserService
     public function destroy(User $user): bool
     {
         try {
-
             return DB::transaction(function () use ($user) {
 
                 $user->delete();

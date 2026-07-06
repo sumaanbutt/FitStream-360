@@ -21,12 +21,29 @@ class Organization extends Model
 
     public function businesses(): HasMany
     {
-        return $this->hasMany(Business::class);
+        return $this->hasMany(
+            Business::class,
+            'organization_code',
+            'code'
+        );
     }
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(
+            User::class,
+            'organization_code',
+            'code'
+        );
+    }
+
+    public function shiftSchedules()
+    {
+        return $this->hasMany(
+            ShiftSchedule::class,
+            'organization_code',
+            'code'
+        );
     }
 
     public function getRouteKeyName(): string
