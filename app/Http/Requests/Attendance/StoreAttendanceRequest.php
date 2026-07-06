@@ -5,7 +5,7 @@ namespace App\Http\Requests\Attendance;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class Store,AttendanceRequest extends FormRequest
+class StoreAttendanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

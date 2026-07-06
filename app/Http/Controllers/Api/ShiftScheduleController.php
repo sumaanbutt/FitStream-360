@@ -60,10 +60,7 @@ class ShiftScheduleController extends Controller
         );
     }
 
-    public function update(
-        UpdateShiftScheduleRequest $request,
-        ShiftSchedule $shiftSchedule
-    ): JsonResponse {
+    public function update(UpdateShiftScheduleRequest $request, ShiftSchedule $shiftSchedule): JsonResponse {
 
         $this->authorize('update', $shiftSchedule);
 

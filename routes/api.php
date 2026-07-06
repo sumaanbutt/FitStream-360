@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('organizations', OrganizationController::class);
-    Route::apiResource('businesses', BusinessController::class);
+    Route::apiResource('businesses', BusinessController::class);//->middleware('can:update,' . Store::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('staff', StaffController::class);
     Route::apiResource('trainees', TraineeController::class);
