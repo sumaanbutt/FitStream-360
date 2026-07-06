@@ -2,16 +2,17 @@
 
 namespace App\Policies;
 
+use App\Models\TraineeGoals;
 use App\Models\User;
 
 class UserPolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        return $user->can('user.view');
+        return $user->can('user.viewAny');
     }
 
-    public function view(User $user, User $model): bool
+    public function view(user $user,): bool
     {
         return $user->can('user.view');
     }
@@ -21,13 +22,4 @@ class UserPolicy
         return $user->can('user.create');
     }
 
-    public function update(User $user, User $model): bool
-    {
-        return $user->can('user.update');
-    }
-
-    public function delete(User $user, User $model): bool
-    {
-        return $user->can('user.delete');
-    }
 }
