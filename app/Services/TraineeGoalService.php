@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\TraineeGoalFilter;
 use App\Models\TraineeGoals;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +17,13 @@ class TraineeGoalService
 
     public function index()
     {
-        return TraineeGoals::with([
-            'trainee.user',
-            'attachments',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new TraineeGoalFilter())
+        ->apply(
+            TraineeGoals::with([
+                'trainee.user',
+                'attachments',
+            ])
+        );
     }
 
 

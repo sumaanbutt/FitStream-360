@@ -21,7 +21,7 @@ class OrganizationController extends Controller
     {
         $this->authorize('viewAny', Organization::class);
 
-        $organizations = $this->organizationService->getAll();
+        $organizations = $this->organizationService->index();
 
         return ApiResponse::success(
             OrganizationResource::collection($organizations),

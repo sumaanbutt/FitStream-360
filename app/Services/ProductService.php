@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\ProductFilter;
 use App\Models\Product;
 use App\Traits\HasCode;
 use Illuminate\Http\UploadedFile;
@@ -17,12 +18,13 @@ class ProductService
 
     public function index()
     {
-        return Product::with([
+        return (new ProductFilter())
+            ->apply(
+            Product::with([
             'category',
             'subCategory',
-        ])
-            ->latest()
-            ->paginate(10);
+            ])
+        );
     }
 
     public function store(array $data, ?UploadedFile $image): Product {
@@ -123,7 +125,6 @@ class ProductService
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);
-
             throw $e;
         }
     }

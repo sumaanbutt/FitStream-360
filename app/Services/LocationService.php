@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
+use App\Filters\LocationFilter;
 use App\Models\Business;
 use App\Models\Location;
 use App\Models\Staff;
@@ -15,12 +17,13 @@ class LocationService
 
     public function index()
     {
-        return Location::with([
-            'business',
-            'staff.user',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new LocationFilter())
+            ->apply(
+            Location::with([
+                'business',
+                'staff.user',
+            ])
+        );
     }
 
     public function store(array $data): Location
@@ -32,14 +35,14 @@ class LocationService
                     $data['location_type'] === 'business' &&
                     ! empty($data['staff_code'])
                 ) {
-                    throw new \Exception('Business location cannot have a staff.');
+                    throw new BusinessException('Business location cannot have a staff.');
                 }
 
                 if (
                     $data['location_type'] === 'staff' &&
                     empty($data['staff_code'])
                 ) {
-                    throw new \Exception('Staff location requires a staff.');
+                    throw new BusinessException('Staff location requires a staff.');
                 }
 
 
@@ -59,7 +62,7 @@ class LocationService
                         $business->organization_code !==
                         $staff->organization_code
                     ) {
-                        throw new \Exception('Selected staff does not belong to the selected business organization.');
+                        throw new BusinessException('Selected staff does not belong to the selected organization.');
                     }
                 }
 
@@ -108,14 +111,14 @@ class LocationService
                     $locationType === 'business' &&
                     ! empty($staffCode)
                 ) {
-                    throw new \Exception('Business location cannot have a staff.');
+                    throw new BusinessException('Business location cannot have a staff.');
                 }
 
                 if (
                     $locationType === 'staff' &&
                     empty($staffCode)
                 ) {
-                    throw new \Exception('Staff location requires a staff.');
+                    throw new BusinessException('Staff location requires a staff.');
                 }
 
                 if ($locationType === 'staff') {
@@ -134,7 +137,7 @@ class LocationService
                         $business->organization_code !==
                         $staff->organization_code
                     ) {
-                        throw new \Exception('Selected staff does not belong to the selected business organization.');
+                        throw new BusinessException('Selected staff does not belong to the selected organization.');
                     }
                 }
 

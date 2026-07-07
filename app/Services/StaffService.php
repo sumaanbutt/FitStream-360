@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
+use App\Filters\StaffFilter;
 use App\Models\Staff;
 use App\Models\User;
 use App\Traits\HasCode;
@@ -18,12 +20,13 @@ class StaffService
 
     public function index()
     {
-        return Staff::with([
-            'user',
-            'business',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new StaffFilter())
+        ->apply(
+            Staff::with([
+                'user',
+                'business',
+            ])
+        );
     }
 
     public function store(array $data): Staff
@@ -43,7 +46,6 @@ class StaffService
                         'business_code' => $data['business_code']
                         ]);
 
-
                     $user->syncRoles(
                         [$data['role']
                     ]);
@@ -62,7 +64,7 @@ class StaffService
                 }
 
                 if (Staff::where('user_code', $user->code)->exists()) {
-                    throw new \Exception('This user is already assigned as staff.');
+                    throw new BusinessException('This user is already assigned as staff.');
                 }
 
                 $staff = Staff::create([
@@ -97,9 +99,7 @@ class StaffService
     public function update(Staff $staff, array $data): Staff
     {
         try {
-
             return DB::transaction(function () use ($staff, $data) {
-
                 $user = $staff->user;
 
                 $this->userService->update(
@@ -126,7 +126,6 @@ class StaffService
             Log::error('Staff Update Failed', [
                 'message' => $e->getMessage(),
             ]);
-
             throw $e;
         }
     }

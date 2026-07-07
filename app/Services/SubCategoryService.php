@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\SubCategoryFilter;
 use App\Models\SubCategory;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +15,15 @@ class SubCategoryService
 
     public function index()
     {
-        return SubCategory::with([
-            'category',
-        ])
-            ->withCount([
-                'products',
+        return (new SubCategoryFilter())
+        ->apply(
+            SubCategory::with([
+                'category',
             ])
-            ->latest()
-            ->paginate(10);
+                ->withCount([
+                    'products',
+                ])
+            );
     }
 
     /**

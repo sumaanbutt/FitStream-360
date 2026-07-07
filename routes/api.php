@@ -35,7 +35,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('trainees', TraineeController::class);
     Route::apiResource('trainee-goals', TraineeGoalController::class);
     Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
-//    Route::apiResource('attendance', AttendanceController::class);
+//  Route::apiResource('attendance', AttendanceController::class);
     Route::apiResource('location', LocationController::class);
     Route::apiResource('shift-schedule', ShiftScheduleController::class);
     Route::apiResource('workout-plan', WorkoutPlanController::class);

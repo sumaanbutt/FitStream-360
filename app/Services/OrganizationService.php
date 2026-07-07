@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\OrganizationFilter;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -13,14 +14,17 @@ use App\Traits\HasCode;
 class OrganizationService
 {
     use HasCode;
-    public function getAll()
+    public function index()
     {
-        return Organization::latest()->paginate(10);
+        return (new OrganizationFilter())
+            ->apply(
+                Organization::with([
+                    'businesses',
+                    'users',
+                ])
+            );
     }
 
-    /**
-     * Create Organization with Organization Admin.
-     */
     public function store(array $data): Organization
     {
         try{
@@ -61,9 +65,6 @@ class OrganizationService
         }
     }
 
-    /**
-     * Update Organization.
-     */
     public function update(Organization $organization, array $data): Organization
     {
         $organization->update($data);
@@ -71,9 +72,6 @@ class OrganizationService
         return $organization->fresh();
     }
 
-    /**
-     * Delete Organization.
-     */
     public function destroy(Organization $organization): bool
     {
         return $organization->delete();

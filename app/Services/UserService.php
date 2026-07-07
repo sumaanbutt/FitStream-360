@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\UserFilter;
 use App\Models\User;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +15,14 @@ class UserService
 
     public function index()
     {
-        return User::with([
-            'organization',
-            'business',
-            'roles',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new UserFilter())
+        ->apply(
+            User::with([
+                'organization',
+                'business',
+                'roles',
+            ])
+        );
     }
 
     public function store(array $data): User
@@ -103,19 +105,14 @@ class UserService
     {
         try {
             return DB::transaction(function () use ($user) {
-
                 $user->delete();
-
                 return true;
-
             });
 
         } catch (\Throwable $e) {
-
             Log::error('User Delete Failed', [
                 'message' => $e->getMessage(),
             ]);
-
             throw $e;
         }
     }

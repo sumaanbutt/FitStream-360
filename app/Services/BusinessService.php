@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\BusinessFilter;
 use App\Models\Business;
 use App\Models\User;
 use App\Traits\HasCode;
@@ -15,9 +16,10 @@ class BusinessService
 
     public function index()
     {
-        return Business::with('organization')
-            ->latest()
-            ->paginate(10);
+        return (new BusinessFilter())
+            ->apply(
+            Business::with('organization')
+            );
     }
 
     public function store(array $data): Business

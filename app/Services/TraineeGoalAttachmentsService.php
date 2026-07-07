@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\TraineeGoalAttachmentFilter;
 use App\Models\TraineeGoalsAttachments;
 use App\Traits\HasCode;
 use Illuminate\Http\UploadedFile;
@@ -16,12 +17,13 @@ class TraineeGoalAttachmentsService
 
     public function index()
     {
-        return TraineeGoalsAttachments::with([
-            'traineeGoal',
-            'uploader',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new TraineeGoalAttachmentFilter())
+        ->apply(
+            TraineeGoalsAttachments::with([
+                'traineeGoal',
+                'uploader',
+            ])
+        );
     }
 
     public function store(array $data, ?UploadedFile $file): TraineeGoalsAttachments

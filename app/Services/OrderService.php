@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\OrderFilter;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -19,15 +20,15 @@ class OrderService
 
     public function index()
     {
-        return Order::with([
-            'organization',
-            'business',
-            'user',
-            'items.product',
-            'invoice',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new OrderFilter())
+            ->apply(Order::with([
+                'organization',
+                'business',
+                'user',
+                'items.product',
+                'invoice',
+            ])
+        );
     }
 
     public function store(array $data): Order

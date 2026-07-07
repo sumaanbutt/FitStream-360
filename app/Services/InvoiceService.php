@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
+use App\Filters\InvoiceFilter;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Traits\HasCode;
@@ -14,14 +16,15 @@ class InvoiceService
 
     public function index()
     {
-        return Invoice::with([
-            'organization',
-            'business',
-            'user',
-            'order',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new InvoiceFilter())
+            ->apply(
+            Invoice::with([
+                'organization',
+                'business',
+                'user',
+                'order',
+            ])
+        );
     }
 
     public function createFromOrder(Order $order): Invoice
@@ -34,7 +37,7 @@ class InvoiceService
                         $order->code
                     )->exists()
                 ) {
-                    throw new \Exception('Invoice already exists for this order.');
+                    throw new BusinessException('Invoice already exists for this order.');
                 }
 
                 $invoice = Invoice::create([

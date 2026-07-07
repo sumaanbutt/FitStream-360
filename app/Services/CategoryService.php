@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Filters\CategoryFilter;
 use App\Models\Category;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -11,17 +12,15 @@ class CategoryService
 {
     use HasCode;
 
-    public function __construct()
-    {}
-
     public function index()
     {
-        return Category::withCount([
+        return (new CategoryFilter())
+        ->apply(
+            Category::withCount([
             'subCategories',
             'products',
-        ])
-            ->latest()
-            ->paginate(10);
+            ])
+        );
     }
 
     public function store(array $data): Category

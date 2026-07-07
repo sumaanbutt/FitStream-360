@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
+use App\Filters\ShiftScheduleFilter;
 use App\Models\ShiftSchedule;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -13,12 +15,13 @@ class ShiftScheduleService
 
     public function index()
     {
-        return ShiftSchedule::with([
-            'organization',
-            'staff.user',
-        ])
-            ->latest()
-            ->paginate(10);
+        return  (new ShiftScheduleFilter())
+        ->apply(
+            ShiftSchedule::with([
+                'organization',
+                'staff.user',
+            ])
+        );
     }
 
     public function store(array $data): ShiftSchedule
@@ -65,7 +68,7 @@ class ShiftScheduleService
                     ->exists();
 
                 if ($alreadyExists) {
-                    throw new \Exception('Shift timing overlaps with an existing schedule.');
+                    throw new BusinessException('Shift timing overlaps with an existing schedule.');
                 }
 
                 $shift = ShiftSchedule::create([
@@ -146,7 +149,7 @@ class ShiftScheduleService
                     ->exists();
 
                 if ($alreadyExists) {
-                    throw new \Exception('Shift timing overlaps with an existing schedule.');
+                    throw new BusinessException('Shift timing overlaps with an existing schedule.');
                 }
 
                 $shiftSchedule->update([

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\BusinessException;
+use App\Filters\TraineeFilter;
 use App\Models\Trainee;
 use App\Models\User;
 use App\Traits\HasCode;
@@ -16,13 +18,14 @@ class TraineeService
 
     public function index()
     {
-        return Trainee::with([
-            'user',
-            'organization',
-            'business',
-        ])
-            ->latest()
-            ->paginate(10);
+        return (new TraineeFilter())
+        ->apply(
+            Trainee::with([
+                'user',
+                'organization',
+                'business',
+            ])
+        );
     }
 
     public function store(array $data): Trainee
@@ -59,9 +62,7 @@ class TraineeService
                 if (
                     Trainee::where('user_code', $user->code)->exists()
                 ) {
-                    throw new \Exception(
-                        'This user is already registered as a trainee.'
-                    );
+                    throw new BusinessException('This user is already registered as a trainee.');
                 }
 
                 $trainee = Trainee::create([
