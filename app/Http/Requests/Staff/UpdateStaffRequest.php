@@ -7,17 +7,11 @@ use Illuminate\Validation\Rule;
 
 class UpdateStaffRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         return [
@@ -46,6 +40,8 @@ class UpdateStaffRequest extends FormRequest
                     'Staff',
                 ]),
             ],
+
+//          'business_code' => ['sometimes', 'exists:businesses,code',],
             'salary' => ['sometimes', 'numeric', 'min:0',],
             'joining_date' => ['sometimes', 'date',],
             'experience' => ['nullable', 'integer', 'min:0',],

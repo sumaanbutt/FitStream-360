@@ -10,6 +10,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class CategoryController extends Controller
 {
@@ -17,13 +18,9 @@ class CategoryController extends Controller
         protected CategoryService $categoryService
     ) {}
 
-    /**
-     * Display all categories.
-     */
+    #[Authorize('viewAny', Category::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Category::class);
-
         $categories = $this->categoryService->index();
 
         return ApiResponse::success(
@@ -32,13 +29,9 @@ class CategoryController extends Controller
         );
     }
 
-    /**
-     * Store category.
-     */
+    #[Authorize('create', Category::class)]
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $this->authorize('create', Category::class);
-
         $category = $this->categoryService->store(
             $request->validated()
         );
@@ -50,13 +43,9 @@ class CategoryController extends Controller
         );
     }
 
-    /**
-     * Display category.
-     */
+   #[Authorize('view', Category::class)]
     public function show(Category $category): JsonResponse
     {
-        $this->authorize('view', $category);
-
         return ApiResponse::success(
             new CategoryResource(
                 $category->loadCount([
@@ -68,15 +57,8 @@ class CategoryController extends Controller
         );
     }
 
-    /**
-     * Update category.
-     */
-    public function update(
-        UpdateCategoryRequest $request,
-        Category $category
-    ): JsonResponse {
-
-        $this->authorize('update', $category);
+    #[Authorize('update', Category::class)]
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse {
 
         $category = $this->categoryService->update(
             $category,
@@ -89,13 +71,9 @@ class CategoryController extends Controller
         );
     }
 
-    /**
-     * Delete category.
-     */
+    #[Authorize('delete', Category::class)]
     public function destroy(Category $category): JsonResponse
     {
-        $this->authorize('delete', $category);
-
         $this->categoryService->destroy($category);
 
         return ApiResponse::success(

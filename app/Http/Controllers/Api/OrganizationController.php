@@ -9,6 +9,7 @@ use App\Http\Requests\Organization\UpdateOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Services\OrganizationService;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class OrganizationController extends Controller
 {
@@ -16,10 +17,10 @@ class OrganizationController extends Controller
         protected OrganizationService $organizationService
     ) {}
 
-
+    #[Authorize('viewAny', Organization::class)]
     public function index()
     {
-        $this->authorize('viewAny', Organization::class);
+//        $this->authorize('viewAny', Organization::class);
 
         $organizations = $this->organizationService->index();
 
@@ -29,11 +30,9 @@ class OrganizationController extends Controller
         );
     }
 
-
+    #[Authorize('create', Organization::class)]
     public function store(StoreOrganizationRequest $request)
     {
-        $this->authorize('create', Organization::class);
-
         $organization = $this->organizationService->store(
             $request->validated()
         );
@@ -44,19 +43,16 @@ class OrganizationController extends Controller
         );
     }
 
-
+    #[Authorize('view', Organization::class)]
     public function show(Organization $organization)
     {
-        $this->authorize('view', $organization);
-
         return ApiResponse::success(
             new OrganizationResource($organization)
         );
     }
 
-
+    #[Authorize('update', Organization::class)]
     public function update(UpdateOrganizationRequest $request, Organization $organization){
-        $this->authorize('update', $organization);
 
         $organization = $this->organizationService->update(
             $organization,
@@ -69,11 +65,9 @@ class OrganizationController extends Controller
         );
     }
 
-
+    #[Authorize('delete', Organization::class)]
     public function destroy(Organization $organization)
     {
-        $this->authorize('delete', $organization);
-
         $this->organizationService->destroy($organization);
 
         return ApiResponse::success(

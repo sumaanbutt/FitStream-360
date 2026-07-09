@@ -93,7 +93,6 @@ class OrderService
                 }
 
                 $invoice = Invoice::create([
-
                     'code' => $this->generateCode('INV', Invoice::class),
                     'order_code' => $order->code,
                     'organization_code' => $order->organization_code,

@@ -102,18 +102,29 @@ class StaffService
             return DB::transaction(function () use ($staff, $data) {
                 $user = $staff->user;
 
-                $this->userService->update(
-                    $user,
-                    $data
-                );
+                $userData = [
+                    'organization_code' => $data['organization_code'] ?? $user->organization_code,
+                    'business_code'     => $data['business_code'] ?? $user->business_code,
+                    'name'              => $data['name'] ?? $user->name,
+                    'email'             => $data['email'] ?? $user->email,
+                    'phone'             => $data['phone'] ?? $user->phone,
+                    'status'            => $data['status'] ?? $user->status,
+                    'role'              => $data['role'] ?? $user->getRoleNames()->first(),
+                ];
+
+                if (!empty($data['password'])) {
+                    $userData['password'] = $data['password'];
+                }
+
+                $this->userService->update($user, $userData);
 
                 $staff->update([
-                    'business_code' => $data['business_code'],
-                    'salary' => $data['salary'],
-                    'certifications' => $data['certifications'] ?? null,
-                    'experience' => $data['experience'] ?? 0,
-                    'joining_date' => $data['joining_date'],
-                    'status' => $data['status'],
+                    'business_code'   => $data['business_code'] ?? $staff->business_code,
+                    'salary'          => $data['salary'] ?? $staff->salary,
+                    'certifications'  => $data['certifications'] ?? $staff->certifications,
+                    'experience'      => $data['experience'] ?? $staff->experience,
+                    'joining_date'    => $data['joining_date'] ?? $staff->joining_date,
+                    'status'          => $data['status'] ?? $staff->status,
                 ]);
 
                 return $staff->fresh()->load([

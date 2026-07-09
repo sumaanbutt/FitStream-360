@@ -10,6 +10,7 @@ use App\Http\Resources\TraineeGoalResource;
 use App\Models\TraineeGoals;
 use App\Services\TraineeGoalService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class TraineeGoalController extends Controller
 {
@@ -17,10 +18,9 @@ class TraineeGoalController extends Controller
         protected TraineeGoalService $traineeGoalService
     ) {}
 
+    #[Authorize('viewAny', TraineeGoals::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', TraineeGoals::class);
-
         $goals = $this->traineeGoalService->index();
 
         return ApiResponse::success(
@@ -29,10 +29,9 @@ class TraineeGoalController extends Controller
         );
     }
 
+    #[Authorize('create', TraineeGoals::class)]
     public function store(StoreTraineeGoalRequest $request): JsonResponse
     {
-        $this->authorize('create', TraineeGoals::class);
-
         $goal = $this->traineeGoalService->store(
             $request->validated()
         );
@@ -44,10 +43,9 @@ class TraineeGoalController extends Controller
         );
     }
 
+    #[Authorize('view', TraineeGoals::class)]
     public function show(TraineeGoals $traineeGoal): JsonResponse
     {
-        $this->authorize('view', $traineeGoal);
-
         return ApiResponse::success(
             new TraineeGoalResource(
                 $traineeGoal->load([
@@ -59,9 +57,8 @@ class TraineeGoalController extends Controller
         );
     }
 
+    #[Authorize('update', TraineeGoals::class)]
     public function update(UpdateTraineeGoalRequest $request, TraineeGoals $traineeGoal): JsonResponse {
-
-        $this->authorize('update', $traineeGoal);
 
         $goal = $this->traineeGoalService->update(
             $traineeGoal,
@@ -74,12 +71,9 @@ class TraineeGoalController extends Controller
         );
     }
 
+    #[Authorize('delete', TraineeGoals::class)]
     public function destroy(TraineeGoals $traineeGoal): JsonResponse
     {
-        $this->authorize('delete', $traineeGoal);
-
-        $this->traineeGoalService->destroy($traineeGoal);
-
         return ApiResponse::success(
             null,
             'Trainee goal deleted successfully.'

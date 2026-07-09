@@ -10,6 +10,7 @@ use App\Http\Resources\LocationResource;
 use App\Models\Location;
 use App\Services\LocationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class LocationController extends Controller
 {
@@ -17,10 +18,9 @@ class LocationController extends Controller
         protected LocationService $locationService
     ) {}
 
+    #[Authorize('viewAny', Location::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Location::class);
-
         $locations = $this->locationService->index();
 
         return ApiResponse::success(
@@ -29,10 +29,9 @@ class LocationController extends Controller
         );
     }
 
+    #[Authorize('create', Location::class)]
     public function store(StoreLocationRequest $request): JsonResponse
     {
-        $this->authorize('create', Location::class);
-
         $location = $this->locationService->store(
             $request->validated()
         );
@@ -44,10 +43,9 @@ class LocationController extends Controller
         );
     }
 
+    #[Authorize('view', Location::class)]
     public function show(Location $location): JsonResponse
     {
-        $this->authorize('view', $location);
-
         return ApiResponse::success(
             new LocationResource(
                 $location->load([
@@ -59,12 +57,8 @@ class LocationController extends Controller
         );
     }
 
-    public function update(
-        UpdateLocationRequest $request,
-        Location $location
-    ): JsonResponse {
-
-        $this->authorize('update', $location);
+    #[Authorize('update', Location::class)]
+    public function update(UpdateLocationRequest $request, Location $location): JsonResponse {
 
         $location = $this->locationService->update(
             $location,
@@ -77,10 +71,9 @@ class LocationController extends Controller
         );
     }
 
+    #[Authorize('delete', Location::class)]
     public function destroy(Location $location): JsonResponse
     {
-        $this->authorize('delete', $location);
-
         $this->locationService->destroy($location);
 
         return ApiResponse::success(

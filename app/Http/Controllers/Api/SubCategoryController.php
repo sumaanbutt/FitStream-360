@@ -10,6 +10,7 @@ use App\Http\Resources\SubCategoryResource;
 use App\Models\SubCategory;
 use App\Services\SubCategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class SubCategoryController extends Controller
 {
@@ -17,10 +18,9 @@ class SubCategoryController extends Controller
         protected SubCategoryService $subCategoryService
     ) {}
 
+    #[Authorize('viewAny', SubCategory::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', SubCategory::class);
-
         $subCategories = $this->subCategoryService->index();
 
         return ApiResponse::success(
@@ -29,10 +29,9 @@ class SubCategoryController extends Controller
         );
     }
 
+    #[Authorize('store', SubCategory::class)]
     public function store(StoreSubCategoryRequest $request): JsonResponse
     {
-        $this->authorize('create', SubCategory::class);
-
         $subCategory = $this->subCategoryService->store(
             $request->validated()
         );
@@ -44,10 +43,9 @@ class SubCategoryController extends Controller
         );
     }
 
+    #[Authorize('view', SubCategory::class)]
     public function show(SubCategory $subCategory): JsonResponse
     {
-        $this->authorize('view', $subCategory);
-
         return ApiResponse::success(
             new SubCategoryResource(
                 $subCategory->load('category')
@@ -57,9 +55,8 @@ class SubCategoryController extends Controller
         );
     }
 
+    #[Authorize('update', SubCategory::class)]
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory): JsonResponse {
-
-        $this->authorize('update', $subCategory);
 
         $subCategory = $this->subCategoryService->update($subCategory, $request->validated());
 
@@ -69,13 +66,9 @@ class SubCategoryController extends Controller
         );
     }
 
-    /**
-     * Delete sub category.
-     */
+    #[Authorize('delete', SubCategory::class)]
     public function destroy(SubCategory $subCategory): JsonResponse
     {
-        $this->authorize('delete', $subCategory);
-
         $this->subCategoryService->destroy($subCategory);
 
         return ApiResponse::success(

@@ -9,6 +9,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class UserController extends Controller
 {
@@ -16,10 +17,9 @@ class UserController extends Controller
         protected UserService $userService
     ) {}
 
+    #[Authorize('viewAny', User::class)]
     public function index()
     {
-        $this->authorize('viewAny', User::class);
-
         $users = $this->userService->index();
 
         return ApiResponse::success(
@@ -28,10 +28,9 @@ class UserController extends Controller
         );
     }
 
+    #[Authorize('create', User::class)]
     public function store(StoreUserRequest $request)
     {
-        $this->authorize('create', User::class);
-
         $user = $this->userService->store(
             $request->validated()
         );
@@ -42,18 +41,17 @@ class UserController extends Controller
         );
     }
 
+    #[Authorize('view', User::class)]
     public function show(User $user)
     {
-        $this->authorize('view', $user);
-
         return ApiResponse::success(
             new UserResource($user),
             'User retrieved successfully.'
         );
     }
 
+    #[Authorize('update', User::class)]
     public function update(UpdateUserRequest $request, User $user) {
-        $this->authorize('update', $user);
 
         $user = $this->userService->update($user, $request->validated());
 
@@ -63,10 +61,9 @@ class UserController extends Controller
         );
     }
 
+    #[Authorize('delete', User::class)]
     public function destroy(User $user)
     {
-        $this->authorize('delete', $user);
-
         $this->userService->destroy($user);
 
         return ApiResponse::deleted(

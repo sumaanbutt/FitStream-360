@@ -10,6 +10,7 @@ use App\Http\Resources\TraineeResource;
 use App\Models\Trainee;
 use App\Services\TraineeService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class TraineeController extends Controller
 {
@@ -17,10 +18,9 @@ class TraineeController extends Controller
         protected TraineeService $traineeService
     ) {}
 
+    #[Authorize('viewAny', Trainee::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Trainee::class);
-
         $trainees = $this->traineeService->index();
 
         return ApiResponse::success(
@@ -29,10 +29,9 @@ class TraineeController extends Controller
         );
     }
 
+    #[Authorize('create', Trainee::class)]
     public function store(StoreTraineeRequest $request): JsonResponse
     {
-        $this->authorize('create', Trainee::class);
-
         $trainee = $this->traineeService->store(
             $request->validated()
         );
@@ -44,10 +43,9 @@ class TraineeController extends Controller
         );
     }
 
+    #[Authorize('view', Trainee::class)]
     public function show(Trainee $trainee): JsonResponse
     {
-        $this->authorize('view', $trainee);
-
         return ApiResponse::success(
             new TraineeResource(
                 $trainee->load([
@@ -59,9 +57,8 @@ class TraineeController extends Controller
         );
     }
 
+    #[Authorize('update', Trainee::class)]
     public function update(UpdateTraineeRequest $request, Trainee $trainee): JsonResponse {
-
-        $this->authorize('update', $trainee);
 
         $trainee = $this->traineeService->update($trainee, $request->validated());
 
@@ -71,10 +68,9 @@ class TraineeController extends Controller
         );
     }
 
+    #[Authorize('delete', Trainee::class)]
     public function destroy(Trainee $trainee): JsonResponse
     {
-        $this->authorize('delete', $trainee);
-
         $this->traineeService->destroy($trainee);
 
         return ApiResponse::success(

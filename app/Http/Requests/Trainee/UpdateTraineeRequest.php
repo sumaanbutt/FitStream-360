@@ -23,7 +23,7 @@ class UpdateTraineeRequest extends FormRequest
             'name' => ['sometimes', 'string', 'max:255',],
             'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($userId),],
             'phone' => ['nullable', 'string', 'max:20',],
-            'password' => ['nullable', 'confirmed', 'min:8',],
+            'password' => ['sometimes', 'confirmed', 'min:8',],
 
 // Trainee:
 

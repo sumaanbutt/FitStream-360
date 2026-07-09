@@ -10,6 +10,7 @@ use App\Http\Resources\ShiftScheduleResource;
 use App\Models\ShiftSchedule;
 use App\Services\ShiftScheduleService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ShiftScheduleController extends Controller
 {
@@ -18,10 +19,9 @@ class ShiftScheduleController extends Controller
     ) {
     }
 
+    #[Authorize('viewAny', ShiftSchedule::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', ShiftSchedule::class);
-
         return ApiResponse::success(
             ShiftScheduleResource::collection(
                 $this->shiftScheduleService->index()
@@ -30,10 +30,9 @@ class ShiftScheduleController extends Controller
         );
     }
 
+    #[Authorize('create', ShiftSchedule::class)]
     public function store(StoreShiftScheduleRequest $request): JsonResponse
     {
-        $this->authorize('create', ShiftSchedule::class);
-
         $shift = $this->shiftScheduleService->store(
             $request->validated()
         );
@@ -45,10 +44,9 @@ class ShiftScheduleController extends Controller
         );
     }
 
+    #[Authorize('view', ShiftSchedule::class)]
     public function show(ShiftSchedule $shiftSchedule): JsonResponse
     {
-        $this->authorize('view', $shiftSchedule);
-
         return ApiResponse::success(
             new ShiftScheduleResource(
                 $shiftSchedule->load([
@@ -60,9 +58,8 @@ class ShiftScheduleController extends Controller
         );
     }
 
+    #[Authorize('update', ShiftSchedule::class)]
     public function update(UpdateShiftScheduleRequest $request, ShiftSchedule $shiftSchedule): JsonResponse {
-
-        $this->authorize('update', $shiftSchedule);
 
         $shift = $this->shiftScheduleService->update(
             $shiftSchedule,
@@ -75,10 +72,9 @@ class ShiftScheduleController extends Controller
         );
     }
 
+    #[Authorize('delete', ShiftSchedule::class)]
     public function destroy(ShiftSchedule $shiftSchedule): JsonResponse
     {
-        $this->authorize('delete', $shiftSchedule);
-
         $this->shiftScheduleService->destroy($shiftSchedule);
 
         return ApiResponse::success(

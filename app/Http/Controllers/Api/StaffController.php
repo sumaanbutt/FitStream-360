@@ -10,6 +10,7 @@ use App\Http\Resources\StaffResource;
 use App\Models\Staff;
 use App\Services\StaffService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class StaffController extends Controller
 {
@@ -17,13 +18,9 @@ class StaffController extends Controller
         protected StaffService $staffService
     ) {}
 
-    /**
-     * Display a listing of staff.
-     */
+    #[Authorize('viewAny', Staff::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Staff::class);
-
         $staff = $this->staffService->index();
 
         return ApiResponse::success(
@@ -32,13 +29,9 @@ class StaffController extends Controller
         );
     }
 
-    /**
-     * Store a newly created staff.
-     */
+    #[Authorize('create', Staff::class)]
     public function store(StoreStaffRequest $request): JsonResponse
     {
-        $this->authorize('create', Staff::class);
-
         $staff = $this->staffService->store(
             $request->validated()
         );
@@ -50,13 +43,9 @@ class StaffController extends Controller
         );
     }
 
-    /**
-     * Display the specified staff.
-     */
+    #[Authorize('view', Staff::class)]
     public function show(Staff $staff): JsonResponse
     {
-        $this->authorize('view', $staff);
-
         return ApiResponse::success(
             new StaffResource(
                 $staff->load([
@@ -69,15 +58,8 @@ class StaffController extends Controller
         );
     }
 
-    /**
-     * Update the specified staff.
-     */
-    public function update(
-        UpdateStaffRequest $request,
-        Staff $staff
-    ): JsonResponse {
-
-        $this->authorize('update', $staff);
+    #[Authorize('update', Staff::class)]
+    public function update(UpdateStaffRequest $request, Staff $staff): JsonResponse {
 
         $staff = $this->staffService->update(
             $staff,
@@ -90,13 +72,9 @@ class StaffController extends Controller
         );
     }
 
-    /**
-     * Remove the specified staff.
-     */
+    #[Authorize('delete', Staff::class)]
     public function destroy(Staff $staff): JsonResponse
     {
-        $this->authorize('delete', $staff);
-
         $this->staffService->destroy($staff);
 
         return ApiResponse::success(

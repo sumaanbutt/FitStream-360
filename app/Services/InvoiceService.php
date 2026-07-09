@@ -27,7 +27,7 @@ class InvoiceService
         );
     }
 
-    public function createFromOrder(Order $order): Invoice
+    public function store(Order $order): Invoice #createFromOrder
     {
         try {
             return DB::transaction(function () use ($order) {
@@ -41,7 +41,6 @@ class InvoiceService
                 }
 
                 $invoice = Invoice::create([
-
                     'code' => $this->generateCode('INV', Invoice::class),
                     'organization_code' => $order->organization_code,
                     'business_code' => $order->business_code,

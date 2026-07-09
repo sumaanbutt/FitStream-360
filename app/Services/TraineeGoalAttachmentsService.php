@@ -77,8 +77,9 @@ class TraineeGoalAttachmentsService
     public function update(TraineeGoalsAttachments $attachment, array $data, ?UploadedFile $file): TraineeGoalsAttachments
     {
         try {
+//            dd($data);
             return DB::transaction(function () use ($attachment, $data, $file) {
-
+//                dd($attachment->toArray());
                 $updateData = [
                     'attachment_type' => $data['attachment_type'] ?? $attachment->attachment_type,
                     'description' => $data['description'] ?? $attachment->description,
@@ -103,13 +104,20 @@ class TraineeGoalAttachmentsService
                     $updateData['file_path'] = $path;
                     $updateData['uploaded_at'] = now();
                 }
+//                dd($updateData);
 
                 $attachment->update($updateData);
 
-                return $attachment->fresh()->load([
+//                dd(
+//                    $attachment->wasChanged(),
+//                    $attachment->getChanges()
+//                );
+                $attachment->refresh();
+
+                return $attachment->load([
                     'traineeGoal',
                     'uploader',
-                ]);
+                    ]);
 
             });
 

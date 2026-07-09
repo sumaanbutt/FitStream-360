@@ -9,6 +9,7 @@ use App\Http\Requests\Business\UpdateBusinessRequest;
 use App\Http\Resources\BusinessResource;
 use App\Models\Business;
 use App\Services\BusinessService;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class BusinessController extends Controller
 {
@@ -16,10 +17,9 @@ class BusinessController extends Controller
         protected BusinessService $businessService
     ) {}
 
+//    #[Authorize('permit', Business::class)]
     public function index()
     {
-        $this->authorize('viewAny', Business::class);
-
         $businesses = $this->businessService->index();
 
         return ApiResponse::success(
@@ -28,10 +28,9 @@ class BusinessController extends Controller
         );
     }
 
+//    #[Authorize('create', Business::class)]
     public function store(StoreBusinessRequest $request)
     {
-        $this->authorize('create', Business::class);
-
         $business = $this->businessService->store(
             $request->validated()
         );
@@ -42,20 +41,16 @@ class BusinessController extends Controller
         );
     }
 
+//    #[Authorize('view', Business::class)]
     public function show(Business $business)
     {
-        $this->authorize('view', $business);
-
         return ApiResponse::success(
             new BusinessResource($business)
         );
     }
 
-    public function update(
-        UpdateBusinessRequest $request,
-        Business $business
-    ) {
-        $this->authorize('update', $business);
+    #[Authorize('update', Business::class)]
+    public function update(UpdateBusinessRequest $request, Business $business) {
 
         $business = $this->businessService->update(
             $business,
@@ -68,10 +63,9 @@ class BusinessController extends Controller
         );
     }
 
+    #[Authorize('delete', Business::class)]
     public function destroy(Business $business)
     {
-        $this->authorize('delete', $business);
-
         $this->businessService->destroy($business);
 
         return ApiResponse::deleted(

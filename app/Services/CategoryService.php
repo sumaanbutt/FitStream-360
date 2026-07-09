@@ -17,7 +17,7 @@ class CategoryService
         return (new CategoryFilter())
         ->apply(
             Category::withCount([
-            'subCategories',
+            'subCategory',
             'products',
             ])
         );
@@ -64,7 +64,7 @@ class CategoryService
                 ]);
 
                 return $category->fresh()->loadCount([
-                    'subCategories',
+                    'subCategory',
                     'products',
                 ]);
 

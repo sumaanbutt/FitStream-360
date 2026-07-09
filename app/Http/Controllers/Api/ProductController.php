@@ -10,6 +10,8 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ProductController extends Controller
 {
@@ -17,13 +19,9 @@ class ProductController extends Controller
         protected ProductService $productService
     ) {}
 
-    /**
-     * Display a listing of products.
-     */
+    #[Authorize('viewAny', Product::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Product::class);
-
         $products = $this->productService->index();
 
         return ApiResponse::success(
@@ -32,13 +30,9 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Store a newly created product.
-     */
+    #[Authorize('create', Product::class)]
     public function store(StoreProductRequest $request): JsonResponse
     {
-        $this->authorize('create', Product::class);
-
         $product = $this->productService->store(
             $request->validated(),
             $request->file('image')
@@ -51,13 +45,9 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Display the specified product.
-     */
+    #[Authorize('view', Product::class)]
     public function show(Product $product): JsonResponse
     {
-        $this->authorize('view', $product);
-
         return ApiResponse::success(
             new ProductResource(
                 $product->load([
@@ -69,12 +59,8 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Update the specified product.
-     */
+    #[Authorize('update', Product::class)]
     public function update(UpdateProductRequest $request, Product $product): JsonResponse {
-
-        $this->authorize('update', $product);
 
         $product = $this->productService->update(
             $product,
@@ -88,13 +74,9 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Remove the specified product.
-     */
+    #[Authorize('delete', Product::class)]
     public function destroy(Product $product): JsonResponse
     {
-        $this->authorize('delete', $product);
-
         $this->productService->destroy($product);
 
         return ApiResponse::success(

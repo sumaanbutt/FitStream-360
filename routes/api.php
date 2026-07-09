@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\BusinessController;
+use App\Models\Business;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DietPlanController;
 use App\Http\Controllers\Api\InvoiceController;
@@ -27,25 +28,40 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('organizations', OrganizationController::class);
-    Route::apiResource('businesses', BusinessController::class);//->middleware('can:update,' . Store::class);
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('staff', StaffController::class);
-    Route::apiResource('trainees', TraineeController::class);
-    Route::apiResource('trainee-goals', TraineeGoalController::class);
-    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
-//  Route::apiResource('attendance', AttendanceController::class);
-    Route::apiResource('location', LocationController::class);
-    Route::apiResource('shift-schedule', ShiftScheduleController::class);
-    Route::apiResource('workout-plan', WorkoutPlanController::class);
-    Route::apiResource('diet-plan', DietPlanController::class);
-    Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('subcategories', SubCategoryController::class);
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('orders', OrderController::class);
-    Route::apiResource('invoices', InvoiceController::class);
 
+    Route::apiResource('organizations', OrganizationController::class);
+
+    Route::apiResource('businesses', BusinessController::class);
+
+    Route::apiResource('users', UserController::class);
+
+    Route::apiResource('staff', StaffController::class);
+
+    Route::apiResource('trainees', TraineeController::class);
+
+    Route::apiResource('trainee-goals', TraineeGoalController::class);
+
+    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
+
+// Route::apiResource('attendance', AttendanceController::class);
+
+    Route::apiResource('location', LocationController::class);
+
+    Route::apiResource('shift-schedule', ShiftScheduleController::class);
+
+    Route::apiResource('workout-plan', WorkoutPlanController::class);
+
+    Route::apiResource('diet-plan', DietPlanController::class);
+
+    Route::apiResource('categories', CategoryController::class);
+
+    Route::apiResource('subcategories', SubCategoryController::class);
+
+    Route::apiResource('products', ProductController::class);
+
+    Route::apiResource('orders', OrderController::class);
+
+    Route::apiResource('invoices', InvoiceController::class);
 
     Route::get('/profile', function () {
         return auth()->user();

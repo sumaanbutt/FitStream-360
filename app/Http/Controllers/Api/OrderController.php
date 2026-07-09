@@ -10,6 +10,8 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+use JetBrains\PhpStorm\ArrayShape;
 
 class OrderController extends Controller
 {
@@ -17,10 +19,9 @@ class OrderController extends Controller
         protected OrderService $orderService
     ) {}
 
+    #[Authorize('viewAny', Order::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Order::class);
-
         $orders = $this->orderService->index();
 
         return ApiResponse::success(
@@ -29,10 +30,9 @@ class OrderController extends Controller
         );
     }
 
+    #[Authorize('create', Order::class)]
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $this->authorize('create', Order::class);
-
         $order = $this->orderService->store(
             $request->validated()
         );
@@ -44,17 +44,15 @@ class OrderController extends Controller
         );
     }
 
+    #[Authorize('view', Order::class)]
     public function show(Order $order): JsonResponse
     {
-        $this->authorize('view', $order);
-
         return ApiResponse::success(
             new OrderResource(
                 $order->load([
                     'organization',
                     'business',
                     'user',
-//                    'items.product',
                     'invoice',
                 ])
             ),
@@ -62,9 +60,8 @@ class OrderController extends Controller
         );
     }
 
+    #[Authorize('update', Order::class)]
     public function update(UpdateOrderRequest $request, Order $order): JsonResponse {
-
-        $this->authorize('update', $order);
 
         $order = $this->orderService->update(
             $order,
@@ -77,10 +74,9 @@ class OrderController extends Controller
         );
     }
 
+    #[Authorize('delete', Order::class)]
     public function destroy(Order $order): JsonResponse
     {
-        $this->authorize('delete', $order);
-
         $this->orderService->destroy($order);
 
         return ApiResponse::success(

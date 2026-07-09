@@ -105,16 +105,24 @@ class TraineeService
 
                 $user = $trainee->user;
 
-                $this->userService->update($user, [
+                $userData = [
                     'organization_code' => $data['organization_code'] ?? $user->organization_code,
                     'business_code' => $data['business_code'] ?? $user->business_code,
                     'name' => $data['name'] ?? $user->name,
                     'email' => $data['email'] ?? $user->email,
                     'phone' => $data['phone'] ?? $user->phone,
-                    'password' => $data['password'] ?? null,
                     'role' => 'Trainee',
                     'status' => $data['status'] ?? $user->status,
-                ]);
+                    ];
+
+                if (!empty($data['password'])) {
+                    $userData['password'] = $data['password'];
+                }
+
+                $this->userService->update(
+                    $user,
+                    $userData
+                );
 
                 $trainee->update([
                     'business_code' => $data['business_code'] ?? $trainee->business_code,

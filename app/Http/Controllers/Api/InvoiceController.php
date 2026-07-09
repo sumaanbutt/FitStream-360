@@ -10,6 +10,7 @@ use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
 use App\Services\InvoiceService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class InvoiceController extends Controller
 {
@@ -17,10 +18,9 @@ class InvoiceController extends Controller
         protected InvoiceService $invoiceService
     ) {}
 
+    #[Authorize('viewAny', Invoice::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', Invoice::class);
-
         return ApiResponse::success(
             InvoiceResource::collection(
                 $this->invoiceService->index()
@@ -29,10 +29,9 @@ class InvoiceController extends Controller
         );
     }
 
+    #[Authorize('create', Invoice::class)]
     public function store(StoreInvoiceRequest $request): JsonResponse
     {
-        $this->authorize('create', Invoice::class);
-
         $invoice = $this->invoiceService->store(
             $request->validated()
         );
@@ -44,10 +43,9 @@ class InvoiceController extends Controller
         );
     }
 
+    #[Authorize('view', Invoice::class)]
     public function show(Invoice $invoice): JsonResponse
     {
-        $this->authorize('view', $invoice);
-
         return ApiResponse::success(
             new InvoiceResource(
                 $invoice->load([

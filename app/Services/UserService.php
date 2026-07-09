@@ -73,10 +73,17 @@ class UserService
 
             return DB::transaction(function () use ($user, $data) {
 
-                if (isset($data['password'])) {
-                    $data['password'] = Hash::make($data['password']);
+                if (
+                    array_key_exists('password', $data)
+                ) {
+                    if (filled($data['password'])) {
+                        $data['password'] = Hash::make(
+                            $data['password']
+                        );
+                    } else {
+                        unset($data['password']);
+                    }
                 }
-
                 $user->update($data);
 
                 if (isset($data['role'])) {

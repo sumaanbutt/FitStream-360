@@ -10,6 +10,7 @@ use App\Http\Resources\TraineeGoalAttachmentsResource;
 use App\Models\TraineeGoalsAttachments;
 use App\Services\TraineeGoalAttachmentsService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class TraineeGoalAttachmentController extends Controller
 {
@@ -17,10 +18,9 @@ class TraineeGoalAttachmentController extends Controller
         protected TraineeGoalAttachmentsService $attachmentService
     ) {}
 
+    #[Authorize('viewAny', TraineeGoalsAttachments::class)]
     public function index(): JsonResponse
     {
-        $this->authorize('viewAny', TraineeGoalsAttachments::class);
-
         $attachments = $this->attachmentService->index();
 
         return ApiResponse::success(
@@ -29,10 +29,9 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
+    #[Authorize('create', TraineeGoalsAttachments::class)]
     public function store(StoreTraineeGoalAttachmentRequest $request): JsonResponse
     {
-        $this->authorize('create', TraineeGoalsAttachments::class);
-
         $attachment = $this->attachmentService->store(
             $request->validated(),
             $request->file('file')
@@ -45,13 +44,12 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    public function show(TraineeGoalsAttachments $traineeGoalAttachment): JsonResponse
+    #[Authorize('view', TraineeGoalsAttachments::class)]
+    public function show(TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse
     {
-        $this->authorize('view', $traineeGoalAttachment);
-
         return ApiResponse::success(
             new TraineeGoalAttachmentsResource(
-            $traineeGoalAttachment->load([
+            $traineeGoalsAttachment->load([
                     'traineeGoal',
                     'uploader',
                 ])
@@ -60,12 +58,11 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    public function update(UpdateTraineeGoalAttachmentRequest $request, TraineeGoalsAttachments $traineeGoalAttachment): JsonResponse {
-
-        $this->authorize('update', $traineeGoalAttachment);
+    #[Authorize('update', TraineeGoalsAttachments::class)]
+    public function update(UpdateTraineeGoalAttachmentRequest $request, TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse {
 
         $attachment = $this->attachmentService->update(
-            $traineeGoalAttachment,
+            $traineeGoalsAttachment,
             $request->validated(),
             $request->file('file')
         );
@@ -76,10 +73,10 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    public function destroy(TraineeGoalsAttachments $traineeGoalAttachment): JsonResponse
+    #[Authorize('delete', TraineeGoalsAttachments::class)]
+    public function destroy(TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse
     {
-        $this->authorize('delete', $traineeGoalAttachment);
-        $this->attachmentService->destroy($traineeGoalAttachment);
+        $this->attachmentService->destroy($traineeGoalsAttachment);
 
         return ApiResponse::success(
             null,
