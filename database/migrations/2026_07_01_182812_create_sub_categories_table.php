@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('code', 8)->unique();
 
             $table->string('organization_code', 8)->nullable();
-            $table->string('categories_code', 8)->nullable();
+            $table->string('category_code', 8)->nullable();
 
             $table->string('name');
+            $table->boolean('status')->default(true);
 
             $table->timestamps();
 
@@ -27,15 +28,15 @@ return new class extends Migration
                 ->on('organizations')
                 ->onDelete('cascade');
 
-            $table->foreign('categories_code')
+            $table->foreign('category_code')
                 ->references('code')
-                ->on('categories')
+                ->on('category')
                 ->onDelete('cascade');
 
             $table->index('code');
             $table->index('name');
             $table->index('organization_code');
-            $table->index('categories_code');
+            $table->index('category_code');
         });
     }
 

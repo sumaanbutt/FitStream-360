@@ -28,14 +28,15 @@ class CategoryService
         try {
             return DB::transaction(function () use ($data) {
                 $category = Category::create([
+                    'organization_code' => $data['organization_code'],
                     'code' => $this->generateCode('CAT', Category::class),
                     'name' => $data['name'],
                     'description' => $data['description'] ?? null,
-                    'status' => $data['status'] ?? true,
+//                    'status' => $data['status'] ?? true,
                 ]);
 
                 return $category->loadCount([
-                    'subCategories',
+                    'subCategory',
                     'products',
                 ]);
 
@@ -60,7 +61,7 @@ class CategoryService
                 $category->update([
                     'name' => $data['name'] ?? $category->name,
                     'description' => $data['description'] ?? $category->description,
-                    'status' => $data['status'] ?? $category->status,
+//                    'status' => $data['status'] ?? $category->status,
                 ]);
 
                 return $category->fresh()->loadCount([
@@ -86,7 +87,7 @@ class CategoryService
         try {
             return DB::transaction(function () use ($category) {
 
-                if ($category->subCategories()->exists()) {
+                if ($category->subCategory()->exists()) {
                     throw new \Exception('Cannot delete category because it has sub categories.');
                 }
 

@@ -19,7 +19,7 @@ class ProductController extends Controller
         protected ProductService $productService
     ) {}
 
-    #[Authorize('viewAny', Product::class)]
+//    #[Authorize('viewAny', Product::class)]
     public function index(): JsonResponse
     {
         $products = $this->productService->index();
@@ -30,7 +30,7 @@ class ProductController extends Controller
         );
     }
 
-    #[Authorize('create', Product::class)]
+//    #[Authorize('create', Product::class)]
     public function store(StoreProductRequest $request): JsonResponse
     {
         $product = $this->productService->store(
@@ -45,7 +45,7 @@ class ProductController extends Controller
         );
     }
 
-    #[Authorize('view', Product::class)]
+//    #[Authorize('view', Product::class)]
     public function show(Product $product): JsonResponse
     {
         return ApiResponse::success(
@@ -59,7 +59,7 @@ class ProductController extends Controller
         );
     }
 
-    #[Authorize('update', Product::class)]
+//    #[Authorize('update', Product::class)]
     public function update(UpdateProductRequest $request, Product $product): JsonResponse {
 
         $product = $this->productService->update(
@@ -74,7 +74,7 @@ class ProductController extends Controller
         );
     }
 
-    #[Authorize('delete', Product::class)]
+//    #[Authorize('delete', Product::class)]
     public function destroy(Product $product): JsonResponse
     {
         $this->productService->destroy($product);

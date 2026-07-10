@@ -21,7 +21,6 @@ class StoreSubCategoryRequest extends FormRequest
                     ->where(fn ($query) => $query->where('category_code', $this->category_code)),
             ],
 
-            'description' => ['nullable', 'string',],
             'status' => ['sometimes', 'boolean',],
         ];
     }

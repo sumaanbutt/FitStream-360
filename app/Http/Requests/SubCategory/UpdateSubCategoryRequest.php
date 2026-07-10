@@ -19,16 +19,14 @@ class UpdateSubCategoryRequest extends FormRequest
 
             'name' => ['sometimes', 'string', 'max:255',
                 Rule::unique('sub_categories')
-                    ->ignore($this->subCategory->id)
+//                    ->ignore($this->subCategory->id)
                     ->where(fn ($query) => $query->where(
                         'category_code',
                         $this->category_code ?? $this->subCategory->category_code
                     )),
             ],
 
-            'description' => ['nullable', 'string',],
-            'status' => ['sometimes', 'boolean',
-            ],
+            'status' => ['sometimes', 'boolean',],
         ];
     }
 }

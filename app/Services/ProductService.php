@@ -48,7 +48,7 @@ class ProductService
                     'code' => $code,
                     'sku' => 'SKU-' . $code,
                     'category_code' => $data['category_code'],
-                    'sub_category_code' => $data['sub_category_code'],
+                    'subcategory_code' => $data['subcategory_code'],
                     'product_name' => $data['name'],
                     'product_description' => $data['description'] ?? null,
                     'product_price' => $data['product_price'],

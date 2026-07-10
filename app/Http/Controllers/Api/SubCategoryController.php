@@ -18,7 +18,7 @@ class SubCategoryController extends Controller
         protected SubCategoryService $subCategoryService
     ) {}
 
-    #[Authorize('viewAny', SubCategory::class)]
+//    #[Authorize('viewAny', SubCategory::class)]
     public function index(): JsonResponse
     {
         $subCategories = $this->subCategoryService->index();
@@ -29,7 +29,7 @@ class SubCategoryController extends Controller
         );
     }
 
-    #[Authorize('store', SubCategory::class)]
+//    #[Authorize('store', SubCategory::class)]
     public function store(StoreSubCategoryRequest $request): JsonResponse
     {
         $subCategory = $this->subCategoryService->store(
@@ -43,7 +43,7 @@ class SubCategoryController extends Controller
         );
     }
 
-    #[Authorize('view', SubCategory::class)]
+//    #[Authorize('view', SubCategory::class)]
     public function show(SubCategory $subCategory): JsonResponse
     {
         return ApiResponse::success(
@@ -55,7 +55,7 @@ class SubCategoryController extends Controller
         );
     }
 
-    #[Authorize('update', SubCategory::class)]
+//    #[Authorize('update', SubCategory::class)]
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory): JsonResponse {
 
         $subCategory = $this->subCategoryService->update($subCategory, $request->validated());
@@ -66,7 +66,7 @@ class SubCategoryController extends Controller
         );
     }
 
-    #[Authorize('delete', SubCategory::class)]
+//    #[Authorize('delete', SubCategory::class)]
     public function destroy(SubCategory $subCategory): JsonResponse
     {
         $this->subCategoryService->destroy($subCategory);

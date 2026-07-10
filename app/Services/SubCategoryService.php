@@ -26,9 +26,6 @@ class SubCategoryService
             );
     }
 
-    /**
-     * Store a newly created sub category.
-     */
     public function store(array $data): SubCategory
     {
         try {
@@ -37,7 +34,6 @@ class SubCategoryService
                     'code' => $this->generateCode('SCT', SubCategory::class),
                     'category_code' => $data['category_code'],
                     'name' => $data['name'],
-                    'description' => $data['description'] ?? null,
                     'status' => $data['status'] ?? true,
                 ]);
 
@@ -64,7 +60,6 @@ class SubCategoryService
                 $subCategory->update([
                     'category_code' => $data['category_code'] ?? $subCategory->category_code,
                     'name' => $data['name'] ?? $subCategory->name,
-                    'description' => $data['description'] ?? $subCategory->description,
                     'status' => $data['status'] ?? $subCategory->status,
                 ]);
 

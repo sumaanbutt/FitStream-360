@@ -57,7 +57,7 @@ class CategoryController extends Controller
         );
     }
 
-    #[Authorize('update', Category::class)]
+//    #[Authorize('update', Category::class)]
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse {
 
         $category = $this->categoryService->update(

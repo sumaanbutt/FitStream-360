@@ -8,6 +8,7 @@ class Category extends Model
 {
     protected $fillable=[
         'code',
+        'organization_code',
         'name',
         'description',
         'status',

@@ -9,6 +9,7 @@ use App\Http\Requests\Business\UpdateBusinessRequest;
 use App\Http\Resources\BusinessResource;
 use App\Models\Business;
 use App\Services\BusinessService;
+use App\Attributes\Permission;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class BusinessController extends Controller
@@ -17,7 +18,7 @@ class BusinessController extends Controller
         protected BusinessService $businessService
     ) {}
 
-//    #[Authorize('permit', Business::class)]
+//    #[Authorize('permission', 'business.index')]
     public function index()
     {
         $businesses = $this->businessService->index();

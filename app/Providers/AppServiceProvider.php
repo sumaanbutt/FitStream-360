@@ -26,8 +26,5 @@ class AppServiceProvider extends ServiceProvider
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-//        Gate::define('check-global-permission', function ($user, string $permission) {
-//            return $user->can($permission);
-//        });
     }
 }

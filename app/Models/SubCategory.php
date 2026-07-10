@@ -10,7 +10,6 @@ class SubCategory extends Model
         'code',
         'category_code',
         'name',
-        'description',
         'status'
     ];
 
@@ -27,7 +26,7 @@ class SubCategory extends Model
     {
         return $this->hasMany(
             Product::class,
-            'sub_category_code',
+            'subcategories_code',
             'code'
         );
     }
