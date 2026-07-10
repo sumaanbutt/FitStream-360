@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'has_permissions' => CheckPermissions::class, // Assigns the alias tag
+            'has_permissions' => CheckPermissions::class,
         ]);
 
 
