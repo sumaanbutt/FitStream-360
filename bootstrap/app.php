@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\CheckPermissions;
 use Illuminate\Http\Request;
 use App\Exceptions\ApiException;
 
@@ -20,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+        ]);
+
+        $middleware->alias([
+            'has_permissions' => CheckPermissions::class, // Assigns the alias tag
         ]);
 
 
