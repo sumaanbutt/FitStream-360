@@ -17,12 +17,9 @@ class OrganizationController extends Controller
         protected OrganizationService $organizationService
     ) {}
 
-//    #[Authorize('viewAny', Organization::class)]
     #[Permission(['can-view-organization'])]
     public function index()
     {
-//        $this->authorize('viewAny', Organization::class);
-
         $organizations = $this->organizationService->index();
 
         return ApiResponse::success(
@@ -31,7 +28,7 @@ class OrganizationController extends Controller
         );
     }
 
-//    #[Authorize('create', Organization::class)]
+    #[Permission(['can-create-organization'])]
     public function store(StoreOrganizationRequest $request)
     {
         $organization = $this->organizationService->store(
@@ -44,7 +41,7 @@ class OrganizationController extends Controller
         );
     }
 
-//    #[Authorize('view', Organization::class)]
+    #[Permission(['can-view-organization'])]
     public function show(Organization $organization)
     {
         return ApiResponse::success(
@@ -52,7 +49,7 @@ class OrganizationController extends Controller
         );
     }
 
-//    #[Authorize('update', Organization::class)]
+    #[Permission(['can-update-organization'])]
     public function update(UpdateOrganizationRequest $request, Organization $organization){
 
         $organization = $this->organizationService->update(
@@ -66,7 +63,7 @@ class OrganizationController extends Controller
         );
     }
 
-//    #[Authorize('delete', Organization::class)]
+    #[Permission(['can-deactivate-organization'])]
     public function destroy(Organization $organization)
     {
         $this->organizationService->destroy($organization);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\StoreStaffRequest;
@@ -18,7 +19,7 @@ class StaffController extends Controller
         protected StaffService $staffService
     ) {}
 
-    #[Authorize('viewAny', Staff::class)]
+    #[Permission(['can-view-staff'])]
     public function index(): JsonResponse
     {
         $staff = $this->staffService->index();
@@ -29,7 +30,7 @@ class StaffController extends Controller
         );
     }
 
-    #[Authorize('create', Staff::class)]
+    #[Permission(['can-create-staff'])]
     public function store(StoreStaffRequest $request): JsonResponse
     {
         $staff = $this->staffService->store(
@@ -43,7 +44,7 @@ class StaffController extends Controller
         );
     }
 
-    #[Authorize('view', Staff::class)]
+    #[Permission(['can-view-staff'])]
     public function show(Staff $staff): JsonResponse
     {
         return ApiResponse::success(
@@ -58,7 +59,7 @@ class StaffController extends Controller
         );
     }
 
-    #[Authorize('update', Staff::class)]
+    #[Permission(['can-update-staff'])]
     public function update(UpdateStaffRequest $request, Staff $staff): JsonResponse {
 
         $staff = $this->staffService->update(
@@ -72,7 +73,7 @@ class StaffController extends Controller
         );
     }
 
-    #[Authorize('delete', Staff::class)]
+    #[Permission(['can-deactivate-staff'])]
     public function destroy(Staff $staff): JsonResponse
     {
         $this->staffService->destroy($staff);

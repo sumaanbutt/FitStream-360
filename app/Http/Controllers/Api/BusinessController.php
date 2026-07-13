@@ -10,13 +10,11 @@ use App\Http\Resources\BusinessResource;
 use App\Models\Business;
 use App\Services\BusinessService;
 use App\Attributes\Permission;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class BusinessController extends Controller
 {
     public function __construct(protected BusinessService $businessService) {}
 
-//    #[Authorize('permission', 'business.index')]
     #[Permission(['can-view-business'])]
     public function index()
     {
@@ -28,7 +26,7 @@ class BusinessController extends Controller
         );
     }
 
-//    #[Authorize('create', Business::class)]
+    #[Permission(['can-create-business'])]
     public function store(StoreBusinessRequest $request)
     {
         $business = $this->businessService->store(
@@ -41,7 +39,7 @@ class BusinessController extends Controller
         );
     }
 
-//    #[Authorize('view', Business::class)]
+    #[Permission(['can-view-business'])]
     public function show(Business $business)
     {
         return ApiResponse::success(
@@ -49,7 +47,7 @@ class BusinessController extends Controller
         );
     }
 
-//    #[Authorize('update', Business::class)]
+    #[Permission(['can-update-business'])]
     public function update(UpdateBusinessRequest $request, Business $business) {
 
         $business = $this->businessService->update(
@@ -63,7 +61,7 @@ class BusinessController extends Controller
         );
     }
 
-//    #[Authorize('delete', Business::class)]
+    #[Permission(['can-deactivate-business'])]
     public function destroy(Business $business)
     {
         $this->businessService->destroy($business);

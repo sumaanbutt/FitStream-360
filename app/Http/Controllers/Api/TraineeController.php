@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Trainee\StoreTraineeRequest;
@@ -18,7 +19,7 @@ class TraineeController extends Controller
         protected TraineeService $traineeService
     ) {}
 
-    #[Authorize('viewAny', Trainee::class)]
+    #[Permission(['can-view-trainee'])]
     public function index(): JsonResponse
     {
         $trainees = $this->traineeService->index();
@@ -29,7 +30,7 @@ class TraineeController extends Controller
         );
     }
 
-    #[Authorize('create', Trainee::class)]
+    #[Permission(['can-create-trainee'])]
     public function store(StoreTraineeRequest $request): JsonResponse
     {
         $trainee = $this->traineeService->store(
@@ -43,7 +44,7 @@ class TraineeController extends Controller
         );
     }
 
-    #[Authorize('view', Trainee::class)]
+    #[Permission(['can-view-trainee'])]
     public function show(Trainee $trainee): JsonResponse
     {
         return ApiResponse::success(
@@ -57,7 +58,7 @@ class TraineeController extends Controller
         );
     }
 
-    #[Authorize('update', Trainee::class)]
+    #[Permission(['can-update-trainee'])]
     public function update(UpdateTraineeRequest $request, Trainee $trainee): JsonResponse {
 
         $trainee = $this->traineeService->update($trainee, $request->validated());
@@ -68,7 +69,7 @@ class TraineeController extends Controller
         );
     }
 
-    #[Authorize('delete', Trainee::class)]
+    #[Permission(['can-deactivate-trainee'])]
     public function destroy(Trainee $trainee): JsonResponse
     {
         $this->traineeService->destroy($trainee);

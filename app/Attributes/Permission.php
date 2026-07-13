@@ -16,11 +16,11 @@ class Permission
             abort(403, 'This action is unauthorized.');
         }
 
-        foreach ($this->permissions as $permission) {
-            if ($user->can($permission)) {
+//        foreach ($this->permissions as $permission) {
+            if ($user->can($this->permissions)) {
                 return;
             }
-        }
+
 
         abort(403, 'This action is unauthorized.');
     }
