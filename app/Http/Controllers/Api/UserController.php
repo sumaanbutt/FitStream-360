@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
@@ -28,7 +29,7 @@ class UserController extends Controller
         );
     }
 
-    #[Authorize('create', User::class)]
+    #[Permission(['can-create-user'])]
     public function store(StoreUserRequest $request)
     {
         $user = $this->userService->store(

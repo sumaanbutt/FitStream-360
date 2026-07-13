@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\StoreOrganizationRequest;
@@ -9,7 +10,6 @@ use App\Http\Requests\Organization\UpdateOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Services\OrganizationService;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class OrganizationController extends Controller
 {
@@ -17,7 +17,8 @@ class OrganizationController extends Controller
         protected OrganizationService $organizationService
     ) {}
 
-    #[Authorize('viewAny', Organization::class)]
+//    #[Authorize('viewAny', Organization::class)]
+    #[Permission(['can-view-organization'])]
     public function index()
     {
 //        $this->authorize('viewAny', Organization::class);
@@ -30,7 +31,7 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Authorize('create', Organization::class)]
+//    #[Authorize('create', Organization::class)]
     public function store(StoreOrganizationRequest $request)
     {
         $organization = $this->organizationService->store(
@@ -43,7 +44,7 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Authorize('view', Organization::class)]
+//    #[Authorize('view', Organization::class)]
     public function show(Organization $organization)
     {
         return ApiResponse::success(
@@ -51,7 +52,7 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Authorize('update', Organization::class)]
+//    #[Authorize('update', Organization::class)]
     public function update(UpdateOrganizationRequest $request, Organization $organization){
 
         $organization = $this->organizationService->update(
@@ -65,7 +66,7 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Authorize('delete', Organization::class)]
+//    #[Authorize('delete', Organization::class)]
     public function destroy(Organization $organization)
     {
         $this->organizationService->destroy($organization);

@@ -23,9 +23,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
 
-        $middleware->alias([
-            'has_permissions' => CheckPermissions::class,
-        ]);
+//        $middleware->alias([
+//            'has_permissions' => CheckPermissions::class,
+//        ]);
+
+//        $middleware->api(append: [
+//            CheckPermissions::class,
+//        ]);
 
 
     })
