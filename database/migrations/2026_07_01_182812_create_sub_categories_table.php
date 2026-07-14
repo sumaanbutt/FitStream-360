@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->foreign('category_code')
                 ->references('code')
-                ->on('category')
+                ->on('categories')
                 ->onDelete('cascade');
 
             $table->index('code');

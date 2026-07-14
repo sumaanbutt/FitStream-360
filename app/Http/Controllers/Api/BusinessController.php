@@ -39,7 +39,7 @@ class BusinessController extends Controller
         );
     }
 
-    #[Permission(['can-view-business'])]
+    #[Permission('can-view-business')]
     public function show(Business $business)
     {
         return ApiResponse::success(

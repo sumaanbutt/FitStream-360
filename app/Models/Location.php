@@ -10,13 +10,13 @@ class Location extends Model
         'code',
         'business_code',
         'staff_code',
-        'type',
+        'location_type',
         'address',
         'city',
         'state',
         'country',
         'postal_code',
-        'status',
+        'location_status',
     ];
 
     public function business()

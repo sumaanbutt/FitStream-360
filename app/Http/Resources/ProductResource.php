@@ -17,8 +17,8 @@ class ProductResource extends JsonResource
             ],
 
             'sub_category' => [
-                'code' => $this->subCategory?->code,
-                'name' => $this->subCategory?->name,
+                'code' => $this->subcategory?->code,
+                'name' => $this->subcategory?->name,
             ],
 
             'product_name' => $this->product_name,

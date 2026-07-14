@@ -31,7 +31,7 @@ class LocationResource extends JsonResource
             'state' => $this->state,
             'country' => $this->country,
             'postal_code' => $this->postal_code,
-            'status' => $this->status,
+            'status' => $this->location_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

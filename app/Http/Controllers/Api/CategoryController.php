@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
@@ -18,7 +19,7 @@ class CategoryController extends Controller
         protected CategoryService $categoryService
     ) {}
 
-    #[Authorize('viewAny', Category::class)]
+    #[Permission(['can-view-category'])]
     public function index(): JsonResponse
     {
         $categories = $this->categoryService->index();
@@ -29,7 +30,7 @@ class CategoryController extends Controller
         );
     }
 
-    #[Authorize('create', Category::class)]
+    #[Permission(['can-create-category'])]
     public function store(StoreCategoryRequest $request): JsonResponse
     {
         $category = $this->categoryService->store(
@@ -43,7 +44,7 @@ class CategoryController extends Controller
         );
     }
 
-   #[Authorize('view', Category::class)]
+    #[Permission(['can-view-category'])]
     public function show(Category $category): JsonResponse
     {
         return ApiResponse::success(
@@ -57,7 +58,7 @@ class CategoryController extends Controller
         );
     }
 
-//    #[Authorize('update', Category::class)]
+    #[Permission(['can-update-category'])]
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse {
 
         $category = $this->categoryService->update(
@@ -71,7 +72,7 @@ class CategoryController extends Controller
         );
     }
 
-    #[Authorize('delete', Category::class)]
+    #[Permission(['can-deactivate-category'])]
     public function destroy(Category $category): JsonResponse
     {
         $this->categoryService->destroy($category);

@@ -32,55 +32,53 @@ class LocationService
             return DB::transaction(function () use ($data) {
 
                 if (
-                    $data['location_type'] === 'business' &&
+                    $data['type'] === 'business' &&
                     ! empty($data['staff_code'])
                 ) {
                     throw new BusinessException('Business location cannot have a staff.');
                 }
 
                 if (
-                    $data['location_type'] === 'staff' &&
+                    $data['type'] === 'staff' &&
                     empty($data['staff_code'])
                 ) {
                     throw new BusinessException('Staff location requires a staff.');
                 }
 
 
-                if ($data['location_type'] === 'staff') {
-
-                    $business = Business::where(
-                        'code',
-                        $data['business_code']
-                    )->firstOrFail();
+                if ($data['type'] === 'staff') {
 
                     $staff = Staff::where(
                         'code',
                         $data['staff_code']
                     )->firstOrFail();
 
-                    if (
-                        $business->organization_code !==
-                        $staff->organization_code
-                    ) {
-                        throw new BusinessException('Selected staff does not belong to the selected organization.');
-                    }
+//                    if (
+//                        $business->organization_code !==
+//                        $staff->organization_code
+//                    ) {
+//                        throw new BusinessException('Selected staff does not belong to the selected organization.');
+//                    }
                 }
 
                 $location = Location::create([
 
                     'code' => $this->generateCode('LOC', Location::class),
-                    'business_code' => $data['business_code'],
-                    'staff_code' => $data['location_type'] === 'business'
-                        ? null
-                        : $data['staff_code'],
+                    'business_code' => $data['type'] === 'business'
+                        ? $data['business_code']
+                        : null,
 
-                    'type' => $data['location_type'],
+                    'staff_code' => $data['type'] === 'staff'
+                        ? $data['staff_code']
+                        : null,
+
+                    'location_type' => $data['type'],
                     'address' => $data['address'],
                     'city' => $data['city'],
                     'state' => $data['state'],
                     'country' => $data['country'],
-                    'postal_code' => $data['postal_code'] ?? null,
-                    'status' => $data['status'] ?? 'active',
+                    'postal_code' => $data['postal_code'],
+                    'location_status' => $data['status'] ?? 'active',
                 ]);
 
                 return $location->load([

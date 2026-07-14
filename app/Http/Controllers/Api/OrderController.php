@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
@@ -19,7 +20,7 @@ class OrderController extends Controller
         protected OrderService $orderService
     ) {}
 
-    #[Authorize('viewAny', Order::class)]
+    #[Permission(['can-view-order'])]
     public function index(): JsonResponse
     {
         $orders = $this->orderService->index();
@@ -30,7 +31,7 @@ class OrderController extends Controller
         );
     }
 
-    #[Authorize('create', Order::class)]
+    #[Permission(['can-create-order'])]
     public function store(StoreOrderRequest $request): JsonResponse
     {
         $order = $this->orderService->store(
@@ -44,7 +45,7 @@ class OrderController extends Controller
         );
     }
 
-    #[Authorize('view', Order::class)]
+    #[Permission(['can-view-order'])]
     public function show(Order $order): JsonResponse
     {
         return ApiResponse::success(
@@ -60,7 +61,7 @@ class OrderController extends Controller
         );
     }
 
-    #[Authorize('update', Order::class)]
+    #[Permission(['can-update-order'])]
     public function update(UpdateOrderRequest $request, Order $order): JsonResponse {
 
         $order = $this->orderService->update(
@@ -74,7 +75,7 @@ class OrderController extends Controller
         );
     }
 
-    #[Authorize('delete', Order::class)]
+    #[Permission(['can-deactivate-order'])]
     public function destroy(Order $order): JsonResponse
     {
         $this->orderService->destroy($order);

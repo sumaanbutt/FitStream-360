@@ -91,8 +91,6 @@ class PermissionSeeder extends Seeder
             'can-create-invoice',
             'can-update-invoice',
             'can-deactivate-invoice',
-
-            'can-index-business'
         ];
 
         foreach ($permissions as $permission) {

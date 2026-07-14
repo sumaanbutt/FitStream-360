@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShiftSchedule\StoreShiftScheduleRequest;
@@ -19,7 +20,7 @@ class ShiftScheduleController extends Controller
     ) {
     }
 
-    #[Authorize('viewAny', ShiftSchedule::class)]
+    #[Permission(['can-view-shiftschedule'])]
     public function index(): JsonResponse
     {
         return ApiResponse::success(
@@ -30,7 +31,7 @@ class ShiftScheduleController extends Controller
         );
     }
 
-    #[Authorize('create', ShiftSchedule::class)]
+    #[Permission(['can-create-shiftschedule'])]
     public function store(StoreShiftScheduleRequest $request): JsonResponse
     {
         $shift = $this->shiftScheduleService->store(
@@ -44,7 +45,7 @@ class ShiftScheduleController extends Controller
         );
     }
 
-    #[Authorize('view', ShiftSchedule::class)]
+    #[Permission(['can-view-shiftschedule'])]
     public function show(ShiftSchedule $shiftSchedule): JsonResponse
     {
         return ApiResponse::success(
@@ -58,7 +59,7 @@ class ShiftScheduleController extends Controller
         );
     }
 
-    #[Authorize('update', ShiftSchedule::class)]
+    #[Permission(['can-update-shiftschedule'])]
     public function update(UpdateShiftScheduleRequest $request, ShiftSchedule $shiftSchedule): JsonResponse {
 
         $shift = $this->shiftScheduleService->update(
@@ -72,7 +73,7 @@ class ShiftScheduleController extends Controller
         );
     }
 
-    #[Authorize('delete', ShiftSchedule::class)]
+    #[Permission(['can-deactivate-shiftschedule'])]
     public function destroy(ShiftSchedule $shiftSchedule): JsonResponse
     {
         $this->shiftScheduleService->destroy($shiftSchedule);

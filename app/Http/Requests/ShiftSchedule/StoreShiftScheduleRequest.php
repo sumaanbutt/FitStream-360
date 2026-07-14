@@ -30,7 +30,7 @@ class StoreShiftScheduleRequest extends FormRequest
             ],
 
             'start_time' => ['required', 'date_format:H:i',],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time',],
+            'end_time' => ['required', 'date_format:H:i',],
 
             'status' => ['sometimes',
                 Rule::in([

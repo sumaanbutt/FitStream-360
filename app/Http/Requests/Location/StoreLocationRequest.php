@@ -16,8 +16,20 @@ class StoreLocationRequest extends FormRequest
     {
         return [
 
-            'business_code' => ['required', 'exists:businesses,code',],
-            'staff_code' => ['nullable', 'exists:staff,code',],
+//            'business_code' => ['nullable', 'exists:businesses,code',],
+//            'staff_code' => ['nullable', 'exists:staff,code',],
+
+            'business_code' => [
+                'required_if:type,business',
+                'nullable',
+                'exists:businesses,code',
+            ],
+
+            'staff_code' => [
+                'required_if:type,staff',
+                'nullable',
+                'exists:staff,code',
+            ],
 
             'type' => ['required',
                 Rule::in([
@@ -30,7 +42,7 @@ class StoreLocationRequest extends FormRequest
             'city' => ['required', 'string', 'max:100',],
             'state' => ['nullable', 'string', 'max:100',],
             'country' => ['required', 'string', 'max:100',],
-            'postal_code' => ['nullable', 'string', 'max:20',],
+            'postal_code' => ['required', 'string', 'max:20',],
             'status' => ['sometimes',
                 Rule::in([
                     'active',

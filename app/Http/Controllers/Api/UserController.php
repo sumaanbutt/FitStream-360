@@ -18,7 +18,7 @@ class UserController extends Controller
         protected UserService $userService
     ) {}
 
-    #[Authorize('viewAny', User::class)]
+    #[Permission(['can-view-user'])]
     public function index()
     {
         $users = $this->userService->index();
@@ -42,7 +42,7 @@ class UserController extends Controller
         );
     }
 
-    #[Authorize('view', User::class)]
+    #[Permission(['can-view-user'])]
     public function show(User $user)
     {
         return ApiResponse::success(
@@ -51,7 +51,7 @@ class UserController extends Controller
         );
     }
 
-    #[Authorize('update', User::class)]
+    #[Permission(['can-update-user'])]
     public function update(UpdateUserRequest $request, User $user) {
 
         $user = $this->userService->update($user, $request->validated());
@@ -62,7 +62,7 @@ class UserController extends Controller
         );
     }
 
-    #[Authorize('delete', User::class)]
+    #[Permission(['can-deactivate-user'])]
     public function destroy(User $user)
     {
         $this->userService->destroy($user);

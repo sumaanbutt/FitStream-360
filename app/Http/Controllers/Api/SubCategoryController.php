@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubCategory\StoreSubCategoryRequest;
@@ -18,7 +19,7 @@ class SubCategoryController extends Controller
         protected SubCategoryService $subCategoryService
     ) {}
 
-//    #[Authorize('viewAny', SubCategory::class)]
+    #[Permission(['can-view-subcategory'])]
     public function index(): JsonResponse
     {
         $subCategories = $this->subCategoryService->index();
@@ -29,7 +30,7 @@ class SubCategoryController extends Controller
         );
     }
 
-//    #[Authorize('store', SubCategory::class)]
+    #[Permission(['can-create-subcategory'])]
     public function store(StoreSubCategoryRequest $request): JsonResponse
     {
         $subCategory = $this->subCategoryService->store(
@@ -43,7 +44,7 @@ class SubCategoryController extends Controller
         );
     }
 
-//    #[Authorize('view', SubCategory::class)]
+    #[Permission(['can-view-subcategory'])]
     public function show(SubCategory $subCategory): JsonResponse
     {
         return ApiResponse::success(
@@ -55,7 +56,7 @@ class SubCategoryController extends Controller
         );
     }
 
-//    #[Authorize('update', SubCategory::class)]
+    #[Permission(['can-update-subcategory'])]
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory): JsonResponse {
 
         $subCategory = $this->subCategoryService->update($subCategory, $request->validated());
@@ -66,7 +67,7 @@ class SubCategoryController extends Controller
         );
     }
 
-//    #[Authorize('delete', SubCategory::class)]
+    #[Permission(['can-deactivate-subcategory'])]
     public function destroy(SubCategory $subCategory): JsonResponse
     {
         $this->subCategoryService->destroy($subCategory);

@@ -16,12 +16,16 @@ class OrganizationService
     use HasCode;
     public function index()
     {
-        return (new OrganizationFilter())
-            ->apply(
-                Organization::with([
-                    'businesses',
-                    'users',
-                ])
+//        return (new OrganizationFilter())
+//            ->apply(
+        return Organization::with([
+            'businesses',
+            'users',
+        ])
+            ->filter(request()->all())
+            ->paginate(
+                request('per_page', 10)
+
             );
     }
 

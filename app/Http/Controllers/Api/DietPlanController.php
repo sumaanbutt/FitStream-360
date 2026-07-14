@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DietPlan\StoreDietPlanRequest;
@@ -18,7 +19,7 @@ class DietPlanController extends Controller
         protected DietPlanService $dietPlanService
     ) {}
 
-    #[Authorize('viewAny', DietPlan::class)]
+    #[Permission(['can-view-dietplan'])]
     public function index(): JsonResponse
     {
         return ApiResponse::success(
@@ -29,7 +30,7 @@ class DietPlanController extends Controller
         );
     }
 
-    #[Authorize('create', DietPlan::class)]
+    #[Permission(['can-create-staff'])]
     public function store(StoreDietPlanRequest $request): JsonResponse
     {
         $dietPlan = $this->dietPlanService->store(
@@ -45,7 +46,7 @@ class DietPlanController extends Controller
         );
     }
 
-    #[Authorize('view', DietPlan::class)]
+    #[Permission(['can-view-dietplan'])]
     public function show(DietPlan $dietPlan): JsonResponse
     {
         return ApiResponse::success(
@@ -54,7 +55,7 @@ class DietPlanController extends Controller
         );
     }
 
-    #[Authorize('update', DietPlan::class)]
+    #[Permission(['can-update-dietplan'])]
     public function update(UpdateDietPlanRequest $request, DietPlan $dietPlan): JsonResponse {
 
         $dietPlan = $this->dietPlanService->update(
@@ -70,7 +71,7 @@ class DietPlanController extends Controller
         );
     }
 
-    #[Authorize('delete', DietPlan::class)]
+    #[Permission(['can-deactivate-dietplan'])]
     public function destroy(DietPlan $dietPlan): JsonResponse
     {
         $this->dietPlanService->destroy($dietPlan);

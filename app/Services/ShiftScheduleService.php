@@ -36,7 +36,7 @@ class ShiftScheduleService
                     $data['staff_code']
                 )
                     ->where(
-                        'working_day',
+                        'working_days',
                         $data['working_day']
                     )
                     ->where(function ($query) use ($data) {
@@ -76,7 +76,7 @@ class ShiftScheduleService
                     'code' => $this->generateCode('SHF', ShiftSchedule::class),
                     'organization_code' => $data['organization_code'],
                     'staff_code' => $data['staff_code'],
-                    'working_day' => $data['working_day'],
+                    'working_days' => $data['working_day'],
                     'start_time' => $data['start_time'],
                     'end_time' => $data['end_time'],
                     'status' => $data['status'] ?? 'active',
@@ -155,7 +155,7 @@ class ShiftScheduleService
                 $shiftSchedule->update([
                     'organization_code' => $data['organization_code'] ?? $shiftSchedule->organization_code,
                     'staff_code' => $data['staff_code'] ?? $shiftSchedule->staff_code,
-                    'working_day' => $data['working_day'] ?? $shiftSchedule->working_day,
+                    'working_days' => $data['working_day'] ?? $shiftSchedule->working_days,
                     'start_time' => $data['start_time'] ?? $shiftSchedule->start_time,
                     'end_time' => $data['end_time'] ?? $shiftSchedule->end_time,
                     'status' => $data['status'] ?? $shiftSchedule->status,

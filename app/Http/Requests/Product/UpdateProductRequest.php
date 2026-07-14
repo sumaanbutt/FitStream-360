@@ -17,16 +17,16 @@ class UpdateProductRequest extends FormRequest
         return [
 
             'category_code' => ['sometimes', 'exists:categories,code',],
-            'sub_category_code' => ['sometimes', 'exists:sub_categories,code',],
+            'subcategory_code' => ['sometimes', 'exists:sub_categories,code',],
             'product_name' => ['sometimes', 'string', 'max:255',],
-            'product_description' => ['nullable', 'string',],
+            'product_description' => ['sometimes', 'string',],
             'sku' => ['sometimes', 'string',
                 Rule::unique('products', 'sku')
                     ->ignore($this->product->code),
             ],
             'product_price' => ['sometimes', 'numeric', 'min:0',],
             'quantity' => ['sometimes', 'integer', 'min:0',],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',],
+            'image' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',],
             'status' => ['sometimes', 'boolean',],
         ];
     }

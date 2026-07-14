@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreProductRequest;
@@ -19,7 +20,7 @@ class ProductController extends Controller
         protected ProductService $productService
     ) {}
 
-//    #[Authorize('viewAny', Product::class)]
+    #[Permission(['can-view-product'])]
     public function index(): JsonResponse
     {
         $products = $this->productService->index();
@@ -30,7 +31,7 @@ class ProductController extends Controller
         );
     }
 
-//    #[Authorize('create', Product::class)]
+    #[Permission(['can-create-product'])]
     public function store(StoreProductRequest $request): JsonResponse
     {
         $product = $this->productService->store(
@@ -45,7 +46,7 @@ class ProductController extends Controller
         );
     }
 
-//    #[Authorize('view', Product::class)]
+    #[Permission(['can-view-product'])]
     public function show(Product $product): JsonResponse
     {
         return ApiResponse::success(
@@ -59,7 +60,7 @@ class ProductController extends Controller
         );
     }
 
-//    #[Authorize('update', Product::class)]
+    #[Permission(['can-update-product'])]
     public function update(UpdateProductRequest $request, Product $product): JsonResponse {
 
         $product = $this->productService->update(
@@ -74,7 +75,7 @@ class ProductController extends Controller
         );
     }
 
-//    #[Authorize('delete', Product::class)]
+    #[Permission(['can-deactivate-product'])]
     public function destroy(Product $product): JsonResponse
     {
         $this->productService->destroy($product);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Location\StoreLocationRequest;
@@ -18,7 +19,7 @@ class LocationController extends Controller
         protected LocationService $locationService
     ) {}
 
-    #[Authorize('viewAny', Location::class)]
+    #[Permission(['can-view-location'])]
     public function index(): JsonResponse
     {
         $locations = $this->locationService->index();
@@ -29,7 +30,7 @@ class LocationController extends Controller
         );
     }
 
-    #[Authorize('create', Location::class)]
+    #[Permission(['can-create-location'])]
     public function store(StoreLocationRequest $request): JsonResponse
     {
         $location = $this->locationService->store(
@@ -43,7 +44,7 @@ class LocationController extends Controller
         );
     }
 
-    #[Authorize('view', Location::class)]
+    #[Permission(['can-view-location'])]
     public function show(Location $location): JsonResponse
     {
         return ApiResponse::success(
@@ -57,7 +58,7 @@ class LocationController extends Controller
         );
     }
 
-    #[Authorize('update', Location::class)]
+    #[Permission(['can-update-location'])]
     public function update(UpdateLocationRequest $request, Location $location): JsonResponse {
 
         $location = $this->locationService->update(
@@ -71,7 +72,7 @@ class LocationController extends Controller
         );
     }
 
-    #[Authorize('delete', Location::class)]
+    #[Permission(['can-deactivate-location'])]
     public function destroy(Location $location): JsonResponse
     {
         $this->locationService->destroy($location);

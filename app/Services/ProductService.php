@@ -47,19 +47,20 @@ class ProductService
                 $product = Product::create([
                     'code' => $code,
                     'sku' => 'SKU-' . $code,
+                    'organization_code' => $data['organization_code'],
                     'category_code' => $data['category_code'],
                     'subcategory_code' => $data['subcategory_code'],
-                    'product_name' => $data['name'],
-                    'product_description' => $data['description'] ?? null,
+                    'product_name' => $data['product_name'],
+                    'product_description' => $data['product_description'],
                     'product_price' => $data['product_price'],
                     'quantity' => $data['quantity'],
-                    'product_image' => $imagePath,
-                    'status' => $data['status'] ?? true,
+                    'product_image_path' => $imagePath,
+//                    'status' => $data['status'] ?? true,
                 ]);
 
                 return $product->load([
                     'category',
-                    'subCategory',
+                    'subcategory',
                 ]);
 
             });
@@ -83,7 +84,7 @@ class ProductService
 
                 $updateData = [
                     'category_code' => $data['category_code'] ?? $product->category_code,
-                    'sub_category_code' => $data['sub_category_code'] ?? $product->sub_category_code,
+                    'subcategory_code' => $data['subcategory_code'] ?? $product->sub_category_code,
                     'product_name' => $data['name'] ?? $product->name,
                     'product_description' => $data['description'] ?? $product->description,
                     'sku' => $data['sku'] ?? $product->sku,

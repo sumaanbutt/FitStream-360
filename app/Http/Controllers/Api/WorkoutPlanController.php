@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WorkoutPlan\StoreWorkoutPlanRequest;
@@ -18,7 +19,7 @@ class WorkoutPlanController extends Controller
         protected WorkoutPlanService $workoutPlanService
     ) {}
 
-    #[Authorize('viewAny', WorkoutPlan::class)]
+    #[Permission(['can-view-workoutplan'])]
     public function index(): JsonResponse
     {
         return ApiResponse::success(
@@ -29,7 +30,7 @@ class WorkoutPlanController extends Controller
         );
     }
 
-    #[Authorize('create', WorkoutPlan::class)]
+    #[Permission(['can-create-workoutplan'])]
     public function store(StoreWorkoutPlanRequest $request): JsonResponse
     {
         $workoutPlan = $this->workoutPlanService->store(
@@ -45,7 +46,7 @@ class WorkoutPlanController extends Controller
         );
     }
 
-    #[Authorize('view', WorkoutPlan::class)]
+    #[Permission(['can-view-workoutplan'])]
     public function show(WorkoutPlan $workoutPlan): JsonResponse
     {
         return ApiResponse::success(
@@ -53,7 +54,7 @@ class WorkoutPlanController extends Controller
             'Workout plan fetched successfully.');
     }
 
-    #[Authorize('update', WorkoutPlan::class)]
+    #[Permission(['can-update-workoutplan'])]
     public function update(UpdateWorkoutPlanRequest $request, WorkoutPlan $workoutPlan): JsonResponse {
 
         $workoutPlan = $this->workoutPlanService->update(
@@ -69,7 +70,7 @@ class WorkoutPlanController extends Controller
         );
     }
 
-    #[Authorize('delete', WorkoutPlan::class)]
+    #[Permission(['can-deactivate-workoutplan'])]
     public function destroy(WorkoutPlan $workoutPlan): JsonResponse
     {
         $this->workoutPlanService->destroy($workoutPlan);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TraineeGoal\StoreTraineeGoalRequest;
@@ -18,7 +19,7 @@ class TraineeGoalController extends Controller
         protected TraineeGoalService $traineeGoalService
     ) {}
 
-    #[Authorize('viewAny', TraineeGoals::class)]
+    #[Permission(['can-view-trainee-goal'])]
     public function index(): JsonResponse
     {
         $goals = $this->traineeGoalService->index();
@@ -29,7 +30,7 @@ class TraineeGoalController extends Controller
         );
     }
 
-    #[Authorize('create', TraineeGoals::class)]
+    #[Permission(['can-create-trainee-goal'])]
     public function store(StoreTraineeGoalRequest $request): JsonResponse
     {
         $goal = $this->traineeGoalService->store(
@@ -43,7 +44,7 @@ class TraineeGoalController extends Controller
         );
     }
 
-    #[Authorize('view', TraineeGoals::class)]
+    #[Permission(['can-view-trainee-goal'])]
     public function show(TraineeGoals $traineeGoal): JsonResponse
     {
         return ApiResponse::success(
@@ -57,7 +58,7 @@ class TraineeGoalController extends Controller
         );
     }
 
-    #[Authorize('update', TraineeGoals::class)]
+    #[Permission(['can-update-trainee-goal'])]
     public function update(UpdateTraineeGoalRequest $request, TraineeGoals $traineeGoal): JsonResponse {
 
         $goal = $this->traineeGoalService->update(
@@ -71,7 +72,7 @@ class TraineeGoalController extends Controller
         );
     }
 
-    #[Authorize('delete', TraineeGoals::class)]
+    #[Permission(['can-deactivate-trainee-goal'])]
     public function destroy(TraineeGoals $traineeGoal): JsonResponse
     {
         return ApiResponse::success(

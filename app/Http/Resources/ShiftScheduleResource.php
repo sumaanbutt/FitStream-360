@@ -21,7 +21,7 @@ class ShiftScheduleResource extends JsonResource
                 'name' => $this->staff?->user?->name,
             ],
 
-            'working_day' => $this->working_day,
+            'working_day' => $this->working_days,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'status' => $this->status,

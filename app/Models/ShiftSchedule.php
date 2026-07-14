@@ -10,7 +10,7 @@ class ShiftSchedule extends Model
         'code',
         'organization_code',
         'staff_code',
-        'working_day',
+        'working_days',
         'start_time',
         'end_time',
         'status',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoice\StoreInvoiceRequest;
@@ -18,7 +19,7 @@ class InvoiceController extends Controller
         protected InvoiceService $invoiceService
     ) {}
 
-    #[Authorize('viewAny', Invoice::class)]
+    #[Permission(['can-view-invoice'])]
     public function index(): JsonResponse
     {
         return ApiResponse::success(
@@ -29,7 +30,7 @@ class InvoiceController extends Controller
         );
     }
 
-    #[Authorize('create', Invoice::class)]
+    #[Permission(['can-create-invoice'])]
     public function store(StoreInvoiceRequest $request): JsonResponse
     {
         $invoice = $this->invoiceService->store(
@@ -43,7 +44,7 @@ class InvoiceController extends Controller
         );
     }
 
-    #[Authorize('view', Invoice::class)]
+    #[Permission(['can-view-invoice'])]
     public function show(Invoice $invoice): JsonResponse
     {
         return ApiResponse::success(
@@ -59,9 +60,8 @@ class InvoiceController extends Controller
         );
     }
 
+    #[Permission(['can-update-invoice'])]
     public function update(UpdateInvoiceRequest $request, Invoice $invoice): JsonResponse {
-
-        $this->authorize('update', $invoice);
 
         $invoice = $this->invoiceService->update(
             $invoice,
@@ -74,10 +74,9 @@ class InvoiceController extends Controller
         );
     }
 
+    #[Permission(['can-deactivate-invoice'])]
     public function destroy(Invoice $invoice): JsonResponse
     {
-        $this->authorize('delete', $invoice);
-
         $this->invoiceService->destroy($invoice);
 
         return ApiResponse::success(

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Attributes\Permission;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TraineeGoalsAttachments\StoreTraineeGoalAttachmentRequest;
@@ -18,7 +19,7 @@ class TraineeGoalAttachmentController extends Controller
         protected TraineeGoalAttachmentsService $attachmentService
     ) {}
 
-    #[Authorize('viewAny', TraineeGoalsAttachments::class)]
+    #[Permission(['can-view-trainee-goal-attachment'])]
     public function index(): JsonResponse
     {
         $attachments = $this->attachmentService->index();
@@ -29,7 +30,7 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    #[Authorize('create', TraineeGoalsAttachments::class)]
+    #[Permission(['can-store-trainee-goal-attachment'])]
     public function store(StoreTraineeGoalAttachmentRequest $request): JsonResponse
     {
         $attachment = $this->attachmentService->store(
@@ -44,7 +45,7 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    #[Authorize('view', TraineeGoalsAttachments::class)]
+    #[Permission(['can-view-trainee-goal-attachment'])]
     public function show(TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse
     {
         return ApiResponse::success(
@@ -58,7 +59,7 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    #[Authorize('update', TraineeGoalsAttachments::class)]
+    #[Permission(['can-update-trainee-goal-attachment'])]
     public function update(UpdateTraineeGoalAttachmentRequest $request, TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse {
 
         $attachment = $this->attachmentService->update(
@@ -73,7 +74,7 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    #[Authorize('delete', TraineeGoalsAttachments::class)]
+    #[Permission(['can-deactivate-trainee-goal-attachment'])]
     public function destroy(TraineeGoalsAttachments $traineeGoalsAttachment): JsonResponse
     {
         $this->attachmentService->destroy($traineeGoalsAttachment);

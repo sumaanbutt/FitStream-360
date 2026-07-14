@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasApiFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
+    use HasApiFilters;
+
     protected $fillable = [
         'organization_code',
         'code',
@@ -57,5 +60,32 @@ class Business extends Model
     public function getRouteKeyName(): string
     {
         return 'code';
+    }
+
+    protected array $filterable = [
+        'code',
+        'organization_code',
+        'status',
+        'search',
+    ];
+
+    protected array $sortable = [
+        'name',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected function filterSearch($query, $value)
+    {
+//        dd('filterSearch called');
+
+        $query->where(function ($q) use ($value) {
+
+            $q->where('code', 'like', "%{$value}%")
+                ->orWhere('name', 'like', "%{$value}%")
+                ->orWhere('email', 'like', "%{$value}%")
+                ->orWhere('phone', 'like', "%{$value}%");
+
+        });
     }
 }
