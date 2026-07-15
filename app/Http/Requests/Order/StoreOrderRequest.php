@@ -16,7 +16,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'organization_code' => ['required', 'exists:organizations,code',],
-            'business_code' => ['required', 'exists:businesses,code',],
+//            'business_code' => ['required', 'exists:businesses,code',],
             'user_code' => ['nullable', 'exists:users,code',],
 
             'payment_method' => ['required',
@@ -27,12 +27,12 @@ class StoreOrderRequest extends FormRequest
                 ]),
             ],
 
-            'payment_status' => ['required',
+            'payment_status' => ['nullable',
                 Rule::in([
                     'paid' , 'unpaid'
                 ])],
 
-            'subtotal' => ['required', 'numeric', 'min:1'],
+            'subtotal' => ['nullable', 'numeric', 'min:1'],
             'discount' => ['nullable', 'numeric', 'min:0',],
             'tax' => ['nullable', 'numeric', 'min:0',],
             'total' => ['nullable', 'numeric', 'min:0',],
@@ -43,7 +43,7 @@ class StoreOrderRequest extends FormRequest
                 ])],
             'items' => ['required', 'array'],
             'items.*.product_code' => ['required', 'exists:products,code',],
-            'items.*.quantity' => ['required', 'integer', 'min:1',],
+            'items.*.quantity' => ['nullable', 'integer', 'min:1',],
         ];
     }
 }

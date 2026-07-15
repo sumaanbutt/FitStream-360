@@ -23,12 +23,12 @@ class StoreInvoiceRequest extends FormRequest
             'user_code' => ['required', 'exists:users,code',],
             'order_code' => ['required', 'exists:orders,code',],
             'invoice_type' => ['required', 'string', 'max:50'],
-            'subtotal' => ['required', 'numeric', 'min:0'],
+            'subtotal' => ['nullable', 'numeric', 'min:0'],
             'discount' => ['nullable', 'numeric', 'min:0'],
             'tax' =>['nullable', 'numeric', 'min:0'],
             'total' => ['nullable', 'numeric', 'min:0'],
 
-            'payment_method' => ['required',
+            'payment_method' => ['nullable',
                 Rule::in([
                     'cash',
                     'card',
@@ -38,10 +38,10 @@ class StoreInvoiceRequest extends FormRequest
 
             'payment_status' => ['sometimes',
                 Rule::in([
-                    'pending',
                     'paid',
-                    'failed',
-                    'refunded',
+                    'unpaid',
+                    'overdue',
+                    'cancelled'
                 ]),
             ],
 

@@ -78,3 +78,5 @@ class Organization extends Model
         });
     }
 }
+
+// Define different trait for each model and define filters possible for each model and pass trait in each model through model scope for each model

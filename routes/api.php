@@ -53,9 +53,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('diet-plan', DietPlanController::class);
 
-    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('product_categories', CategoryController::class);
 
-    Route::apiResource('subcategories', SubCategoryController::class);
+    Route::apiResource('product_subcategories', SubCategoryController::class);
 
     Route::apiResource('products', ProductController::class);
 

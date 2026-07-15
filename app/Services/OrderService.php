@@ -48,25 +48,27 @@ class OrderService
                     if ($product->quantity < $item['quantity']) {
                         throw new \Exception("Insufficient stock for {$product->name}.");
                     }
-                    $subtotal += $product->selling_price * $item['quantity'];
+                    $subtotal += $product->product_price * $item['quantity'];
                 }
 
                 $discount = $data['discount'] ?? 0;
                 $tax = $data['tax'] ?? 0;
+                $discount = ($subtotal * $discount) / 100;
+                $tax = ($subtotal * $tax) / 100;
                 $total = ($subtotal - $discount) + $tax;
 
                 $order = Order::create([
                     'code' => $this->generateCode('ORD', Order::class),
                     'organization_code' => $data['organization_code'],
-                    'business_code' => $data['business_code'],
+//                    'business_code' => $data['business_code'],
                     'user_code' => $data['user_code'] ?? null,
                     'subtotal' => $subtotal,
                     'discount' => $discount,
                     'tax' => $tax,
                     'total' => $total,
                     'payment_method' => $data['payment_method'],
-                    'payment_status' => 'pending',
-                    'status' => 'completed',
+                    'payment_status' => $data['payment_status'] ?? 'unpaid',
+                    'status' => $data['status'],
                 ]);
 
                 foreach ($data['items'] as $item) {
@@ -82,27 +84,27 @@ class OrderService
                         'order_code' => $order->code,
                         'product_code' => $product->code,
                         'quantity' => $item['quantity'],
-                        'unit_price' => $product->selling_price,
+                        'unit_price' => $product->product_price,
                         'discount' => 0,
                         'subtotal' =>
-                            $product->selling_price *
+                            $product->product_price *
                             $item['quantity'],
                     ]);
 
                     $product->decrement('quantity', $item['quantity']);
                 }
 
-                $invoice = Invoice::create([
+                Invoice::create([
                     'code' => $this->generateCode('INV', Invoice::class),
                     'order_code' => $order->code,
                     'organization_code' => $order->organization_code,
-                    'user_code' => $order->trainee_code,
-                    'invoice_number' => 'INV-'.time(),
+                    'user_code' => $order->user_code,
+//                    'invoice_number' => 'INV-'.time(),
                     'invoice_type' => 'POS',
-                    'payment_status' => 'pending',
-                    'subtotal' => $subtotal,
-                    'discount' => $discount,
-                    'tax' => $tax,
+                    'payment_status' => $data['payment_status'] ?? 'unpaid',
+//                    'subtotal' => $subtotal,
+//                    'discount' => $discount,
+//                    'tax' => $tax,
                     'total_amount' => $total,
                 ]);
 
@@ -158,7 +160,7 @@ class OrderService
                         throw new \Exception("Insufficient stock for {$product->name}.");
                     }
 
-                    $subtotal += $product->selling_price * $item['quantity'];
+                    $subtotal += $product->product_price * $item['quantity'];
                 }
 
                 $discount = $data['discount'] ?? 0;
@@ -169,7 +171,7 @@ class OrderService
 //  Update Order:
                 $order->update([
                     'organization_code' => $data['organization_code'] ?? $order->organization_code,
-                    'business_code' => $data['business_code'] ?? $order->business_code,
+//                    'business_code' => $data['business_code'] ?? $order->business_code,
                     'user_code' => $data['user_code'] ?? $order->user_code,
                     'subtotal' => $subtotal,
                     'discount' => $discount,
@@ -193,9 +195,9 @@ class OrderService
                         'order_code' => $order->code,
                         'product_code' => $product->code,
                         'quantity' => $item['quantity'],
-                        'unit_price' => $product->selling_price,
+                        'unit_price' => $product->product_price,
                         'discount' => 0,
-                        'subtotal' => $product->selling_price * $item['quantity'],
+                        'subtotal' => $product->product_price * $item['quantity'],
                     ]);
 
                     $product->decrement('quantity', $item['quantity']);

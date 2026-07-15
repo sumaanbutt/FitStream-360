@@ -10,10 +10,7 @@ class   Order extends Model
         'code',
 
         'organization_code',
-        'business_code',
-
         'user_code',
-        'invoice_code',
 
         'subtotal',
         'discount',

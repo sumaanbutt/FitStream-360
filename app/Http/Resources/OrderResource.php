@@ -15,10 +15,10 @@ class OrderResource extends JsonResource
                 'code' => $this->organization?->code,
                 'name' => $this->organization?->name,
             ],
-            'business' => [
-                'code' => $this->business?->code,
-                'name' => $this->business?->name,
-            ],
+//            'business' => [
+//                'code' => $this->business?->code,
+//                'name' => $this->business?->name,
+//            ],
 
             'user' => $this->when(
                 $this->user,
