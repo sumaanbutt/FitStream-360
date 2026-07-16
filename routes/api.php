@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\BusinessController;
+use App\Http\Controllers\Api\GymGoalsController;
+use App\Http\Controllers\Api\TraineeGoalProgressController;
 use App\Models\Business;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DietPlanController;
@@ -41,6 +43,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('trainee-goals', TraineeGoalController::class);
 
+    Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class);
+
+    Route::apiResource('gym-goals', GymGoalsController::class);
+
     Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
 
 // Route::apiResource('attendance', AttendanceController::class);
@@ -66,5 +72,4 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profile', function () {
         return auth()->user();
     });
-
 });

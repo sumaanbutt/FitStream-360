@@ -42,6 +42,16 @@ class PermissionSeeder extends Seeder
             'can-update-trainee-goal',
             'can-deactivate-trainee-goal',
 
+            'can-view-trainee-goal-progress',
+            'can-create-trainee-goal-progress',
+            'can-update-trainee-goal-progress',
+            'can-deactivate-trainee-goal-progress',
+
+            'can-view-gym-goals',
+            'can-create-gym-goals',
+            'can-update-gym-goals',
+            'can-deactivate-gym-goals',
+
             'can-view-trainee-goal-attachment',
             'can-create-trainee-goal-attachment',
             'can-update-trainee-goal-attachment',

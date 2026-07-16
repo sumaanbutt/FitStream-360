@@ -21,10 +21,18 @@ class TraineeGoalResource extends JsonResource
                 'email' => $this->trainee?->user?->email,
             ],
 
+            'gym_goal' => [
+                'code' => $this->gymGoal?->code,
+                'title' => $this->gymGoal?->title,
+                'category' => $this->gymGoal?->goal_category,
+            ],
+
             'title' => $this->title,
             'description' => $this->description,
-            'target_value' => $this->target_value,
-            'target_unit' => $this->target_unit,
+
+            'priority' => $this->priority,
+            'target_weight' => $this->target_weight,
+            'target_body_fat' => $this->target_body_fat,
 
             'start_date' => optional($this->start_date)
                 ->format('Y-m-d'),
@@ -33,7 +41,7 @@ class TraineeGoalResource extends JsonResource
                 ->format('Y-m-d'),
 
             'status' => $this->status,
-            'remarks' => $this->remarks,
+            'notes' => $this->remarks,
 
             'attachments' => TraineeGoalAttachmentsResource::collection(
                 $this->whenLoaded('attachments')

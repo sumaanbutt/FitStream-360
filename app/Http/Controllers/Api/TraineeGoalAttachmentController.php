@@ -30,7 +30,7 @@ class TraineeGoalAttachmentController extends Controller
         );
     }
 
-    #[Permission(['can-store-trainee-goal-attachment'])]
+    #[Permission(['can-create-trainee-goal-attachment'])]
     public function store(StoreTraineeGoalAttachmentRequest $request): JsonResponse
     {
         $attachment = $this->attachmentService->store(

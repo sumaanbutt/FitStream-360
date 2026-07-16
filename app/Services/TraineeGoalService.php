@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Filters\TraineeGoalFilter;
+use App\Models\Trainee;
 use App\Models\TraineeGoals;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class TraineeGoalService
         ->apply(
             TraineeGoals::with([
                 'trainee.user',
+                'gymGoal',
                 'attachments',
             ])
         );
@@ -32,22 +34,27 @@ class TraineeGoalService
         try {
             return DB::transaction(function () use ($data) {
 
-                $traineeGoal = TraineeGoals::create([
+                $trainee = Trainee::where('code', $data['trainee_code'])->firstOrFail();
 
+                $traineeGoal = TraineeGoals::create([
                     'code' => $this->generateCode('TGL', TraineeGoals::class),
-                    'trainee_code' => $data['trainee_code'],
+                    'trainee_code' => $trainee->code,
+                    'gym_goal_code' => $data['gym_goal_code'],
+                    'user_code' => $trainee->user_code ?? null,
                     'title' => $data['title'],
                     'description' => $data['description'] ?? null,
-                    'target_value' => $data['target_value'],
-                    'target_unit' => $data['target_unit'],
+                    'priority' => $data['priority'] ?? 1,
+                    'target_weight' => $data['target_weight'] ?? null,
+                    'target_body_fat' => $data['target_body_fat'] ?? null,
                     'start_date' => $data['start_date'],
                     'target_date' => $data['target_date'],
                     'status' => $data['status'],
-                    'remarks' => $data['remarks'] ?? null,
+                    'notes' => $data['notes'] ?? null,
                 ]);
 
                 return $traineeGoal->load([
                     'trainee.user',
+                    'gymGoal',
                     'attachments.uploader',
                 ]);
 
@@ -69,20 +76,35 @@ class TraineeGoalService
     {
         try {
             return DB::transaction(function () use ($traineeGoal, $data) {
-                $traineeGoal->update([
+
+                $updateData = [
                     'trainee_code' => $data['trainee_code'] ?? $traineeGoal->trainee_code,
+                    'gym_goal_code' => $data['gym_goal_code'] ?? $traineeGoal->gym_goal_code,
+                    'user_code' => $data['user_code'] ?? $traineeGoal->user_code,
                     'title' => $data['title'] ?? $traineeGoal->title,
                     'description' => $data['description'] ?? $traineeGoal->description,
-                    'target_value' => $data['target_value'] ?? $traineeGoal->target_value,
-                    'target_unit' => $data['target_unit'] ?? $traineeGoal->target_unit,
+                    'priority' => $data['priority'] ?? $traineeGoal->priority,
+                    'target_weight' => $data['target_weight'] ?? $traineeGoal->target_weight,
+                    'target_body_fat' => $data['target_body_fat'] ?? $traineeGoal->target_body_fat,
                     'start_date' => $data['start_date'] ?? $traineeGoal->start_date,
                     'target_date' => $data['target_date'] ?? $traineeGoal->target_date,
                     'status' => $data['status'] ?? $traineeGoal->status,
-                    'remarks' => $data['remarks'] ?? $traineeGoal->remarks,
-                ]);
+                    'notes' => $data['notes'] ?? $traineeGoal->notes,
+                ];
+
+                if (isset($data['trainee_code'])) {
+
+                    $trainee = Trainee::where('code', $data['trainee_code'])->firstOrFail();
+
+                    $updateData['trainee_code'] = $trainee->code;
+                    $updateData['user_code'] = $trainee->user_code;
+                }
+
+                $traineeGoal->update($updateData);
 
                 return $traineeGoal->fresh()->load([
                     'trainee.user',
+                    'gymGoal',
                     'attachments.uploader',
                 ]);
             });

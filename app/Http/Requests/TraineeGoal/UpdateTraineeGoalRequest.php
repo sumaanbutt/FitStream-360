@@ -15,43 +15,28 @@ class UpdateTraineeGoalRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Validation Rules
-     */
     public function rules(): array
     {
         return [
             'trainee_code' => ['sometimes', 'exists:trainees,code',],
+            'gym_goal_code' => ['sometimes', 'exists:gym_goals,code',],
+            'user_code' => ['sometimes', 'exists:users,code',],
             'title' => ['sometimes', 'string', 'max:255',],
             'description' => ['nullable', 'string',],
-            'target_value' => ['sometimes', 'numeric', 'min:0',],
-            'target_unit' => ['sometimes',
-                Rule::in([
-                    'kg',
-                    'lbs',
-                    'cm',
-                    'inch',
-                    '%',
-                    'days',
-                    'weeks',
-                    'months',
-                    'reps',
-                    'minutes',
-                ]),
-            ],
+            'target_weight' => ['sometimes', 'numeric', 'min:0',],
+            'target_body_fat' => ['sometimes', 'numeric', 'min:0','max:100'],
+
 
             'start_date' => ['sometimes', 'date',],
             'target_date' => ['sometimes', 'date', 'after_or_equal:start_date',],
             'status' => ['sometimes',
                 Rule::in([
-                    'pending',
                     'active',
                     'completed',
                     'cancelled',
                 ]),
             ],
-
-            'remarks' => ['nullable', 'string',],
+            'notes' => ['nullable', 'string',],
         ];
     }
 
@@ -59,7 +44,8 @@ class UpdateTraineeGoalRequest extends FormRequest
     {
         return [
             'trainee_code.exists' => 'Selected trainee does not exist.',
-            'target_date.after_or_equal' => 'Target date must be after or equal to start date.',
+            'gym_goal_code.exists' => 'Selected gym goal does not exist.',
+            'user_code.exists' => 'Selected user does not exist.',
         ];
     }
 }

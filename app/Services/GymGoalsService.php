@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class GymGoalsService
 {
@@ -47,7 +48,7 @@ class GymGoalsService
                     'code' => $this->generateCode('GGL', GymGoals::class),
                     'organization_code' => $data['organization_code'],
                     'title' => $data['title'],
-                    'slug' => $data['slug'],
+                    'slug' => Str::slug($data['title']),
                     'description' => $data['description'] ?? null,
                     'goal_image_path' => $imagePath,
                     'goal_category' => $data['goal_category'],
@@ -79,32 +80,36 @@ class GymGoalsService
 
                 $updateData = [
                     'title' => $data['title'] ?? $gymGoal->title,
-                    'slug' => $data['slug'],
+                    'slug' => isset($data['title'])
+                        ? Str::slug($data['title'])
+                        : $gymGoal->slug,
                     'description' => $data['description'] ?? $gymGoal->description,
-                    'goal_category' => $data['goal_category'],
+                    'goal_category' => $data['goal_category'] ?? $gymGoal->goal_category,
                     'status' => $data['status'] ?? $gymGoal->status,
                     ];
 
                 if ($image) {
                     if (
-                        $gymGoal->image &&
-                        Storage::disk('public')->exists($gymGoal->image)
+                        $gymGoal->goal_image_path &&
+                        Storage::disk('public')->exists($gymGoal->goal_image_path)
                     ) {
-                        Storage::disk('public')->delete($gymGoal->image);
+                        Storage::disk('public')->delete($gymGoal->goal_image_path);
                     }
 
                     $imageName = time() . '_' . $image->getClientOriginalName();
 
-                    $updateData['image'] = $image->storeAs(
+                    $updateData['goal_image_path'] = $image->storeAs(
                         'gym-goals',
                         $imageName,
                         'public'
                     );
                 }
 
-                $gymGoal->update($updateData);
+                $result = $gymGoal->update($updateData);
 
-                return $gymGoal->fresh()->load([
+                $gymGoal->refresh();
+
+                return $gymGoal->load([
                     'organization',
                 ]);
             });

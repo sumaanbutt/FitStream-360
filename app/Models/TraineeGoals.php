@@ -11,22 +11,26 @@ class TraineeGoals extends Model
     protected $fillable=[
         'code',
         'trainee_code',
+        'gym_goal_code',
+        'user_code',
         'title',
         'description',
-        'target_value',
-        'target_unit',
+        'priority',
+        'target_weight',
+        'target_body_fat',
         'start_date',
         'target_date',
         'status',
-        'remarks',
+        'notes',
     ];
 
     protected function casts(): array
     {
         return [
-            'target_value' => 'decimal:2',
             'start_date' => 'date',
             'target_date' => 'date',
+            'target_weight' => 'decimal:2',
+            'target_body_fat' => 'decimal:2',
         ];
     }
 
@@ -40,6 +44,24 @@ class TraineeGoals extends Model
         return $this->belongsTo(
             Trainee::class,
             'trainee_code',
+            'code'
+        );
+    }
+
+    public function gymGoal(): BelongsTo
+    {
+        return $this->belongsTo(
+            GymGoals::class,
+            'gym_goal_code',
+            'code'
+        );
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(
+            User::class,
+            'user_code',
             'code'
         );
     }

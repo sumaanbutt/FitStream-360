@@ -22,10 +22,10 @@ class TraineeGoalController extends Controller
     #[Permission(['can-view-trainee-goal'])]
     public function index(): JsonResponse
     {
-        $goals = $this->traineeGoalService->index();
+        $traineeGoals = $this->traineeGoalService->index();
 
         return ApiResponse::success(
-            TraineeGoalResource::collection($goals),
+            TraineeGoalResource::collection($traineeGoals),
             'Trainee goals fetched successfully.'
         );
     }
@@ -33,12 +33,12 @@ class TraineeGoalController extends Controller
     #[Permission(['can-create-trainee-goal'])]
     public function store(StoreTraineeGoalRequest $request): JsonResponse
     {
-        $goal = $this->traineeGoalService->store(
+        $traineeGoal = $this->traineeGoalService->store(
             $request->validated()
         );
 
         return ApiResponse::success(
-            new TraineeGoalResource($goal),
+            new TraineeGoalResource($traineeGoal),
             'Trainee goal created successfully.',
             201
         );
@@ -51,6 +51,7 @@ class TraineeGoalController extends Controller
             new TraineeGoalResource(
                 $traineeGoal->load([
                     'trainee.user',
+                    'gymGoal',
                     'attachments.uploader',
                 ])
             ),
@@ -61,13 +62,13 @@ class TraineeGoalController extends Controller
     #[Permission(['can-update-trainee-goal'])]
     public function update(UpdateTraineeGoalRequest $request, TraineeGoals $traineeGoal): JsonResponse {
 
-        $goal = $this->traineeGoalService->update(
+        $traineeGoal = $this->traineeGoalService->update(
             $traineeGoal,
             $request->validated()
         );
 
         return ApiResponse::success(
-            new TraineeGoalResource($goal),
+            new TraineeGoalResource($traineeGoal),
             'Trainee goal updated successfully.'
         );
     }
@@ -75,6 +76,8 @@ class TraineeGoalController extends Controller
     #[Permission(['can-deactivate-trainee-goal'])]
     public function destroy(TraineeGoals $traineeGoal): JsonResponse
     {
+        $this->traineeGoalService->destroy($traineeGoal);
+
         return ApiResponse::success(
             null,
             'Trainee goal deleted successfully.'

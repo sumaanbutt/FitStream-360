@@ -18,48 +18,35 @@ class StoreTraineeGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'trainee_code' => ['required', 'exists:trainees,code',],
-            'title' => ['required', 'string', 'max:255',],
+            'gym_goal_code' => ['required', 'exists:gym_goals,code',],
+            'user_code' => ['nullable', 'exists:users,code',],
+            'title' => ['nullable', 'string', 'max:255',],
             'description' => ['nullable', 'string',],
-            'target_value' => ['required', 'numeric', 'min:0',],
-            'target_unit' => ['required',
-                Rule::in([
-                    'kg',
-                    'lbs',
-                    'cm',
-                    'inch',
-                    '%',
-                    'days',
-                    'weeks',
-                    'months',
-                    'reps',
-                    'minutes',
-                ]),
-            ],
-
+            'priority' => ['nullable', 'integer', 'between:1,5',],
+            'target_weight' => ['nullable', 'numeric', 'min:0',],
+            'target_body_fat' => ['nullable', 'numeric', 'min:0','max:100',],
             'start_date' => ['required', 'date',],
             'target_date' => ['required', 'date',],
 
             'status' => ['required',
                 Rule::in([
-                    'pending',
                     'active',
                     'completed',
                     'cancelled',
                 ]),
             ],
 
-            'remarks' => ['nullable', 'string',],
+            'notes' => ['nullable', 'string',],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'trainee_code.required' => 'Please select a trainee.',
             'trainee_code.exists' => 'Selected trainee does not exist.',
-            'target_date.after_or_equal' => 'Target date must be after or equal to start date.',
+            'gym_goal_code.exists' => 'Selected gym goal does not exist.',
+            'user_code.exists' => 'Selected user does not exist.',
         ];
     }
 }
