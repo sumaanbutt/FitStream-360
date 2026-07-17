@@ -6,34 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class DietPlan extends Model
+class DietPlanWeek extends Model
 {
     protected $fillable = [
         'code',
-        'organization_code',
-        'created_by',
+        'diet_plan_code',
+        'week_number',
         'title',
         'description',
-        'goal',
-        'diet_type',
-        'level',
-        'gender',
-        'duration_weeks',
-        'meals_per_day',
         'target_calories',
         'target_protein',
         'target_carbohydrates',
         'target_fat',
-        'price',
-        'currency',
-        'cover_image_path',
+        'instructions',
         'status',
     ];
 
     protected function casts(): array
     {
         return [
-            'price' => 'decimal:2',
             'target_protein' => 'decimal:2',
             'target_carbohydrates' => 'decimal:2',
             'target_fat' => 'decimal:2',
@@ -45,28 +36,10 @@ class DietPlan extends Model
         return 'code';
     }
 
-    public function organization(): BelongsTo
+    public function dietPlan(): BelongsTo
     {
         return $this->belongsTo(
-            Organization::class,
-            'organization_code',
-            'code'
-        );
-    }
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(
-            User::class,
-            'created_by',
-            'code'
-        );
-    }
-
-    public function weeks(): HasMany
-    {
-        return $this->hasMany(
-            DietPlanWeek::class,
+            DietPlan::class,
             'diet_plan_code',
             'code'
         );
@@ -76,7 +49,7 @@ class DietPlan extends Model
     {
         return $this->hasMany(
             DietPlanDay::class,
-            'diet_plan_code',
+            'diet_plan_week_code',
             'code'
         );
     }

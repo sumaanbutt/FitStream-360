@@ -11,7 +11,6 @@ use App\Http\Resources\DietPlanResource;
 use App\Models\DietPlan;
 use App\Services\DietPlanService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class DietPlanController extends Controller
 {
@@ -30,13 +29,12 @@ class DietPlanController extends Controller
         );
     }
 
-    #[Permission(['can-create-staff'])]
+    #[Permission(['can-create-dietplan'])]
     public function store(StoreDietPlanRequest $request): JsonResponse
     {
         $dietPlan = $this->dietPlanService->store(
             $request->validated(),
-            $request->file('image'),
-            $request->file('pdf_file')
+            $request->file('cover_image')
         );
 
         return ApiResponse::success(
@@ -56,13 +54,12 @@ class DietPlanController extends Controller
     }
 
     #[Permission(['can-update-dietplan'])]
-    public function update(UpdateDietPlanRequest $request, DietPlan $dietPlan): JsonResponse {
-
+    public function update(UpdateDietPlanRequest $request, DietPlan $dietPlan): JsonResponse
+    {
         $dietPlan = $this->dietPlanService->update(
             $dietPlan,
             $request->validated(),
-            $request->file('image'),
-            $request->file('pdf_file')
+            $request->file('cover_image')
         );
 
         return ApiResponse::success(

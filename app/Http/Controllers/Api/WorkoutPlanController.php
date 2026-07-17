@@ -11,7 +11,6 @@ use App\Http\Resources\WorkoutPlanResource;
 use App\Models\WorkoutPlan;
 use App\Services\WorkoutPlanService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class WorkoutPlanController extends Controller
 {
@@ -35,8 +34,7 @@ class WorkoutPlanController extends Controller
     {
         $workoutPlan = $this->workoutPlanService->store(
             $request->validated(),
-            $request->file('image'),
-            $request->file('pdf_file')
+            $request->file('cover_image')
         );
 
         return ApiResponse::success(
@@ -51,17 +49,20 @@ class WorkoutPlanController extends Controller
     {
         return ApiResponse::success(
             new WorkoutPlanResource($workoutPlan),
-            'Workout plan fetched successfully.');
+            'Workout plan fetched successfully.'
+        );
     }
 
     #[Permission(['can-update-workoutplan'])]
-    public function update(UpdateWorkoutPlanRequest $request, WorkoutPlan $workoutPlan): JsonResponse {
+    public function update(
+        UpdateWorkoutPlanRequest $request,
+        WorkoutPlan $workoutPlan
+    ): JsonResponse {
 
         $workoutPlan = $this->workoutPlanService->update(
             $workoutPlan,
             $request->validated(),
-            $request->file('image'),
-            $request->file('pdf_file')
+            $request->file('cover_image')
         );
 
         return ApiResponse::success(

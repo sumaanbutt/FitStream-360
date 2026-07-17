@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\TraineeGoalProgressController;
 use App\Models\Business;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DietPlanController;
+use App\Http\Controllers\Api\DietPlanWeekController;
+use App\Http\Controllers\Api\DietPlanDayController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\OrderController;
@@ -20,6 +22,8 @@ use App\Http\Controllers\Api\TraineeGoalAttachmentController;
 use App\Http\Controllers\Api\TraineeGoalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WorkoutPlanController;
+use App\Http\Controllers\Api\WorkoutWeekController;
+use App\Http\Controllers\Api\WorkoutDayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +53,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
 
-// Route::apiResource('attendance', AttendanceController::class);
+    Route::apiResource('attendance', AttendanceController::class);
 
     Route::apiResource('location', LocationController::class);
 
@@ -57,7 +61,15 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('workout-plan', WorkoutPlanController::class);
 
+    Route::apiResource('workout-week', WorkoutWeekController::class);
+
+    Route::apiResource('workout-day', WorkoutDayController::class);
+
     Route::apiResource('diet-plan', DietPlanController::class);
+
+    Route::apiResource('diet-plan-week', DietPlanWeekController::class);
+
+    Route::apiResource('diet-plan-day', DietPlanDayController::class);
 
     Route::apiResource('product_categories', CategoryController::class);
 

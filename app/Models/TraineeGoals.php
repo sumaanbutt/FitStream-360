@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TraineeGoals extends Model
 {
-    protected $fillable=[
+    protected $fillable = [
         'code',
+        'organization_code',
         'trainee_code',
-        'gym_goal_code',
-        'user_code',
+        'created_by',
         'title',
         'description',
         'priority',
@@ -20,6 +19,8 @@ class TraineeGoals extends Model
         'target_body_fat',
         'start_date',
         'target_date',
+        'goal_source',
+        'category',
         'status',
         'notes',
     ];
@@ -29,14 +30,21 @@ class TraineeGoals extends Model
         return [
             'start_date' => 'date',
             'target_date' => 'date',
-            'target_weight' => 'decimal:2',
-            'target_body_fat' => 'decimal:2',
         ];
     }
 
     public function getRouteKeyName(): string
     {
         return 'code';
+    }
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(
+            Organization::class,
+            'organization_code',
+            'code'
+        );
     }
 
     public function trainee(): BelongsTo
@@ -48,28 +56,28 @@ class TraineeGoals extends Model
         );
     }
 
-    public function gymGoal(): BelongsTo
-    {
-        return $this->belongsTo(
-            GymGoals::class,
-            'gym_goal_code',
-            'code'
-        );
-    }
-
-    public function user(): BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(
             User::class,
-            'user_code',
+            'created_by',
             'code'
         );
     }
 
-    public function attachments(): HasMany
+    public function attachments()
     {
         return $this->hasMany(
             TraineeGoalsAttachments::class,
+            'trainee_goal_code',
+            'code'
+        );
+    }
+
+    public function progress()
+    {
+        return $this->hasMany(
+            TraineeGoalProgress::class,
             'trainee_goal_code',
             'code'
         );

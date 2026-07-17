@@ -7,9 +7,6 @@ use Illuminate\Validation\Rule;
 
 class UpdateTraineeGoalRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized.
-     */
     public function authorize(): bool
     {
         return true;
@@ -18,17 +15,26 @@ class UpdateTraineeGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'trainee_code' => ['sometimes', 'exists:trainees,code',],
-            'gym_goal_code' => ['sometimes', 'exists:gym_goals,code',],
-            'user_code' => ['sometimes', 'exists:users,code',],
-            'title' => ['sometimes', 'string', 'max:255',],
-            'description' => ['nullable', 'string',],
-            'target_weight' => ['sometimes', 'numeric', 'min:0',],
-            'target_body_fat' => ['sometimes', 'numeric', 'min:0','max:100'],
+            'title' => ['sometimes','string','max:100',],
+            'description' => ['nullable','string',],
+            'priority' => ['nullable','integer','between:1,5',],
+            'target_weight' => ['nullable','numeric','min:0',],
+            'target_body_fat' => ['nullable','numeric','min:0',],
+            'start_date' => ['nullable','date',],
+            'target_date' => ['nullable','date',],
 
+            'category' => ['sometimes',
+                Rule::in([
+                    'body_composition',
+                    'performance',
+                    'health',
+                    'lifestyle',
+                    'sport',
+                    'rehabilitation',
+                    'other',
+                ]),
+            ],
 
-            'start_date' => ['sometimes', 'date',],
-            'target_date' => ['sometimes', 'date', 'after_or_equal:start_date',],
             'status' => ['sometimes',
                 Rule::in([
                     'active',
@@ -36,16 +42,8 @@ class UpdateTraineeGoalRequest extends FormRequest
                     'cancelled',
                 ]),
             ],
-            'notes' => ['nullable', 'string',],
-        ];
-    }
 
-    public function messages(): array
-    {
-        return [
-            'trainee_code.exists' => 'Selected trainee does not exist.',
-            'gym_goal_code.exists' => 'Selected gym goal does not exist.',
-            'user_code.exists' => 'Selected user does not exist.',
+            'notes' => ['nullable','string',],
         ];
     }
 }

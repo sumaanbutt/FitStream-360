@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Filters\DietPlanFilter;
 use App\Models\DietPlan;
 use App\Traits\HasCode;
 use Illuminate\Http\UploadedFile;
@@ -13,136 +12,138 @@ use Illuminate\Support\Facades\Storage;
 class DietPlanService
 {
     use HasCode;
+
     public function index()
     {
-        return (new DietPlanFilter())
-            ->apply(
-                DietPlan::with([
-                    'organization',
-                    'creator',
-                ])
-            );
+        return DietPlan::with([
+            'organization',
+            'creator',
+        ])
+            ->withCount('weeks');
     }
 
-    public function store(array $data, ?UploadedFile $image = null, ?UploadedFile $pdf = null): DietPlan {
+    public function store(array $data, ?UploadedFile $image): DietPlan
+    {
         try {
-            return DB::transaction(function () use ($data, $image, $pdf) {
+            return DB::transaction(function () use ($data, $image) {
 
                 $imagePath = null;
-                $pdfPath = null;
 
                 if ($image) {
-
                     $imageName = time() . '_' . $image->getClientOriginalName();
 
                     $imagePath = $image->storeAs(
-                        'diet-plans/images',
+                        'diet-plans',
                         $imageName,
                         'public'
                     );
                 }
 
-                if ($pdf) {
-                    $pdfName = time() . '_' . $pdf->getClientOriginalName();
-
-                    $pdfPath = $pdf->storeAs(
-                        'diet-plans/pdfs',
-                        $pdfName,
-                        'public'
-                    );
-                }
-
-                return DietPlan::create([
-                    'code' => $this->generateCode('DTP', DietPlan::class),
+                $dietPlan = DietPlan::create([
+                    'code' => $this->generateCode('DPL', DietPlan::class),
                     'organization_code' => $data['organization_code'],
                     'created_by' => auth()->user()->code,
                     'title' => $data['title'],
                     'description' => $data['description'] ?? null,
+                    'goal' => $data['goal'],
                     'diet_type' => $data['diet_type'],
-                    'duration' => $data['duration'],
-                    'duration_uom' => $data['duration_uom'],
-                    'calories' => $data['calories'],
-                    'image_path' => $imagePath,
-                    'pdf_file_path' => $pdfPath,
-                    'status' => $data['status'],
+                    'level' => $data['level'],
+                    'gender' => $data['gender'],
+                    'duration_weeks' => $data['duration_weeks'],
+                    'meals_per_day' => $data['meals_per_day'],
+                    'target_calories' => $data['target_calories'] ?? null,
+                    'target_protein' => $data['target_protein'] ?? null,
+                    'target_carbohydrates' => $data['target_carbohydrates'] ?? null,
+                    'target_fat' => $data['target_fat'] ?? null,
+                    'price' => $data['price'],
+                    'currency' => $data['currency'],
+                    'cover_image_path' => $imagePath,
+                    'status' => $data['status'] ?? 'draft',
                 ]);
+
+                return $dietPlan->load([
+                    'organization',
+                    'creator',
+                ]);
+
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Diet Plan Creation Failed', [
                 'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
             ]);
+
             throw $e;
         }
     }
 
-    public function update(DietPlan $dietPlan, array $data, ?UploadedFile $image = null, ?UploadedFile $pdf = null): DietPlan {
+    public function update(DietPlan $dietPlan, array $data, ?UploadedFile $image): DietPlan
+    {
         try {
             return DB::transaction(function () use (
                 $dietPlan,
                 $data,
-                $image,
-                $pdf
+                $image
             ) {
+
+                $updateData = [
+                    'title' => $data['title'] ?? $dietPlan->title,
+                    'description' => $data['description'] ?? $dietPlan->description,
+                    'goal' => $data['goal'] ?? $dietPlan->goal,
+                    'diet_type' => $data['diet_type'] ?? $dietPlan->diet_type,
+                    'level' => $data['level'] ?? $dietPlan->level,
+                    'gender' => $data['gender'] ?? $dietPlan->gender,
+                    'duration_weeks' => $data['duration_weeks'] ?? $dietPlan->duration_weeks,
+                    'meals_per_day' => $data['meals_per_day'] ?? $dietPlan->meals_per_day,
+                    'target_calories' => $data['target_calories'] ?? $dietPlan->target_calories,
+                    'target_protein' => $data['target_protein'] ?? $dietPlan->target_protein,
+                    'target_carbohydrates' => $data['target_carbohydrates'] ?? $dietPlan->target_carbohydrates,
+                    'target_fat' => $data['target_fat'] ?? $dietPlan->target_fat,
+                    'price' => $data['price'] ?? $dietPlan->price,
+                    'currency' => $data['currency'] ?? $dietPlan->currency,
+                    'status' => $data['status'] ?? $dietPlan->status,
+                ];
 
                 if ($image) {
                     if (
-                        $dietPlan->image_path &&
+                        $dietPlan->cover_image_path &&
                         Storage::disk('public')->exists(
-                            $dietPlan->image_path
+                            $dietPlan->cover_image_path
                         )
                     ) {
                         Storage::disk('public')->delete(
-                            $dietPlan->image_path
+                            $dietPlan->cover_image_path
                         );
                     }
-
                     $imageName = time() . '_' . $image->getClientOriginalName();
 
-                    $data['image_path'] = $image->storeAs(
-                        'diet-plans/images',
+                    $updateData['cover_image_path'] = $image->storeAs(
+                        'diet-plans',
                         $imageName,
                         'public'
                     );
                 }
 
-                if ($pdf) {
-                    if (
-                        $dietPlan->pdf_file_path &&
-                        Storage::disk('public')->exists(
-                            $dietPlan->pdf_file_path
-                        )
-                    ) {
-                        Storage::disk('public')->delete(
-                            $dietPlan->pdf_file_path
-                        );
-                    }
+                $dietPlan->update($updateData);
 
-                    $pdfName = time() . '_' . $pdf->getClientOriginalName();
+                return $dietPlan
+                    ->fresh()
+                    ->load([
+                        'organization',
+                        'creator',
+                    ]);
 
-                    $data['pdf_file_path'] = $pdf->storeAs(
-                        'diet-plans/pdfs',
-                        $pdfName,
-                        'public'
-                    );
-                }
-
-                $dietPlan->update($data);
-
-                return $dietPlan->fresh()->load([
-                    'organization',
-                    'creator',
-                ]);
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Diet Plan Update Failed', [
                 'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
             ]);
+
             throw $e;
         }
     }
@@ -153,41 +154,28 @@ class DietPlanService
             return DB::transaction(function () use ($dietPlan) {
 
                 if (
-                    $dietPlan->image_path &&
+                    $dietPlan->cover_image_path &&
                     Storage::disk('public')->exists(
-                        $dietPlan->image_path
+                        $dietPlan->cover_image_path
                     )
                 ) {
-
                     Storage::disk('public')->delete(
-                        $dietPlan->image_path
-                    );
-
-                }
-
-                if (
-                    $dietPlan->pdf_file_path &&
-                    Storage::disk('public')->exists(
-                        $dietPlan->pdf_file_path
-                    )
-                ) {
-
-                    Storage::disk('public')->delete(
-                        $dietPlan->pdf_file_path
+                        $dietPlan->cover_image_path
                     );
                 }
 
                 $dietPlan->delete();
 
                 return true;
-
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Diet Plan Delete Failed', [
                 'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
             ]);
+
             throw $e;
         }
     }
