@@ -67,10 +67,50 @@ class PermissionSeeder extends Seeder
             'can-update-dietplan',
             'can-deactivate-dietplan',
 
+            'can-view-foods',
+            'can-create-foods',
+            'can-update-foods',
+            'can-deactivate-foods',
+
+            'can-view-food-categories',
+            'can-create-food-categories',
+            'can-update-food-categories',
+            'can-deactivate-food-categories',
+
+            'can-view-dietplan-meals',
+            'can-create-dietplan-meals',
+            'can-update-dietplan-meals',
+            'can-deactivate-dietplan-meals',
+
+            'can-view-dietplan-meal-foods',
+            'can-create-dietplan-meal-foods',
+            'can-update-dietplan-meal-foods',
+            'can-deactivate-dietplan-meal-foods',
+
             'can-view-workoutplan',
             'can-create-workoutplan',
             'can-update-workoutplan',
             'can-deactivate-workoutplan',
+
+            'can-view-equipments',
+            'can-create-equipments',
+            'can-update-equipments',
+            'can-deactivate-equipments',
+
+            'can-view-exercises',
+            'can-create-exercises',
+            'can-update-exercises',
+            'can-deactivate-exercises',
+
+            'can-view-workoutplan-equipments',
+            'can-create-workoutplan-equipments',
+            'can-update-workoutplan-equipments',
+            'can-deactivate-workoutplan-equipments',
+
+            'can-view-workout-day-exercises',
+            'can-create-workout-day-exercises',
+            'can-update-workout-day-exercises',
+            'can-deactivate-workout-day-exercises',
 
             'can-view-shiftschedule',
             'can-create-shiftschedule',

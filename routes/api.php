@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\BusinessController;
-use App\Http\Controllers\Api\GymGoalsController;
+use App\Http\Controllers\Api\DietPlanMealController;
+use App\Http\Controllers\Api\DietPlanMealFoodController;
+use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\ExerciseController;
+use App\Http\Controllers\Api\FoodCategoryController;
+use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\TraineeGoalProgressController;
-use App\Models\Business;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DietPlanController;
 use App\Http\Controllers\Api\DietPlanWeekController;
@@ -21,7 +25,9 @@ use App\Http\Controllers\Api\TraineeController;
 use App\Http\Controllers\Api\TraineeGoalAttachmentController;
 use App\Http\Controllers\Api\TraineeGoalController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\WorkoutDayExerciseController;
 use App\Http\Controllers\Api\WorkoutPlanController;
+use App\Http\Controllers\Api\WorkoutPlanEquipmentController;
 use App\Http\Controllers\Api\WorkoutWeekController;
 use App\Http\Controllers\Api\WorkoutDayController;
 use Illuminate\Http\Request;
@@ -49,8 +55,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class);
 
-    Route::apiResource('gym-goals', GymGoalsController::class);
-
     Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
 
     Route::apiResource('attendance', AttendanceController::class);
@@ -65,11 +69,27 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('workout-day', WorkoutDayController::class);
 
+    Route::apiResource('exercise', ExerciseController::class);
+
+    Route::apiResource('equipment', EquipmentController::class);
+
+    Route::apiResource('workout-plan-equipment', WorkoutPlanEquipmentController::class);
+
+    Route::apiResource('workout-day-exercise', WorkoutDayExerciseController::class);
+
     Route::apiResource('diet-plan', DietPlanController::class);
 
     Route::apiResource('diet-plan-week', DietPlanWeekController::class);
 
     Route::apiResource('diet-plan-day', DietPlanDayController::class);
+
+    Route::apiResource('food-category', FoodCategoryController::class);
+
+    Route::apiResource('food', FoodController::class);
+
+    Route::apiResource('diet-plan-meal', DietPlanMealController::class);
+
+    Route::apiResource('diet-plan-meal-food', DietPlanMealFoodController::class);
 
     Route::apiResource('product_categories', CategoryController::class);
 
