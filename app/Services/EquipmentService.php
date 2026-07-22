@@ -20,7 +20,8 @@ class EquipmentService
             'organization',
             'creator',
         ])
-            ->withCount('workoutPlanEquipments');
+            ->withCount('workoutPlanEquipments')
+            ->paginate(10);
     }
 
     public function store(array $data, ?UploadedFile $image): Equipment

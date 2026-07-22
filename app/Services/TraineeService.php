@@ -68,6 +68,7 @@ class TraineeService
                 $trainee = Trainee::create([
 
                     'code' => $this->generateCode('TRN', Trainee::class),
+                    'trainee_type' => $data['trainee_type'],
                     'business_code' => $data['business_code'],
                     'organization_code' => $data['organization_code'],
                     'user_code' => $user->code,
@@ -106,6 +107,7 @@ class TraineeService
                 $user = $trainee->user;
 
                 $userData = [
+                    'trainee_type' => $data['trainee_type'] ?? $trainee->trainee_type,
                     'organization_code' => $data['organization_code'] ?? $user->organization_code,
                     'business_code' => $data['business_code'] ?? $user->business_code,
                     'name' => $data['name'] ?? $user->name,

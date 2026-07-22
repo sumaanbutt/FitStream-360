@@ -19,7 +19,8 @@ class WorkoutPlanEquipmentService
         return WorkoutPlanEquipment::with([
             'workoutPlan',
             'equipment',
-        ]);
+            ])
+            ->paginate(10);
     }
 
     public function store(array $data): WorkoutPlanEquipment

@@ -45,11 +45,11 @@ class SubCategoryController extends Controller
     }
 
     #[Permission(['can-view-subcategory'])]
-    public function show(SubCategory $subCategory): JsonResponse
+    public function show(SubCategory $product_subcategory): JsonResponse
     {
         return ApiResponse::success(
             new SubCategoryResource(
-                $subCategory->load('category')
+                $product_subcategory->load('category')
                     ->loadCount('products')
             ),
             'Sub category fetched successfully.'
@@ -57,9 +57,9 @@ class SubCategoryController extends Controller
     }
 
     #[Permission(['can-update-subcategory'])]
-    public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory): JsonResponse {
+    public function update(UpdateSubCategoryRequest $request, SubCategory $product_subcategory): JsonResponse {
 
-        $subCategory = $this->subCategoryService->update($subCategory, $request->validated());
+        $subCategory = $this->subCategoryService->update($product_subcategory, $request->validated());
 
         return ApiResponse::success(
             new SubCategoryResource($subCategory),
@@ -68,9 +68,9 @@ class SubCategoryController extends Controller
     }
 
     #[Permission(['can-deactivate-subcategory'])]
-    public function destroy(SubCategory $subCategory): JsonResponse
+    public function destroy(SubCategory $product_subcategory): JsonResponse
     {
-        $this->subCategoryService->destroy($subCategory);
+        $this->subCategoryService->destroy($product_subcategory);
 
         return ApiResponse::success(
             null,

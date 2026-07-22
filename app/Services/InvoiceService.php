@@ -20,7 +20,7 @@ class InvoiceService
             ->apply(
             Invoice::with([
                 'organization',
-                'business',
+//                'business',
                 'user',
                 'order',
             ])
@@ -58,7 +58,7 @@ class InvoiceService
 
                 return $invoice->load([
                     'organization',
-                    'business',
+//                    'business',
                     'user',
                     'order',
                 ]);
@@ -89,7 +89,7 @@ class InvoiceService
 
                 return $invoice->fresh()->load([
                     'organization',
-                    'business',
+//                    'business',
                     'user',
                     'order',
                 ]);

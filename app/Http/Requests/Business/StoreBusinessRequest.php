@@ -22,9 +22,9 @@ class StoreBusinessRequest extends FormRequest
             'name' => ['required','string','max:255'],
             'email' => ['required','email','unique:businesses,email'],
             'phone' => ['nullable','string','max:20'],
-            'discount_percentage' => ['required','numeric','min:0','max:100'],
-            'agreement_start' => ['required','date'],
-            'agreement_end' => ['required','date',],
+//            'discount_percentage' => ['required','numeric','min:0','max:100'],
+//            'agreement_start' => ['required','date'],
+//            'agreement_end' => ['required','date',],
             'status' => ['required','boolean'],
 
             // Business Admin

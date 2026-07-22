@@ -53,9 +53,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('trainee-goals', TraineeGoalController::class);
 
-    Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class);
+    Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class); // i didnt created resource for this
 
-    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
+    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);//not tested any method of this yet
 
     Route::apiResource('attendance', AttendanceController::class);
 
@@ -91,11 +91,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('diet-plan-meal-food', DietPlanMealFoodController::class);
 
-    Route::apiResource('product_categories', CategoryController::class);
+    Route::apiResource('product_categories', CategoryController::class); //status showing null in response, because no status field in table
 
     Route::apiResource('product_subcategories', SubCategoryController::class);
 
-    Route::apiResource('products', ProductController::class);
+    Route::apiResource('products', ProductController::class);// image and status showing null in response , status is not in table need to add
 
     Route::apiResource('orders', OrderController::class);
 

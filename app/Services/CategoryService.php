@@ -17,7 +17,7 @@ class CategoryService
         return (new CategoryFilter())
         ->apply(
             Category::withCount([
-            'subCategory',
+            'subCategories',
             'products',
             ])
         );
@@ -36,7 +36,7 @@ class CategoryService
                 ]);
 
                 return $category->loadCount([
-                    'subCategory',
+                    'subCategories',
                     'products',
                 ]);
 
@@ -57,15 +57,18 @@ class CategoryService
     public function update(Category $category, array $data): Category
     {
         try {
-            return DB::transaction(function () use ($category, $data) {
+            return DB::transaction(function () use ($category, $data)
+            {
                 $category->update([
                     'name' => $data['name'] ?? $category->name,
                     'description' => $data['description'] ?? $category->description,
 //                    'status' => $data['status'] ?? $category->status,
                 ]);
 
-                return $category->fresh()->loadCount([
-                    'subCategory',
+                $category->refresh();
+
+                return $category->loadCount([
+                    'subCategories',
                     'products',
                 ]);
 
@@ -87,7 +90,7 @@ class CategoryService
         try {
             return DB::transaction(function () use ($category) {
 
-                if ($category->subCategory()->exists()) {
+                if ($category->subCategories()->exists()) {
                     throw new \Exception('Cannot delete category because it has sub categories.');
                 }
 

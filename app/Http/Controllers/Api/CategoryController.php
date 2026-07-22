@@ -45,11 +45,11 @@ class CategoryController extends Controller
     }
 
     #[Permission(['can-view-category'])]
-    public function show(Category $category): JsonResponse
+    public function show(Category $product_category): JsonResponse
     {
         return ApiResponse::success(
             new CategoryResource(
-                $category->loadCount([
+                $product_category->loadCount([
                     'subCategories',
                     'products',
                 ])
@@ -59,10 +59,10 @@ class CategoryController extends Controller
     }
 
     #[Permission(['can-update-category'])]
-    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse {
+    public function update(UpdateCategoryRequest $request, Category $product_category): JsonResponse {
 
         $category = $this->categoryService->update(
-            $category,
+            $product_category,
             $request->validated()
         );
 
@@ -73,9 +73,9 @@ class CategoryController extends Controller
     }
 
     #[Permission(['can-deactivate-category'])]
-    public function destroy(Category $category): JsonResponse
+    public function destroy(Category $product_category): JsonResponse
     {
-        $this->categoryService->destroy($category);
+        $this->categoryService->destroy($product_category);
 
         return ApiResponse::success(
             null,

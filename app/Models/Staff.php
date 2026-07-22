@@ -12,10 +12,12 @@ class Staff extends Model
         'code',
         'business_code',
         'user_code',
-//      'staff_type',
+        'staff_type',
         'salary',
-        'certifications',
-        'experience',
+        'cnic',
+        'blood_group',
+        'emergency_contact_name',
+        'emergency_contact_phone',
         'joining_date',
         'status',
     ];
@@ -34,15 +36,14 @@ class Staff extends Model
         return 'code';
     }
 
-
-    public function organization(): BelongsTo
-    {
-        return $this->belongsTo(
-            Organization::class,
-            'organization_code',
-            'code'
-        );
-    }
+//    public function organization(): BelongsTo
+//    {
+//        return $this->belongsTo(
+//            Organization::class,
+//            'organization_code',
+//            'code'
+//        );
+//    }
 
     public function business(): BelongsTo
     {
@@ -80,17 +81,13 @@ class Staff extends Model
         );
     }
 
-
-
-// Future Relationships:
-
-//    public function trainer(): HasOne
-//    {
-//        return $this->hasOne(
-//            Trainer::class,
-//            'staff_code',
-//            'code'
-//        );
-//    }
+    public function trainer()
+    {
+        return $this->hasOne(
+            Trainer::class,
+            'staff_code',
+            'code'
+        );
+    }
 
 }

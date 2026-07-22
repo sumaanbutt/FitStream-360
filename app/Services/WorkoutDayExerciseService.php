@@ -21,7 +21,8 @@ class WorkoutDayExerciseService
             'workoutWeek',
             'workoutDay',
             'exercise',
-        ]);
+        ])
+            ->paginate(10);
     }
 
     public function store(array $data): WorkoutDayExercise
@@ -110,10 +111,8 @@ class WorkoutDayExerciseService
     public function update(WorkoutDayExercise $workoutDayExercise, array $data): WorkoutDayExercise
     {
         try {
-            return DB::transaction(function () use (
-                $workoutDayExercise,
-                $data
-            ) {
+            return DB::transaction(function () use ($workoutDayExercise, $data)
+            {
                 $workoutDayExercise->update([
                     'sets' => $data['sets'] ?? $workoutDayExercise->sets,
                     'reps' => $data['reps'] ?? $workoutDayExercise->reps,

@@ -22,7 +22,8 @@ class TraineeGoalProgressService
 //            ->apply(
                 TraineeGoalProgress::with([
                     'traineeGoal',
-                ]);
+                ])
+                ->paginate(10);
 //            );
     }
 

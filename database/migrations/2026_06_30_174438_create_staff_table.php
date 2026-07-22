@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        if (!Schema::hasTable('staff')) {
-
             Schema::create('staff', function (Blueprint $table) {
 
                 $table->id();
@@ -51,7 +49,6 @@ return new class extends Migration
                 $table->index('user_code');
                 $table->index('status');
             });
-//        }
     }
 
     public function down(): void

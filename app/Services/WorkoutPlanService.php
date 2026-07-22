@@ -20,7 +20,6 @@ class WorkoutPlanService
             'creator',
         ])
             ->withCount('weeks')
-            ->latest()
             ->paginate();
     }
 

@@ -12,6 +12,7 @@ class Trainee extends Model
         'organization_code',
         'business_code',
         'user_code',
+        'trainee_type',
         'gender',
         'age',
         'height',

@@ -21,6 +21,11 @@ return new class extends Migration
             $table->string('user_code', 8);
 
             // Personal Information
+            $table->enum('trainee_type', [
+                'organization',
+                'business',
+            ])->default('business');
+
             $table->enum('gender', [
                 'male',
                 'female',
@@ -65,5 +70,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('trainees');
+        $table->dropColumn('trainee_type');
     }
 };

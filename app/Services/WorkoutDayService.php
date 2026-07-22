@@ -16,7 +16,8 @@ class WorkoutDayService
         return WorkoutDay::with([
             'workoutPlan',
             'workoutWeek',
-        ]);
+            ])
+            ->paginate(10);
     }
 
     public function store(array $data): WorkoutDay

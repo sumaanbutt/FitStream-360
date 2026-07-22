@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\BusinessException;
 use App\Filters\StaffFilter;
 use App\Models\Staff;
+use App\Models\Trainer;
 use App\Models\User;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class StaffService
             Staff::with([
                 'user',
                 'business',
+                'trainer'
             ])
         );
     }
@@ -67,20 +69,42 @@ class StaffService
                     throw new BusinessException('This user is already assigned as staff.');
                 }
 
+                $staffType = strtolower($data['role']) === 'trainer'
+                    ? 'trainer'
+                    : 'operational';
+
                 $staff = Staff::create([
                     'code' => $this->generateCode('STF', Staff::class),
                     'business_code' => $data['business_code'],
                     'user_code' => $user->code,
+                    'staff_type' => $staffType,
                     'salary' => $data['salary'],
-                    'certifications' => $data['certifications'] ?? null,
-                    'experience' => $data['experience'] ?? 0,
+                    'cnic' => $data['cnic'] ?? null,
+                    'blood_group' => $data['blood_group'] ?? null,
+                    'emergency_contact_name' => $data['emergency_contact_name'] ?? null,
+                    'emergency_contact_phone' => $data['emergency_contact_phone'] ?? null,
                     'joining_date' => $data['joining_date'],
                     'status' => $data['status'],
                 ]);
 
+                if ($staffType === 'trainer') {
+
+                    Trainer::create([
+                        'code' => $this->generateCode('TRN', Trainer::class),
+                        'business_code' => $staff->business_code,
+                        'staff_code' => $staff->code,
+                        'experience' => $data['experience'],
+                        'certifications' => $data['certifications'],
+                        'specialization' => $data['specialization'] ?? null,
+                        'bio' => $data['bio'] ?? null,
+                        'status' => $staff->status,
+                    ]);
+                }
+
                 return $staff->load([
                     'user',
                     'business',
+                    'trainer'
                 ]);
             });
 
@@ -118,18 +142,51 @@ class StaffService
 
                 $this->userService->update($user, $userData);
 
+                //check type:
+
+                $role = $data['role'] ?? $user->getRoleNames()->first();
+
+                $staffType = strtolower($role) === 'trainer'
+                    ? 'trainer'
+                    : 'operational';
+
                 $staff->update([
-                    'business_code'   => $data['business_code'] ?? $staff->business_code,
-                    'salary'          => $data['salary'] ?? $staff->salary,
-                    'certifications'  => $data['certifications'] ?? $staff->certifications,
-                    'experience'      => $data['experience'] ?? $staff->experience,
-                    'joining_date'    => $data['joining_date'] ?? $staff->joining_date,
-                    'status'          => $data['status'] ?? $staff->status,
+                    'business_code'             => $data['business_code'] ?? $staff->business_code,
+                    'staff_type'                => $staffType,
+                    'salary'                    => $data['salary'] ?? $staff->salary,
+                    'cnic'                      => $data['cnic'] ?? $staff->cnic,
+                    'blood_group'               => $data['blood_group'] ?? $staff->blood_group,
+                    'emergency_contact_name'    => $data['emergency_contact_name'] ?? $staff->emergency_contact_name,
+                    'emergency_contact_phone'   => $data['emergency_contact_phone'] ?? $staff->emergency_contact_phone,
+                    'joining_date'              => $data['joining_date'] ?? $staff->joining_date,
+                    'status'                    => $data['status'] ?? $staff->status,
                 ]);
+
+
+                if ($staffType === 'trainer') {
+
+                    Trainer::updateOrCreate([
+                            'staff_code' => $staff->code,
+                        ],
+
+                        [
+                            'business_code' => $staff->business_code,
+                            'experience' => $data['experience'] ?? optional($staff->trainer)->experience,
+                            'certifications' => $data['certifications'] ?? optional($staff->trainer)->certifications,
+                            'specialization' => $data['specialization'] ?? optional($staff->trainer)->specialization,
+                            'bio' => $data['bio'] ?? optional($staff->trainer)->bio,
+                            'status' => $staff->status,
+                        ]
+                    );
+
+                } else {
+                    $staff->trainer()?->delete();
+                }
 
                 return $staff->fresh()->load([
                     'user',
                     'business',
+                    'trainer',
                 ]);
             });
 
@@ -144,7 +201,6 @@ class StaffService
     public function destroy(Staff $staff): bool
     {
         try {
-
             return DB::transaction(function () use ($staff) {
                 $staff->delete();
                 return true;
@@ -153,6 +209,8 @@ class StaffService
         } catch (\Throwable $e) {
             Log::error('Staff Delete Failed', [
                 'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
             ]);
 
             throw $e;

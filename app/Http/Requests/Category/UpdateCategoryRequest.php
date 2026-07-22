@@ -18,7 +18,7 @@ class UpdateCategoryRequest extends FormRequest
 
             'name' => ['sometimes', 'string', 'max:255',
                 Rule::unique('categories', 'name')->ignore(
-                    $this->category->id
+                    $this->route('$product_category')
                 ),
             ],
 

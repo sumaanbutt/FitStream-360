@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DietPlanMealFood extends Model
 {
+    protected $table = 'diet_plan_meal_foods';
     protected $fillable = [
         'code',
         'diet_plan_meal_code',

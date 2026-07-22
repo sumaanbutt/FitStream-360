@@ -19,7 +19,8 @@ class DietPlanService
             'organization',
             'creator',
         ])
-            ->withCount('weeks');
+            ->withCount('weeks')
+            ->paginate(10);
     }
 
     public function store(array $data, ?UploadedFile $image): DietPlan

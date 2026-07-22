@@ -26,6 +26,13 @@ class UpdateTraineeRequest extends FormRequest
             'password' => ['sometimes', 'confirmed', 'min:8',],
 
 // Trainee:
+            'trainee_type' => [
+                'required',
+                Rule::in([
+                    'organization',
+                    'business',
+                ]),
+            ],
 
             'gender' => ['sometimes',
                 Rule::in([

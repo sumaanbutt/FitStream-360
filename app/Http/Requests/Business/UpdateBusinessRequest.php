@@ -21,9 +21,9 @@ class UpdateBusinessRequest extends FormRequest
             'name' => ['sometimes','required','string','max:255'],
             'email' => ['sometimes','required','email'],
             'phone' => ['nullable','string'],
-            'discount_percentage' => ['sometimes','numeric','min:0','max:100'],
-            'agreement_start' => ['sometimes','date'],
-            'agreement_end' => ['sometimes','date'],
+//            'discount_percentage' => ['sometimes','numeric','min:0','max:100'],
+//            'agreement_start' => ['sometimes','date'],
+//            'agreement_end' => ['sometimes','date'],
             'status' => ['sometimes','boolean'],
         ];
     }

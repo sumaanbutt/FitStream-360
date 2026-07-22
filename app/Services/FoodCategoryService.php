@@ -17,7 +17,8 @@ class FoodCategoryService
             'organization',
             'creator',
         ])
-            ->withCount('foods');
+            ->withCount('foods')
+            ->paginate(10);
     }
 
     public function store(array $data): FoodCategory

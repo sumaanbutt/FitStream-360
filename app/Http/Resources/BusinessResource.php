@@ -15,9 +15,9 @@ class BusinessResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'discount_percentage' => $this->discount_percentage,
-            'agreement_start' => $this->agreement_start,
-            'agreement_end' => $this->agreement_end,
+//            'discount_percentage' => $this->discount_percentage,
+//            'agreement_start' => $this->agreement_start,
+//            'agreement_end' => $this->agreement_end,
             'status' => $this->status,
             'created_at' => $this->created_at,
         ];

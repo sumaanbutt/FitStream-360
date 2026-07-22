@@ -40,9 +40,41 @@ class StoreStaffRequest extends FormRequest
 
             'salary' => ['required', 'numeric', 'min:0'],
             'joining_date' => ['required', 'date',],
-            'experience' => ['nullable', 'string', 'min:0'],
-            'certifications' => ['nullable', 'string',],
+            'cnic' => ['nullable', 'string', 'max:20',],
+
+            'blood_group' => ['nullable',
+                Rule::in([
+                    'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-',
+                ]),
+            ],
+
+            'emergency_contact_name' => ['nullable', 'string', 'max:255',],
+            'emergency_contact_phone' => ['nullable', 'string', 'max:20',],
             'status' => ['required', 'boolean'],
+
+
+
+// Trainer Information:
+
+            'experience' => [
+                Rule::requiredIf(
+                    fn () => strtolower($this->role ?? '') === 'trainer'
+                ),
+                'nullable', 'string',],
+
+            'certifications' => [
+                Rule::requiredIf(
+                    fn () => strtolower($this->role ?? '') === 'trainer'
+                ),
+                'nullable', 'string',],
+
+            'specialization' => [
+                Rule::requiredIf(
+                    fn () => strtolower($this->role ?? '') === 'trainer'
+                ),
+                'nullable', 'string',],
+
+            'bio' => ['nullable', 'string',],
         ];
     }
     public function messages(): array
@@ -56,6 +88,10 @@ class StoreStaffRequest extends FormRequest
             'password.required_if' => 'Password is required for a new user.',
             'business_code.required' => 'Business Code is required.',
             'role.required' => 'Please select a role.',
+
+            'experience.required' => 'Experience is required for trainers.',
+            'certifications.required' => 'Certifications are required for trainers.',
+            'specialization.required' => 'Specialization is required for trainers.',
         ];
     }
 }

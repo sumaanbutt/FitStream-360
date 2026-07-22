@@ -20,7 +20,8 @@ class ExerciseService
             'organization',
             'creator',
         ])
-            ->withCount('workoutDayExercises');
+            ->withCount('workoutDayExercises')
+            ->paginate(10);
     }
 
     public function store(array $data, ?UploadedFile $image): Exercise

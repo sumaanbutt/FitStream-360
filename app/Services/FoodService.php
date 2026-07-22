@@ -19,7 +19,8 @@ class FoodService
             'organization',
             'creator',
             'foodCategory',
-        ]);
+        ])
+            ->paginate(10);
     }
 
     public function store(array $data, ?UploadedFile $image): Food

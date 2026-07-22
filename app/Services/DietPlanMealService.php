@@ -20,7 +20,8 @@ class DietPlanMealService
             'dietPlanWeek',
             'dietPlanDay',
         ])
-            ->withCount('mealFoods');
+            ->withCount('mealFoods')
+            ->paginate(10);
     }
 
     public function store(array $data): DietPlanMeal

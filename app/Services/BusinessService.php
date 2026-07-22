@@ -34,9 +34,9 @@ class BusinessService
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'] ?? null,
-                    'discount_percentage' => $data['discount_percentage'],
-                    'agreement_start' => $data['agreement_start'],
-                    'agreement_end' => $data['agreement_end'],
+//                    'discount_percentage' => $data['discount_percentage'],
+//                    'agreement_start' => $data['agreement_start'],
+//                    'agreement_end' => $data['agreement_end'],
                     'status' => $data['status'],
                 ]);
 

@@ -36,6 +36,13 @@ class StoreTraineeRequest extends FormRequest
             'password' => ['required_if:user_type,new', 'nullable', 'confirmed', 'min:8',],
 
 // Trainee:
+            'trainee_type' => [
+                'required',
+                Rule::in([
+                    'organization',
+                    'business',
+                ]),
+            ],
             'business_code' => ['required', 'exists:businesses,code',],
 
             'gender' => ['nullable', Rule::in([

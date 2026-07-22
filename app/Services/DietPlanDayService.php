@@ -18,7 +18,8 @@ class DietPlanDayService
         return DietPlanDay::with([
             'dietPlan',
             'dietPlanWeek',
-        ]);
+            ])
+            ->paginate(10);
     }
 
     public function store(array $data): DietPlanDay

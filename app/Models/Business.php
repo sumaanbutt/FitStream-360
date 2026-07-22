@@ -15,17 +15,17 @@ class Business extends Model
         'name',
         'email',
         'phone',
-        'discount_percentage',
-        'agreement_start',
-        'agreement_end',
+//        'discount_percentage',
+//        'agreement_start',
+//        'agreement_end',
         'status',
     ];
 
     protected function casts(): array
     {
         return [
-            'agreement_start' => 'date',
-            'agreement_end' => 'date',
+//            'agreement_start' => 'date',
+//            'agreement_end' => 'date',
             'status' => 'boolean',
         ];
     }
@@ -43,6 +43,15 @@ class Business extends Model
     {
         return $this->hasMany(
             User::class,
+            'business_code',
+            'code'
+        );
+    }
+
+    public function trainers()
+    {
+        return $this->hasMany(
+            Trainer::class,
             'business_code',
             'code'
         );

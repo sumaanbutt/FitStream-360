@@ -19,7 +19,8 @@ class DietPlanMealFoodService
         return DietPlanMealFood::with([
             'dietPlanMeal',
             'food',
-        ]);
+        ])
+            ->paginate(10);
     }
 
     public function store(array $data): DietPlanMealFood
@@ -27,9 +28,15 @@ class DietPlanMealFoodService
         try {
             return DB::transaction(function () use ($data) {
 
-                $meal = DietPlanMeal::findOrFail($data['diet_plan_meal_code']);
+                $meal = DietPlanMeal::where(
+                    'code',
+                    $data['diet_plan_meal_code']
+                )->firstOrFail();
 
-                $food = Food::findOrFail($data['food_code']);
+                $food = Food::where(
+                    'code',
+                    $data['food_code']
+                )->firstOrFail();
 
                 if (
                     $meal->dietPlan->organization_code !==

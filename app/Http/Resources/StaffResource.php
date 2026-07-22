@@ -7,15 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class StaffResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     */
     public function toArray(Request $request): array
     {
         return [
             'code' => $this->code,
 
-            'business' => ['code' => $this->business?->code, 'name' => $this->business?->name,],
+            'business' => [
+                'code' => $this->business?->code,
+                'name' => $this->business?->name,
+            ],
 
             'user' => [
                 'code' => $this->user?->code,
@@ -25,13 +25,20 @@ class StaffResource extends JsonResource
                 'role' => $this->user?->getRoleNames()->first(),
             ],
 
+            'staff_type' => $this->staff_type,
             'salary' => $this->salary,
+            'cnic' => $this->cnic,
+            'blood_group' => $this->blood_group,
+            'emergency_contact_name' => $this->emergency_contact_name,
+            'emergency_contact_phone' => $this->emergency_contact_phone,
 
             'joining_date' => optional($this->joining_date)
                 ->format('Y-m-d'),
 
-            'experience' => $this->experience,
-            'certifications' => $this->certifications,
+            'trainer' => TrainerResource::make(
+                $this->whenLoaded('trainer')
+            ),
+
             'status' => $this->status,
 
             'created_at' => $this->created_at,

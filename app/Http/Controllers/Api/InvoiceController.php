@@ -51,7 +51,7 @@ class InvoiceController extends Controller
             new InvoiceResource(
                 $invoice->load([
                     'organization',
-                    'business',
+//                    'business',
                     'user',
                     'order',
                 ])
