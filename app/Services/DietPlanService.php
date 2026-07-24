@@ -16,7 +16,7 @@ class DietPlanService
     public function index()
     {
         return DietPlan::with([
-            'organization',
+            'business',
             'creator',
         ])
             ->withCount('weeks')
@@ -42,7 +42,7 @@ class DietPlanService
 
                 $dietPlan = DietPlan::create([
                     'code' => $this->generateCode('DPL', DietPlan::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'created_by' => auth()->user()->code,
                     'title' => $data['title'],
                     'description' => $data['description'] ?? null,
@@ -63,7 +63,7 @@ class DietPlanService
                 ]);
 
                 return $dietPlan->load([
-                    'organization',
+                    'business',
                     'creator',
                 ]);
 
@@ -132,7 +132,7 @@ class DietPlanService
                 return $dietPlan
                     ->fresh()
                     ->load([
-                        'organization',
+                        'business',
                         'creator',
                     ]);
 

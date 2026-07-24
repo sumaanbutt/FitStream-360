@@ -30,7 +30,7 @@ class RoleSeeder extends Seeder
             ]);
         }
 
-        $user = User::where('email', 'superadmin@fitstream.com')->first();
+        $user = User::where('email', 'superadmin@xpertdigi.com')->first();
 
         if ($user && ! $user->hasRole('Super Admin')) {
             $user->assignRole('Super Admin');

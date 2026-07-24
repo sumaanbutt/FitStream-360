@@ -17,7 +17,7 @@ class ExerciseService
     public function index()
     {
         return Exercise::with([
-            'organization',
+            'business',
             'creator',
         ])
             ->withCount('workoutDayExercises')
@@ -30,8 +30,8 @@ class ExerciseService
             return DB::transaction(function () use ($data, $image) {
 
                 $exists = Exercise::where(
-                    'organization_code',
-                    $data['organization_code']
+                    'business_code',
+                    $data['business_code']
                 )
                     ->whereRaw(
                         'LOWER(name) = ?',
@@ -61,7 +61,7 @@ class ExerciseService
 
                 $exercise = Exercise::create([
                     'code' => $this->generateCode('EXR', Exercise::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'created_by' => auth()->user()->code,
                     'name' => $data['name'],
                     'description' => $data['description'] ?? null,
@@ -76,7 +76,7 @@ class ExerciseService
                 ]);
 
                 return $exercise->load([
-                    'organization',
+                    'business',
                     'creator',
                 ]);
             });
@@ -106,8 +106,8 @@ class ExerciseService
                     strtolower($data['name']) !== strtolower($exercise->name)
                 ) {
                     $exists = Exercise::where(
-                        'organization_code',
-                        $exercise->organization_code
+                        'business_code',
+                        $exercise->business_code
                     )
                         ->whereRaw(
                             'LOWER(name) = ?',
@@ -166,7 +166,7 @@ class ExerciseService
                 return $exercise
                     ->fresh()
                     ->load([
-                        'organization',
+                        'business',
                         'creator',
                     ]);
 

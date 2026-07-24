@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('code', 8)->unique();
 
-                $table->string('organization_code', 8)->nullable();
+                $table->string('business_code', 8)->nullable();
                 $table->string('staff_code', 8)->nullable();
 
                 $table->enum('working_days', [
@@ -36,9 +36,9 @@ return new class extends Migration
 
                 $table->timestamps();
 
-                $table->foreign('organization_code')
+                $table->foreign('business_code')
                     ->references('code')
-                    ->on('organizations')
+                    ->on('businesses')
                     ->cascadeOnDelete();
 
                 $table->foreign('staff_code')
@@ -47,7 +47,7 @@ return new class extends Migration
                     ->cascadeOnDelete();
 
                 $table->index('code');
-                $table->index('organization_code');
+                $table->index('business_code');
                 $table->index('staff_code');
                 $table->index('working_days');
                 $table->index('status');

@@ -1,6 +1,6 @@
 <?php
 //TODO:: add business code in all tables
-// create two tables for staff details and trainee details
+// create two tables for staff details and trainer details
 
 //TODO::// add staff type
 // add trainee type
@@ -13,18 +13,8 @@
 
 //TODO::// trainee attendance will get trainees location as well
 
-//TODO::// trainees personal location can be saved against trainees info
+//TODO::// trainees personal location can be saved against trainees info /optional
 
 //TODO::// trainees allowed gym locations will be marked separately
 
 //TODO::// business allows all locations against all trainees then it will be utilized from there
-
-
-//XpertDigi (Organization) owns FitStream-360 (Business)
-//Business has multiple locations , staff, trainee
-
-
-// remove discount percentage, agreement date from business
-// add staff_type , and other details in staff table
-// create trainer table and add specific info of trainer in it like certification, experience etc
-// add trainee_type and other details in trainee table

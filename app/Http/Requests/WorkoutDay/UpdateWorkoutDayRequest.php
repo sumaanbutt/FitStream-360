@@ -15,6 +15,7 @@ class UpdateWorkoutDayRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'workout_week_code' => ['nullable',],
 
             'day_number' => [
                 'sometimes',

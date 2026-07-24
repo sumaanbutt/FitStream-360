@@ -28,7 +28,7 @@ class CategoryService
         try {
             return DB::transaction(function () use ($data) {
                 $category = Category::create([
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'code' => $this->generateCode('CAT', Category::class),
                     'name' => $data['name'],
                     'description' => $data['description'] ?? null,

@@ -12,9 +12,9 @@ class FoodCategoryResource extends JsonResource
         return [
             'code' => $this->code,
 
-            'organization' => [
-                'code' => $this->organization?->code,
-                'name' => $this->organization?->name,
+            'business' => [
+                'code' => $this->business?->code,
+                'name' => $this->business?->name,
             ],
 
             'created_by' => [

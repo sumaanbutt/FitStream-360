@@ -65,17 +65,29 @@ class TraineeService
                     throw new BusinessException('This user is already registered as a trainee.');
                 }
 
-                $trainee = Trainee::create([
+                $address = collect([
+                    $data['house'] ?? null,
+                    $data['address'] ?? null,
+                    $data['city'] ?? null,
+                ])->filter()->implode(', ');
 
+                $trainee = Trainee::create([
                     'code' => $this->generateCode('TRN', Trainee::class),
                     'trainee_type' => $data['trainee_type'],
-                    'business_code' => $data['business_code'],
                     'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'] ?? null,
                     'user_code' => $user->code,
                     'gender' => $data['gender'] ?? null,
                     'age' => $data['age'] ?? null,
                     'height' => $data['height'] ?? null,
                     'weight' => $data['weight'] ?? null,
+                    'address' => $address,
+                    'blood_group' => $data['blood_group'] ?? null,
+                    'emergency_contact_name' => $data['emergency_contact_name'] ?? null,
+                    'emergency_contact_phone' => $data['emergency_contact_phone'] ?? null,
+                    'allergies' => $data['allergies'] ?? null,
+                    'medical_conditions' => $data['medical_conditions'] ?? null,
+                    'allowed_locations' => $data['allowed_locations'] ?? [],
                     'joining_date' => $data['joining_date'],
                     'status' => $data['status'],
                 ]);
@@ -107,7 +119,6 @@ class TraineeService
                 $user = $trainee->user;
 
                 $userData = [
-                    'trainee_type' => $data['trainee_type'] ?? $trainee->trainee_type,
                     'organization_code' => $data['organization_code'] ?? $user->organization_code,
                     'business_code' => $data['business_code'] ?? $user->business_code,
                     'name' => $data['name'] ?? $user->name,
@@ -126,12 +137,31 @@ class TraineeService
                     $userData
                 );
 
+                $address = collect([
+                    $data['house'] ?? null,
+                    $data['address'] ?? null,
+                    $data['city'] ?? null,
+                ])->filter()->implode(', ');
+
+                if (empty($address)) {
+                    $address = $trainee->address;
+                }
+
                 $trainee->update([
+                    'trainee_type' => $data['trainee_type'] ?? $trainee->trainee_type,
+                    'organization_code' => $data['organization_code'] ?? $trainee->organization_code,
                     'business_code' => $data['business_code'] ?? $trainee->business_code,
                     'gender' => $data['gender'] ?? $trainee->gender,
                     'age' => $data['age'] ?? $trainee->age,
                     'height' => $data['height'] ?? $trainee->height,
                     'weight' => $data['weight'] ?? $trainee->weight,
+                    'address' => $address,
+                    'blood_group' => $data['blood_group'] ?? $trainee->blood_group,
+                    'emergency_contact_name' => $data['emergency_contact_name'] ?? $trainee->emergency_contact_name,
+                    'emergency_contact_phone' => $data['emergency_contact_phone'] ?? $trainee->emergency_contact_phone,
+                    'allergies' => $data['allergies'] ?? $trainee->allergies,
+                    'medical_conditions' => $data['medical_conditions'] ?? $trainee->medical_conditions,
+                    'allowed_locations' => $data['allowed_locations'] ?? $trainee->allowed_locations,
                     'joining_date' => $data['joining_date'] ?? $trainee->joining_date,
                     'status' => $data['status'] ?? $trainee->status,
                 ]);

@@ -51,7 +51,7 @@ class ShiftScheduleController extends Controller
         return ApiResponse::success(
             new ShiftScheduleResource(
                 $shiftSchedule->load([
-                    'organization',
+                    'business',
                     'staff.user',
                 ])
             ),

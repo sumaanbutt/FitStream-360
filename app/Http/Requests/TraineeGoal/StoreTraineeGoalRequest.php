@@ -15,7 +15,7 @@ class StoreTraineeGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_code' => ['required','exists:organizations,code',],
+            'business_code' => ['required','exists:businesses,code',],
             'trainee_code' => ['nullable','exists:trainees,code',],
             'title' => ['required','string','max:100',],
             'description' => ['nullable','string',],

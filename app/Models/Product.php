@@ -8,7 +8,7 @@ class Product extends Model
 {
     protected $fillable=[
         'code',
-        'organization_code',
+        'business_code',
         'category_code',
         'subcategory_code',
         'product_name',
@@ -19,6 +19,15 @@ class Product extends Model
         'quantity',
 //        'status',
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(
+            Business::class,
+            'business_code',
+            'code'
+        );
+    }
 
     public function category()
     {

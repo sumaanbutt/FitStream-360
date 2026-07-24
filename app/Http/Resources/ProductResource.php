@@ -11,6 +11,12 @@ class ProductResource extends JsonResource
     {
         return [
             'code' => $this->code,
+
+            'business'=> [
+                'code' => $this->business?->code,
+                'name' => $this->business?->name,
+            ],
+
             'category' => [
                 'code' => $this->category?->code,
                 'name' => $this->category?->name,
@@ -26,7 +32,7 @@ class ProductResource extends JsonResource
             'sku' => $this->sku,
             'product_price' => $this->product_price,
             'quantity' => $this->quantity,
-            'image' => $this->image,
+            'image' => $this->product_image_path,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -12,7 +12,7 @@ class Food extends Model
 
     protected $fillable = [
         'code',
-        'organization_code',
+        'business_code',
         'created_by',
         'food_category_code',
         'name',
@@ -46,11 +46,11 @@ class Food extends Model
         return 'code';
     }
 
-    public function organization(): BelongsTo
+    public function business(): BelongsTo
     {
         return $this->belongsTo(
-            Organization::class,
-            'organization_code',
+            Business::class,
+            'business_code',
             'code'
         );
     }

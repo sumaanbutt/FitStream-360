@@ -15,18 +15,8 @@ class UpdateWorkoutPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'title' => [
-                'sometimes',
-                'string',
-                'max:255',
-            ],
-
-            'description' => [
-                'sometimes',
-                'nullable',
-                'string',
-            ],
+            'title' => ['sometimes', 'string', 'max:255',],
+            'description' => ['sometimes', 'nullable', 'string',],
 
             'goal' => [
                 'sometimes',
@@ -59,49 +49,13 @@ class UpdateWorkoutPlanRequest extends FormRequest
                 ]),
             ],
 
-            'duration_weeks' => [
-                'sometimes',
-                'integer',
-                'min:1',
-            ],
-
-            'days_per_week' => [
-                'sometimes',
-                'integer',
-                'between:1,7',
-            ],
-
-            'estimated_minutes_per_day' => [
-                'sometimes',
-                'nullable',
-                'integer',
-                'min:1',
-            ],
-
-            'requires_gym' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            'price' => [
-                'sometimes',
-                'numeric',
-                'min:0',
-            ],
-
-            'currency' => [
-                'sometimes',
-                'string',
-                'size:3',
-            ],
-
-            'cover_image' => [
-                'sometimes',
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:2048',
-            ],
+            'duration_weeks' => ['sometimes', 'integer', 'min:1',],
+            'days_per_week' => ['sometimes', 'integer', 'between:1,7',],
+            'estimated_minutes_per_day' => ['sometimes', 'nullable', 'integer', 'min:1',],
+            'requires_gym' => ['sometimes', 'boolean',],
+            'price' => ['sometimes', 'numeric', 'min:0',],
+            'currency' => ['sometimes', 'string', 'size:3',],
+            'cover_image' => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',],
 
             'status' => [
                 'sometimes',

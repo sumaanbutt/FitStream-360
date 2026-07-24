@@ -26,13 +26,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone', 20);
 
-            $table->decimal('discount_percentage', 5, 2)->default(0.00);
             $table->boolean('status')->default(true);
             $table->timestamps();
 
-
-            $table->date('agreement_start');
-            $table->date('agreement_end');
 
             $table->index('name');
             $table->index('status');

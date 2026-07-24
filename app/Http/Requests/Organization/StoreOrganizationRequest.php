@@ -22,6 +22,7 @@ class StoreOrganizationRequest extends FormRequest
             // Organization Admin
             'admin_name' => ['required', 'string', 'max:255'],
             'admin_email' => ['required', 'email', 'unique:users,email'],
+            'admin_phone' => ['nullable', 'numeric'],
             'admin_password' => ['required', 'confirmed', 'min:8'],
         ];
     }

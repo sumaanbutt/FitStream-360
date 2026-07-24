@@ -19,8 +19,7 @@ class InvoiceService
         return (new InvoiceFilter())
             ->apply(
             Invoice::with([
-                'organization',
-//                'business',
+                'business',
                 'user',
                 'order',
             ])
@@ -42,7 +41,6 @@ class InvoiceService
 
                 $invoice = Invoice::create([
                     'code' => $this->generateCode('INV', Invoice::class),
-                    'organization_code' => $order->organization_code,
                     'business_code' => $order->business_code,
                     'user_code' => $order->user_code,
                     'order_code' => $order->code,
@@ -57,8 +55,7 @@ class InvoiceService
                 ]);
 
                 return $invoice->load([
-                    'organization',
-//                    'business',
+                    'business',
                     'user',
                     'order',
                 ]);
@@ -88,8 +85,7 @@ class InvoiceService
                 ]);
 
                 return $invoice->fresh()->load([
-                    'organization',
-//                    'business',
+                    'business',
                     'user',
                     'order',
                 ]);

@@ -18,7 +18,8 @@ class TraineeGoalProgressService
 
     public function index()
     {
-//        return (new TraineeGoalProgressFilter())
+        return
+// (new TraineeGoalProgressFilter())
 //            ->apply(
                 TraineeGoalProgress::with([
                     'traineeGoal',
@@ -43,6 +44,7 @@ class TraineeGoalProgressService
                     'hips' => $data['hips'] ?? null,
                     'arms' => $data['arms'] ?? null,
                     'thighs' => $data['thighs'] ?? null,
+                    'progress_percentage' => $data['progress_percentage'] ?? null,
                     'notes' => $data['notes'] ?? null,
                     'recorded_at' => $data['recorded_at'],
                 ]);
@@ -80,6 +82,7 @@ class TraineeGoalProgressService
                     'hips' => $data['hips'] ?? $progress->hips,
                     'arms' => $data['arms'] ?? $progress->arms,
                     'thighs' => $data['thighs'] ?? $progress->thighs,
+                    'progress_percentage' => $data['progress_percentage'] ?? $progress->progress_percentage,
                     'notes' => $data['notes'] ?? $progress->notes,
                     'recorded_at' => $data['recorded_at'] ?? $progress->recorded_at,
                 ]);

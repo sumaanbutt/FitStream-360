@@ -15,8 +15,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_code' => ['required', 'exists:organizations,code',],
-//            'business_code' => ['required', 'exists:businesses,code',],
+            'business_code' => ['required', 'exists:businesses,code',],
             'user_code' => ['nullable', 'exists:users,code',],
 
             'payment_method' => ['required',

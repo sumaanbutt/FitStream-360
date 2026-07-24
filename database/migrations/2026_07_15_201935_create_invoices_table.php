@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->string('order_code', 8)->nullable();
 
-            $table->string('organization_code', 8)->nullable();
+            $table->string('business_code', 8)->nullable();
             $table->string('user_code', 8)->nullable();
 
             $table->enum('invoice_type', [
@@ -39,9 +39,9 @@ return new class extends Migration
                 ->on('orders')
                 ->cascadeOnDelete();
 
-            $table->foreign('organization_code')
+            $table->foreign('business_code')
                 ->references('code')
-                ->on('organizations')
+                ->on('businesses')
                 ->cascadeOnDelete();
 
             $table->foreign('user_code')
@@ -50,7 +50,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->index('order_code');
-            $table->index('organization_code');
+            $table->index('business_code');
             $table->index('user_code');
             $table->index('payment_status');
             $table->index('invoice_type');

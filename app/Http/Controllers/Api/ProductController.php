@@ -52,6 +52,7 @@ class ProductController extends Controller
         return ApiResponse::success(
             new ProductResource(
                 $product->load([
+                    'business',
                     'category',
                     'subCategory',
                 ])

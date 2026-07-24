@@ -44,6 +44,23 @@ class UpdateTraineeRequest extends FormRequest
             'age' => ['sometimes', 'integer', 'min:1',],
             'height' => ['sometimes', 'numeric', 'min:1',],
             'weight' => ['sometimes', 'numeric', 'min:1',],
+            'house' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+
+            'blood_group' => ['nullable', Rule::in([
+                'A+','A-','B+','B-','AB+','AB-','O+','O-'
+            ])],
+
+            'emergency_contact_name' => ['nullable', 'string'],
+            'emergency_contact_phone' => ['nullable', 'string'],
+
+            'allergies' => ['nullable', 'string'],
+            'medical_conditions' => ['nullable', 'string'],
+
+            'allowed_locations' => ['nullable', 'array'],
+            'allowed_locations.*' => ['exists:locations,code'],
+
             'joining_date' => ['sometimes', 'date',],
             'status' => ['sometimes', 'boolean',],
         ];

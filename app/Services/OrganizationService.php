@@ -35,7 +35,7 @@ class OrganizationService
         return DB::transaction(function () use ($data) {
 
             $organization = Organization::create([
-                'code' => $this->generateCode('FTS', Organization::class),
+                'code' => $this->generateCode('XPD', Organization::class),
                 'name' => $data['name'],
                 'address' => $data['address'] ?? null,
                 'logo' => null, // We'll implement upload later
@@ -48,6 +48,7 @@ class OrganizationService
                 'business_code' => null,
                 'name' => $data['admin_name'],
                 'email' => $data['admin_email'],
+                'phone' => $data['admin_phone'],
                 'password' => Hash::make($data['admin_password']),
                 'status' => true,
             ]);

@@ -8,17 +8,17 @@ class Category extends Model
 {
     protected $fillable=[
         'code',
-        'organization_code',
+        'business_code',
         'name',
         'description',
         'status',
     ];
 
-    public function organization()
+    public function business()
     {
         return $this->belongsTo(
-            Organization::class,
-            'organization_code',
+            Business::class,
+            'business_code',
             'code'
         );
     }

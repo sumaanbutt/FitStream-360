@@ -50,6 +50,7 @@ class CategoryController extends Controller
         return ApiResponse::success(
             new CategoryResource(
                 $product_category->loadCount([
+                    'business',
                     'subCategories',
                     'products',
                 ])

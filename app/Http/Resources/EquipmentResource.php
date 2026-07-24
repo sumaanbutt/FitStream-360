@@ -15,9 +15,9 @@ class EquipmentResource extends JsonResource
         return [
             'code' => $this->code,
 
-            'organization' => [
-                'code' => $this->organization?->code,
-                'name' => $this->organization?->name,
+            'business' => [
+                'code' => $this->business?->code,
+                'name' => $this->business?->name,
             ],
 
             'created_by' => [
@@ -28,7 +28,7 @@ class EquipmentResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'category' => $this->category,
-            'image' => $this->image_path,
+            'image' => $this->equipment_image_path,
             'status' => $this->status,
 
             'workout_plans_count' => $this->whenCounted(

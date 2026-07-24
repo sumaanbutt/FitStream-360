@@ -13,9 +13,9 @@ class TraineeGoalResource extends JsonResource
 
             'code' => $this->code,
 
-            'organization' => [
-                'code' => $this->organization?->code,
-                'name' => $this->organization?->name,
+            'busniess' => [
+                'code' => $this->business?->code,
+                'name' => $this->business?->name,
             ],
 
             'trainee' => [

@@ -49,7 +49,7 @@ class SubCategoryController extends Controller
     {
         return ApiResponse::success(
             new SubCategoryResource(
-                $product_subcategory->load('category')
+                $product_subcategory->load('business','category')
                     ->loadCount('products')
             ),
             'Sub category fetched successfully.'

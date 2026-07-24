@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 8)->unique();
 
-            $table->string('organization_code', 8)->nullable();
+            $table->string('business_code', 8)->nullable();
             $table->string('category_code', 8)->nullable();
 
             $table->string('name');
@@ -23,9 +23,9 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('organization_code')
+            $table->foreign('business_code')
                 ->references('code')
-                ->on('organizations')
+                ->on('businesses')
                 ->onDelete('cascade');
 
             $table->foreign('category_code')
@@ -35,7 +35,7 @@ return new class extends Migration
 
             $table->index('code');
             $table->index('name');
-            $table->index('organization_code');
+            $table->index('business_code');
             $table->index('category_code');
         });
     }

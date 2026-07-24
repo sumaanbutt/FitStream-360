@@ -21,7 +21,7 @@ class TraineeGoalService
         return (new TraineeGoalFilter())
         ->apply(
             TraineeGoals::with([
-                'organization',
+                'business',
                 'trainee',
                 'creator',
                 'attachments',
@@ -51,7 +51,7 @@ class TraineeGoalService
 
                 $traineeGoal = TraineeGoals::create([
                     'code' => $this->generateCode('TGL', TraineeGoals::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'trainee_code' => $traineeCode,
                     'created_by' => $user->code,
                     'title' => $data['title'],
@@ -67,7 +67,7 @@ class TraineeGoalService
                     'notes' => $data['notes'] ?? null,
                 ]);
                 return $traineeGoal->load([
-                    'organization',
+                    'business',
                     'trainee.user',
                     'creator',
                     'attachments',
@@ -106,7 +106,7 @@ class TraineeGoalService
                 $traineeGoal->refresh();
 
                 return $traineeGoal->fresh()->load([
-                    'organization',
+                    'business',
                     'trainee.user',
                     'creator',
                     'attachments',
@@ -137,7 +137,7 @@ class TraineeGoalService
                 ]);
 
                 return $traineegoal->fresh()->load([
-                    'organization',
+                    'business',
                     'trainee',
                     'creator',
                     'attachments',

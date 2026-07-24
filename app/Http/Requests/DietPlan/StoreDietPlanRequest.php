@@ -15,22 +15,9 @@ class StoreDietPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'organization_code' => [
-                'required',
-                'exists:organizations,code',
-            ],
-
-            'title' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-            ],
+            'business_code' => ['required', 'exists:businesses,code',],
+            'title' => ['required', 'string', 'max:255',],
+            'description' => ['nullable', 'string',],
 
             'goal' => [
                 'required',
@@ -75,60 +62,15 @@ class StoreDietPlanRequest extends FormRequest
                 ]),
             ],
 
-            'duration_weeks' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
-
-            'meals_per_day' => [
-                'required',
-                'integer',
-                'between:1,10',
-            ],
-
-            'target_calories' => [
-                'nullable',
-                'integer',
-                'min:1',
-            ],
-
-            'target_protein' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'target_carbohydrates' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'target_fat' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'price' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
-
-            'currency' => [
-                'required',
-                'string',
-                'size:3',
-            ],
-
-            'cover_image' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:2048',
-            ],
+            'duration_weeks' => ['required', 'integer', 'min:1',],
+            'meals_per_day' => ['required', 'integer', 'between:1,10',],
+            'target_calories' => ['nullable', 'integer', 'min:1',],
+            'target_protein' => ['nullable', 'numeric', 'min:0',],
+            'target_carbohydrates' => ['nullable', 'numeric', 'min:0',],
+            'target_fat' => ['nullable', 'numeric', 'min:0',],
+            'price' => ['required', 'numeric', 'min:0',],
+            'currency' => ['required', 'string', 'size:3',],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',],
 
             'status' => [
                 'sometimes',

@@ -22,7 +22,6 @@ class OrderService
     {
         return (new OrderFilter())
             ->apply(Order::with([
-                'organization',
                 'business',
                 'user',
                 'items.product',
@@ -59,8 +58,7 @@ class OrderService
 
                 $order = Order::create([
                     'code' => $this->generateCode('ORD', Order::class),
-                    'organization_code' => $data['organization_code'],
-//                    'business_code' => $data['business_code'],
+                    'business_code' => $data['business_code'],
                     'user_code' => $data['user_code'] ?? null,
                     'subtotal' => $subtotal,
                     'discount' => $discount,
@@ -97,7 +95,7 @@ class OrderService
                 Invoice::create([
                     'code' => $this->generateCode('INV', Invoice::class),
                     'order_code' => $order->code,
-                    'organization_code' => $order->organization_code,
+                    'business_code' => $order->business_code,
                     'user_code' => $order->user_code,
 //                    'invoice_number' => 'INV-'.time(),
                     'invoice_type' => 'POS',
@@ -109,7 +107,6 @@ class OrderService
                 ]);
 
                 return $order->load([
-                    'organization',
                     'business',
                     'user',
                     'items.product',
@@ -170,8 +167,7 @@ class OrderService
 
 //  Update Order:
                 $order->update([
-                    'organization_code' => $data['organization_code'] ?? $order->organization_code,
-//                    'business_code' => $data['business_code'] ?? $order->business_code,
+                    'business_code' => $data['business_code'] ?? $order->business_code,
                     'user_code' => $data['user_code'] ?? $order->user_code,
                     'subtotal' => $subtotal,
                     'discount' => $discount,
@@ -216,8 +212,6 @@ class OrderService
                 }
 
                 return $order->fresh()->load([
-
-                    'organization',
                     'business',
                     'user',
                     'items.product',

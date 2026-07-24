@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\WorkoutDay;
+use App\Models\WorkoutWeek;
 use App\Traits\HasCode;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -56,7 +57,6 @@ class WorkoutDayService
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Workout Day Creation Failed', [
                 'message' => $e->getMessage(),
                 'file'    => $e->getFile(),
@@ -105,7 +105,6 @@ class WorkoutDayService
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Workout Day Update Failed', [
                 'message' => $e->getMessage(),
                 'file'    => $e->getFile(),
@@ -122,7 +121,6 @@ class WorkoutDayService
             return DB::transaction(function () use ($workoutDay) {
 
                 $workoutDay->delete();
-
                 return true;
             });
 

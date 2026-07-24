@@ -23,6 +23,7 @@ class StoreTraineeGoalProgressRequest extends FormRequest
             'hips' => ['nullable', 'numeric', 'min:0',],
             'arms' => ['nullable', 'numeric', 'min:0',],
             'thighs' => ['nullable', 'numeric', 'min:0',],
+            'progress_percentage' => ['nullable', 'numeric', 'min:0',],
             'notes' => ['nullable', 'string',],
             'recorded_at' => ['required', 'date',],
         ];

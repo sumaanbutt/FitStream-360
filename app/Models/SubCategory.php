@@ -8,10 +8,20 @@ class SubCategory extends Model
 {
     protected $fillable=[
         'code',
+        'business_code',
         'category_code',
         'name',
         'status'
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(
+            Business::class,
+            'business_code',
+            'code'
+        );
+    }
 
     public function category()
     {

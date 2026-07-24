@@ -17,7 +17,7 @@ class EquipmentService
     public function index()
     {
         return Equipment::with([
-            'organization',
+            'business',
             'creator',
         ])
             ->withCount('workoutPlanEquipments')
@@ -30,8 +30,8 @@ class EquipmentService
             return DB::transaction(function () use ($data, $image) {
 
                 $exists = Equipment::where(
-                    'organization_code',
-                    $data['organization_code']
+                    'business_code',
+                    $data['business_code']
                 )
                     ->where(
                         'name',
@@ -61,7 +61,7 @@ class EquipmentService
 
                 $equipment = Equipment::create([
                     'code' => $this->generateCode('EQP', Equipment::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'created_by' => auth()->user()->code,
                     'name' => $data['name'],
                     'description' => $data['description'] ?? null,
@@ -71,7 +71,7 @@ class EquipmentService
                 ]);
 
                 return $equipment->load([
-                    'organization',
+                    'business',
                     'creator',
                 ]);
             });
@@ -101,8 +101,8 @@ class EquipmentService
                     $data['name'] !== $equipment->name
                 ) {
                     $exists = Equipment::where(
-                        'organization_code',
-                        $equipment->organization_code
+                        'business_code',
+                        $equipment->business_code
                     )
                         ->where(
                             'name',
@@ -156,7 +156,7 @@ class EquipmentService
                 return $equipment
                     ->fresh()
                     ->load([
-                        'organization',
+                        'business',
                         'creator',
                     ]);
             });

@@ -15,7 +15,6 @@ class UpdateShiftScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_code' => ['sometimes', 'exists:organizations,code',],
             'staff_code' => ['sometimes', 'exists:staff,code',],
             'working_day' => ['sometimes',
                 Rule::in([

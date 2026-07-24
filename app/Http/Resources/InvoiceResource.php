@@ -11,10 +11,6 @@ class InvoiceResource extends JsonResource
     {
         return [
             'code' => $this->code,
-            'organization' => [
-                'code' => $this->organization?->code,
-                'name' => $this->organization?->name,
-            ],
 
             'business' => [
                 'code' => $this->business?->code,

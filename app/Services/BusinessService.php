@@ -29,8 +29,8 @@ class BusinessService
             return DB::transaction(function () use ($data) {
 
                 $business = Business::create([
+                    'code' => $this->generateCode('FTS', Business::class),
                     'organization_code' => $data['organization_code'],
-                    'code' => $this->generateCode('BUS', Business::class),
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'] ?? null,

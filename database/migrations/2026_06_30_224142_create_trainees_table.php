@@ -11,16 +11,12 @@ return new class extends Migration
         Schema::create('trainees', function (Blueprint $table) {
 
             $table->id();
-
-            // Public Code
             $table->string('code', 8)->unique();
 
-            // Relationships
             $table->string('organization_code', 8)->nullable();
             $table->string('business_code', 8)->nullable();
             $table->string('user_code', 8);
 
-            // Personal Information
             $table->enum('trainee_type', [
                 'organization',
                 'business',
@@ -36,6 +32,17 @@ return new class extends Migration
 
             $table->decimal('height', 5, 2)->nullable();
             $table->decimal('weight', 5, 2)->nullable();
+
+            $table->text('address')->nullable();
+
+            $table->string('emergency_contact_name')->nullable();
+            $table->string('emergency_contact_phone', 20)->nullable();
+
+            $table->string('blood_group', 10)->nullable();
+            $table->text('allergies')->nullable();
+            $table->text('medical_conditions')->nullable();
+
+            $table->json('allowed_locations')->nullable();
 
             $table->date('joining_date');
 
@@ -71,5 +78,12 @@ return new class extends Migration
     {
         Schema::dropIfExists('trainees');
         $table->dropColumn('trainee_type');
+        $table->dropColumn('address');
+        $table->dropColumn('emergency_contact_name');
+        $table->dropColumn('emergency_contact_phone');
+        $table->dropColumn('blood_group');
+        $table->dropColumn('allergies');
+        $table->dropColumn('medical_conditions');
+        $table->dropColumn('allowed_locations');
     }
 };

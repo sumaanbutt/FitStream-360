@@ -16,7 +16,7 @@ class StoreExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_code' => ['required','exists:organizations,code'],
+            'business_code' => ['required','exists:businesses,code'],
             'created_by' => ['sometimes','exists:users,code'],
             'name' => ['required','string','max:255'],
             'description' => ['nullable','string'],

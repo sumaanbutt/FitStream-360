@@ -10,7 +10,6 @@ class SubCategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-
             'code' => $this->code,
             'category' => [
                 'code' => $this->category?->code,

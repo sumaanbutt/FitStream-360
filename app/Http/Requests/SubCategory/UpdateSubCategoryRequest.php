@@ -16,7 +16,6 @@ class UpdateSubCategoryRequest extends FormRequest
     {
         return [
             'category_code' => ['sometimes', 'exists:categories,code',],
-
             'name' => ['sometimes', 'string', 'max:255',
                 Rule::unique('sub_categories')
 //                    ->ignore($this->subCategory->id)

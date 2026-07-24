@@ -51,7 +51,6 @@ class OrderController extends Controller
         return ApiResponse::success(
             new OrderResource(
                 $order->load([
-                    'organization',
                     'business',
                     'user',
                     'invoice',

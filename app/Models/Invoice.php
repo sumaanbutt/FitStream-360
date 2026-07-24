@@ -8,7 +8,7 @@ class Invoice extends Model
 {
     protected $fillable = [
         'code',
-        'organization_code',
+        'business_code',
         'order_code',
         'user_code',
         'invoice_number',
@@ -21,11 +21,11 @@ class Invoice extends Model
         'payment_date',
     ];
 
-    public function organization()
+    public function business()
     {
         return $this->belongsTo(
-            Organization::class,
-            'organization_code',
+            Business::class,
+            'business_code',
             'code'
         );
     }

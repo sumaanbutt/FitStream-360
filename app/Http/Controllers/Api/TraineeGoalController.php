@@ -47,7 +47,7 @@ class TraineeGoalController extends Controller
         return ApiResponse::success(
             new TraineeGoalResource(
                 $traineeGoal->load([
-                    'organization',
+                    'business',
                     'trainee',
                     'creator',
                 ])

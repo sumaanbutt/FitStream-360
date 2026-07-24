@@ -101,7 +101,7 @@ class LocationService
         try {
             return DB::transaction(function () use ($location, $data) {
 
-                $locationType = $data['location_type'] ?? $location->location_type;
+                $locationType = $data['type'] ?? $location->location_type;
                 $businessCode = $data['business_code'] ?? $location->business_code;
                 $staffCode = $data['staff_code'] ?? $location->staff_code;
 
@@ -145,13 +145,13 @@ class LocationService
                         ? null
                         : $staffCode,
 
-                    'type' => $locationType,
+                    'location_type' => $locationType,
                     'address' => $data['address'] ?? $location->address,
                     'city' => $data['city'] ?? $location->city,
                     'state' => $data['state'] ?? $location->state,
                     'country' => $data['country'] ?? $location->country,
                     'postal_code' => $data['postal_code'] ?? $location->postal_code,
-                    'status' => $data['status'] ?? $location->status,
+                    'location_status' => $data['status'] ?? $location->location_status,
                 ]);
 
                 return $location->fresh()->load([

@@ -16,7 +16,7 @@ class FoodService
     public function index()
     {
         return Food::with([
-            'organization',
+            'business',
             'creator',
             'foodCategory',
         ])
@@ -43,7 +43,7 @@ class FoodService
 
                 $food = Food::create([
                     'code' => $this->generateCode('FOD', Food::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'created_by' => auth()->user()->code,
                     'food_category_code' => $data['food_category_code'] ?? null,
                     'name' => $data['name'],
@@ -61,7 +61,7 @@ class FoodService
                 ]);
 
                 return $food->load([
-                    'organization',
+                    'business',
                     'creator',
                     'foodCategory',
                 ]);
@@ -123,7 +123,7 @@ class FoodService
                 return $food
                     ->fresh()
                     ->load([
-                        'organization',
+                        'business',
                         'creator',
                         'foodCategory',
                     ]);

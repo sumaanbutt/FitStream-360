@@ -32,6 +32,7 @@ class SubCategoryService
             return DB::transaction(function () use ($data) {
                 $subCategory = SubCategory::create([
                     'code' => $this->generateCode('SCT', SubCategory::class),
+                    'business_code' => $data['business_code'],
                     'category_code' => $data['category_code'],
                     'name' => $data['name'],
                     'status' => $data['status'] ?? true,

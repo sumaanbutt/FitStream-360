@@ -7,17 +7,13 @@ use Illuminate\Validation\Rule;
 
 class StoreTraineeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized.
-     */
+
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Validation Rules
-     */
+
     public function rules(): array
     {
         return [
@@ -55,6 +51,23 @@ class StoreTraineeRequest extends FormRequest
             'age' => ['nullable', 'integer', 'min:1'],
             'height' => ['nullable', 'numeric', 'min:1'],
             'weight' => ['nullable', 'numeric', 'min:1'],
+            'house' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+
+            'blood_group' => ['nullable', Rule::in([
+                'A+','A-','B+','B-','AB+','AB-','O+','O-'
+            ])],
+
+            'emergency_contact_name' => ['nullable', 'string'],
+            'emergency_contact_phone' => ['nullable', 'string'],
+
+            'allergies' => ['nullable', 'string'],
+            'medical_conditions' => ['nullable', 'string'],
+
+            'allowed_locations' => ['nullable', 'array'],
+            'allowed_locations.*' => ['exists:locations,code'],
+
             'joining_date' => ['required', 'date',],
             'status' => ['required', 'boolean'],
         ];
@@ -63,7 +76,7 @@ class StoreTraineeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_type.required' => 'Please select user type.',
+            'user.required' => 'Please select user type.',
             'user_code.required_if' => 'User Code is required.',
             'organization_code.required_if' => 'Organization Code is required.',
             'name.required_if' => 'Name is required.',

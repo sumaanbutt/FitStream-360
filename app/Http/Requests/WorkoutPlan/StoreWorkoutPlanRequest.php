@@ -15,22 +15,9 @@ class StoreWorkoutPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'organization_code' => [
-                'required',
-                'exists:organizations,code',
-            ],
-
-            'title' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-            ],
+            'business_code' => ['required', 'exists:businesses,code',],
+            'title' => ['required', 'string', 'max:255',],
+            'description' => ['nullable', 'string',],
 
             'goal' => [
                 'required',
@@ -63,40 +50,12 @@ class StoreWorkoutPlanRequest extends FormRequest
                 ]),
             ],
 
-            'duration_weeks' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
-
-            'days_per_week' => [
-                'required',
-                'integer',
-                'between:1,7',
-            ],
-
-            'estimated_minutes_per_day' => [
-                'nullable',
-                'integer',
-                'min:1',
-            ],
-
-            'requires_gym' => [
-                'required',
-                'boolean',
-            ],
-
-            'price' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
-
-            'currency' => [
-                'required',
-                'string',
-                'size:3',
-            ],
+            'duration_weeks' => ['required', 'integer', 'min:1',],
+            'days_per_week' => ['required', 'integer', 'between:1,7',],
+            'estimated_minutes_per_day' => ['nullable', 'integer', 'min:1',],
+            'requires_gym' => ['required', 'boolean',],
+            'price' => ['required', 'numeric', 'min:0',],
+            'currency' => ['required', 'string', 'size:3',],
 
             'cover_image' => [
                 'nullable',

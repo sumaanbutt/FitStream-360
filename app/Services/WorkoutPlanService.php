@@ -16,7 +16,7 @@ class WorkoutPlanService
     public function index()
     {
         return WorkoutPlan::with([
-            'organization',
+            'business',
             'creator',
         ])
             ->withCount('weeks')
@@ -43,7 +43,7 @@ class WorkoutPlanService
 
                 $workoutPlan = WorkoutPlan::create([
                     'code' => $this->generateCode('WPL', WorkoutPlan::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'created_by' => auth()->user()->code,
                     'title' => $data['title'],
                     'description' => $data['description'] ?? null,
@@ -61,7 +61,7 @@ class WorkoutPlanService
                 ]);
 
                 return $workoutPlan->load([
-                    'organization',
+                    'business',
                     'creator',
                 ]);
 
@@ -130,7 +130,7 @@ class WorkoutPlanService
                 return $workoutPlan
                     ->fresh()
                     ->load([
-                        'organization',
+                        'business',
                         'creator',
                     ]);
 

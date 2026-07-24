@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class ProductService
+class   ProductService
 {
     use HasCode;
     public function __construct()
@@ -21,6 +21,7 @@ class ProductService
         return (new ProductFilter())
             ->apply(
             Product::with([
+            'business',
             'category',
             'subCategory',
             ])
@@ -47,7 +48,7 @@ class ProductService
                 $product = Product::create([
                     'code' => $code,
                     'sku' => 'SKU-' . $code,
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'category_code' => $data['category_code'],
                     'subcategory_code' => $data['subcategory_code'],
                     'product_name' => $data['product_name'],
@@ -59,10 +60,10 @@ class ProductService
                 ]);
 
                 return $product->load([
+                    'business',
                     'category',
                     'subcategory',
                 ]);
-
             });
 
         } catch (\Throwable $e) {
@@ -85,10 +86,10 @@ class ProductService
                 $updateData = [
                     'category_code' => $data['category_code'] ?? $product->category_code,
                     'subcategory_code' => $data['subcategory_code'] ?? $product->sub_category_code,
-                    'product_name' => $data['name'] ?? $product->name,
-                    'product_description' => $data['description'] ?? $product->description,
+                    'product_name' => $data['product_name'] ?? $product->product_name,
+                    'product_description' => $data['product_description'] ?? $product->product_description,
                     'sku' => $data['sku'] ?? $product->sku,
-                    'product_price' => $data['product_price'] ?? $product->cost_price,
+                    'product_price' => $data['product_price'] ?? $product->product_price,
                     'quantity' => $data['quantity'] ?? $product->quantity,
                     'status' => $data['status'] ?? $product->status,
                 ];
@@ -113,6 +114,7 @@ class ProductService
                 $product->update($updateData);
 
                 return $product->fresh()->load([
+                    'business',
                     'category',
                     'subCategory',
                 ]);

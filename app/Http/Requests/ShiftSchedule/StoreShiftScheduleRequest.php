@@ -15,7 +15,7 @@ class StoreShiftScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_code' => ['required', 'exists:organizations,code',],
+            'business_code' => ['required', 'exists:businesses,code',],
             'staff_code' => ['required', 'exists:staff,code',],
             'working_day' => ['required',
                 Rule::in([

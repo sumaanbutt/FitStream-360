@@ -18,7 +18,7 @@ class ShiftScheduleService
         return  (new ShiftScheduleFilter())
         ->apply(
             ShiftSchedule::with([
-                'organization',
+                'business',
                 'staff.user',
             ])
         );
@@ -72,9 +72,8 @@ class ShiftScheduleService
                 }
 
                 $shift = ShiftSchedule::create([
-
                     'code' => $this->generateCode('SHF', ShiftSchedule::class),
-                    'organization_code' => $data['organization_code'],
+                    'business_code' => $data['business_code'],
                     'staff_code' => $data['staff_code'],
                     'working_days' => $data['working_day'],
                     'start_time' => $data['start_time'],
@@ -83,7 +82,7 @@ class ShiftScheduleService
                 ]);
 
                 return $shift->load([
-                    'organization',
+                    'business',
                     'staff.user',
                 ]);
 
@@ -153,7 +152,6 @@ class ShiftScheduleService
                 }
 
                 $shiftSchedule->update([
-                    'organization_code' => $data['organization_code'] ?? $shiftSchedule->organization_code,
                     'staff_code' => $data['staff_code'] ?? $shiftSchedule->staff_code,
                     'working_days' => $data['working_day'] ?? $shiftSchedule->working_days,
                     'start_time' => $data['start_time'] ?? $shiftSchedule->start_time,
@@ -162,7 +160,7 @@ class ShiftScheduleService
                 ]);
 
                 return $shiftSchedule->fresh()->load([
-                    'organization',
+                    'business',
                     'staff.user',
                 ]);
             });

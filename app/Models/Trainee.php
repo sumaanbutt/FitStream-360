@@ -17,6 +17,13 @@ class Trainee extends Model
         'age',
         'height',
         'weight',
+        'address',
+        'blood_group',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'allergies',
+        'medical_conditions',
+        'allowed_locations',
         'joining_date',
         'status',
     ];
@@ -28,6 +35,7 @@ class Trainee extends Model
             'weight' => 'decimal:2',
             'joining_date' => 'date',
             'status' => 'boolean',
+            'allowed_locations' => 'array',
         ];
     }
 
@@ -35,7 +43,6 @@ class Trainee extends Model
     {
         return 'code';
     }
-
 
 // Relationships
 

@@ -50,8 +50,7 @@ class InvoiceController extends Controller
         return ApiResponse::success(
             new InvoiceResource(
                 $invoice->load([
-                    'organization',
-//                    'business',
+                    'business',
                     'user',
                     'order',
                 ])

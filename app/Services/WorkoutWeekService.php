@@ -23,7 +23,6 @@ class WorkoutWeekService
     public function store(array $data): WorkoutWeek
     {
         try {
-
             return DB::transaction(function () use ($data) {
 
                 $week = WorkoutWeek::create([
@@ -39,11 +38,9 @@ class WorkoutWeekService
                 return $week->load([
                     'workoutPlan',
                 ]);
-
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Workout Week Creation Failed', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -55,7 +52,6 @@ class WorkoutWeekService
     }
 
     public function update(WorkoutWeek $workoutWeek, array $data): WorkoutWeek {
-
         try {
             return DB::transaction(function () use ($workoutWeek, $data) {
 
@@ -74,11 +70,9 @@ class WorkoutWeekService
                     ->load([
                         'workoutPlan',
                     ]);
-
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Workout Week Update Failed', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -90,17 +84,14 @@ class WorkoutWeekService
     }
 
     public function destroy(WorkoutWeek $workoutWeek): bool {
-
         try {
             return DB::transaction(function () use ($workoutWeek) {
 
                 $workoutWeek->delete();
-
                 return true;
             });
 
         } catch (\Throwable $e) {
-
             Log::error('Workout Week Delete Failed', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),

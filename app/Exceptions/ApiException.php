@@ -8,18 +8,16 @@ class ApiException extends Exception
 {
     protected int $statusCode;
 
-    protected array $errors;
+    protected mixed $errors;
 
     public function __construct(
         string $message = 'Something went wrong.',
         int $statusCode = 500,
-        array $errors = []
+        mixed $errors = null
     ) {
-
         parent::__construct($message);
 
         $this->statusCode = $statusCode;
-
         $this->errors = $errors;
     }
 
@@ -27,8 +25,7 @@ class ApiException extends Exception
     {
         return $this->statusCode;
     }
-
-    public function getErrors(): array
+    public function getErrors(): mixed
     {
         return $this->errors;
     }

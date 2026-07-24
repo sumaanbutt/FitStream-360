@@ -9,7 +9,7 @@ class   Order extends Model
     protected $fillable = [
         'code',
 
-        'organization_code',
+        'business_code',
         'user_code',
 
         'subtotal',
@@ -22,15 +22,6 @@ class   Order extends Model
 
         'status',
     ];
-
-    public function organization()
-    {
-        return $this->belongsTo(
-            Organization::class,
-            'organization_code',
-            'code'
-        );
-    }
 
     public function business()
     {

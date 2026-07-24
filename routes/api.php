@@ -53,9 +53,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('trainee-goals', TraineeGoalController::class);
 
-    Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class); // i didnt created resource for this
+    Route::apiResource('trainee-goal-progress', TraineeGoalProgressController::class);
 
-    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);//not tested any method of this yet
+    Route::apiResource('trainee-goals-attachments', TraineeGoalAttachmentController::class);
 
     Route::apiResource('attendance', AttendanceController::class);
 

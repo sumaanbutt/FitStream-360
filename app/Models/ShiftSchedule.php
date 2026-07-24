@@ -8,7 +8,7 @@ class ShiftSchedule extends Model
 {
     protected $fillable = [
         'code',
-        'organization_code',
+        'business_code',
         'staff_code',
         'working_days',
         'start_time',
@@ -20,11 +20,11 @@ class ShiftSchedule extends Model
         'status' => 'boolean',
     ];
 
-    public function organization()
+    public function business()
     {
         return $this->belongsTo(
-            Organization::class,
-            'organization_code',
+            Business::class,
+            'business_code',
             'code'
         );
     }
