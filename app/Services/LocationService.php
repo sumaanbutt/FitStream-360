@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\BusinessException;
+use App\Exceptions\ApiException;
 use App\Filters\LocationFilter;
 use App\Models\Business;
 use App\Models\Location;
@@ -78,7 +78,7 @@ class LocationService
                     'state' => $data['state'],
                     'country' => $data['country'],
                     'postal_code' => $data['postal_code'],
-                    'location_status' => $data['status'] ?? 'active',
+                    'location_status' => $data['location_status'] ?? 'active',
                 ]);
 
                 return $location->load([
@@ -97,67 +97,75 @@ class LocationService
         }
     }
 
-    public function update(Location $location, array $data): Location {
+    public function update(Location $location, array $data): Location
+    {
         try {
             return DB::transaction(function () use ($location, $data) {
 
                 $locationType = $data['type'] ?? $location->location_type;
-                $businessCode = $data['business_code'] ?? $location->business_code;
-                $staffCode = $data['staff_code'] ?? $location->staff_code;
 
-                if (
-                    $locationType === 'business' &&
-                    ! empty($staffCode)
-                ) {
-                    throw new BusinessException('Business location cannot have a staff.');
-                }
+                $businessCode = null;
+                $staffCode = null;
 
-                if (
-                    $locationType === 'staff' &&
-                    empty($staffCode)
-                ) {
-                    throw new BusinessException('Staff location requires a staff.');
-                }
+                switch ($locationType) {
 
-                if ($locationType === 'staff') {
+                    case 'business':
 
-                    $business = Business::where(
-                        'code',
-                        $businessCode
-                    )->firstOrFail();
+                        $businessCode = $data['business_code'] ?? $location->business_code;
 
-                    $staff = Staff::where(
-                        'code',
-                        $staffCode
-                    )->firstOrFail();
+                        if (empty($businessCode)) {
+                            throw new ApiException(
+                                'Business Code is required for business location.',
+                                400
+                            );
+                        }
 
-                    if (
-                        $business->organization_code !==
-                        $staff->organization_code
-                    ) {
-                        throw new BusinessException('Selected staff does not belong to the selected organization.');
-                    }
+                        Business::where('code', $businessCode)->firstOrFail();
+
+                        break;
+
+                    case 'staff':
+
+                        $staffCode = $data['staff_code'] ?? $location->staff_code;
+
+                        if (empty($staffCode)) {
+                            throw new ApiException(
+                                'Staff Code is required for staff location.',
+                                400
+                            );
+                        }
+
+                        Staff::where('code', $staffCode)->firstOrFail();
+
+                        break;
+
+                    default:
+                        throw new ApiException(
+                            'Invalid location type.',
+                            400
+                        );
                 }
 
                 $location->update([
                     'business_code' => $businessCode,
-                    'staff_code' => $locationType === 'business'
-                        ? null
-                        : $staffCode,
-
+                    'staff_code' => $staffCode,
                     'location_type' => $locationType,
                     'address' => $data['address'] ?? $location->address,
                     'city' => $data['city'] ?? $location->city,
                     'state' => $data['state'] ?? $location->state,
                     'country' => $data['country'] ?? $location->country,
                     'postal_code' => $data['postal_code'] ?? $location->postal_code,
-                    'location_status' => $data['status'] ?? $location->location_status,
+                    'location_status' => $data['location_status'] ?? $location->location_status,
+
                 ]);
 
-                return $location->fresh()->load([
-                    'business',
-                    'staff.user',
-                ]);
+                return $location
+                    ->fresh()
+                    ->load([
+                        'business',
+                        'staff.user',
+                    ]);
+
             });
 
         } catch (\Throwable $e) {
@@ -167,6 +175,7 @@ class LocationService
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);
+
             throw $e;
         }
     }

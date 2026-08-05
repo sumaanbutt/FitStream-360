@@ -18,7 +18,8 @@ class ApiResponse
         return self::success($data, $message, 201);
     }
 
-    public static function error(string $message = 'Something went wrong.', mixed $errors = null, int $status = 500): JsonResponse {
+    public static function error(string $message = 'Something went wrong.', int $status = 500, mixed $errors = null): JsonResponse
+    {
         return response()->json([
             'success' => false,
             'message' => $message,

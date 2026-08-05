@@ -39,7 +39,7 @@ class   StoreLocationRequest extends FormRequest
             'state' => ['nullable', 'string', 'max:100',],
             'country' => ['required', 'string', 'max:100',],
             'postal_code' => ['required', 'string', 'max:20',],
-            'status' => ['sometimes',
+            'location_status' => ['sometimes',
                 Rule::in([
                     'active',
                     'inactive',

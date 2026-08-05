@@ -15,8 +15,20 @@ class UpdateLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'business_code' => ['sometimes', 'exists:businesses,code',],
-            'staff_code' => ['nullable', 'exists:staff,code',],
+//            'business_code' => ['sometimes', 'exists:businesses,code',],
+//            'staff_code' => ['nullable', 'exists:staff,code',],
+            'business_code' => [
+                'required_if:type,business',
+                'nullable',
+                'exists:businesses,code',
+            ],
+
+            'staff_code' => [
+                'required_if:type,staff',
+                'nullable',
+                'exists:staff,code',
+            ],
+
             'type' => ['sometimes',
                 Rule::in([
                     'business',
@@ -29,7 +41,7 @@ class UpdateLocationRequest extends FormRequest
             'state' => ['nullable', 'string', 'max:100',],
             'country' => ['sometimes', 'string', 'max:100',],
             'postal_code' => ['nullable', 'string', 'max:20',],
-            'status' => ['sometimes',
+            'location_status' => ['sometimes',
                 Rule::in([
                     'active',
                     'inactive',

@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\WorkoutPlanController;
 use App\Http\Controllers\Api\WorkoutPlanEquipmentController;
 use App\Http\Controllers\Api\WorkoutWeekController;
 use App\Http\Controllers\Api\WorkoutDayController;
+use App\Http\Controllers\Api\AnalyticsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,20 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('orders', OrderController::class);
 
     Route::apiResource('invoices', InvoiceController::class);
+
+// Analytics Routes
+    Route::prefix('analytics')
+        ->controller(AnalyticsController::class)
+        ->group(function () {
+            Route::get('/overview', 'overview');
+            Route::get('/organization', 'organization');
+            Route::get('/users', 'users');
+            Route::get('/attendance', 'attendance');
+            Route::get('/fitness', 'fitness');
+            Route::get('/inventory', 'inventory');
+            Route::get('/orders', 'orders');
+            Route::get('/finance', 'finance');
+        });
 
     Route::get('/profile', function () {
         return auth()->user();
